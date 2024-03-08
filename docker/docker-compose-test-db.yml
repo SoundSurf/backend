@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  testDb:
+    container_name: test-db
+    image: mysql:8.0.31
+    restart: always
+    #    platform: linux/x86_64/v8
+    ports:
+      - "13308:3306"
+    environment:
+      - MYSQL_DATABASE=soundSurf
+      - MYSQL_ROOT_PASSWORD=1234
+      - TZ=Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci

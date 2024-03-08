@@ -1,0 +1,92 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.api'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.flywaydb:flyway-core:9.6.0'
+    implementation "org.flywaydb:flyway-mysql"
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.register('createTestDbScript', Exec) {
+    group "test"
+    workingDir "${projectDir}/src/test/resources/script"
+    commandLine "sh", "create_test_db_script.sh", "${projectDir}/docker/mysql/app/init.d", false
+    doLast {
+        println "Test DB script created!"
+    }
+}
+
+tasks.register('dbUp', Exec) {
+    group "test"
+    workingDir "${projectDir}"
+    commandLine "docker", "compose", "-f", "./docker/docker-compose-db.yml", "-p", "db", "up", "-d"
+    doLast {
+        println "Db Up!"
+    }
+}
+
+tasks.register('dbDown', Exec) {
+    group "test"
+    workingDir "${projectDir}"
+    commandLine "docker", "compose", "-f", "./docker/docker-compose-db.yml", "-p", "db", "down"
+    doLast {
+        println "Db Down!"
+    }
+}
+
+tasks.register('testDbUp', Exec) {
+    group "test"
+    workingDir "${projectDir}"
+    commandLine "docker", "compose", "-f", "./docker/docker-compose-test-db.yml", "-p", "test", "up", "-d"
+    doLast {
+        println "Test Db Up!"
+    }
+}
+
+tasks.register('testDbDown', Exec) {
+    group "test"
+    workingDir "${projectDir}"
+    commandLine "docker", "compose", "-f", "./docker/docker-compose-test-db.yml", "-p", "test", "down"
+    doLast {
+        println "Test Db Down!"
+    }
+}
