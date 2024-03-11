@@ -3,7 +3,6 @@ package com.api.soundsurf.api.config;
 import com.api.soundsurf.api.exception.DbConnectionCredentialException;
 import com.api.soundsurf.api.exception.UnknownException;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -29,7 +28,6 @@ public class DataSourcePropertyLoader implements ApplicationListener<Application
 
     @Override
     public void onApplicationEvent(final ApplicationEnvironmentPreparedEvent event) {
-        System.out.println("abcaabdbdc");
         try {
             final var environment = event.getEnvironment();
             buildDataSourceProperties(environment);
