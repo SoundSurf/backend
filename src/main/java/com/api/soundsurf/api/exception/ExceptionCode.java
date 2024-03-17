@@ -7,4 +7,8 @@ public class ExceptionCode {
         final public static String ILLEGAL_ENUM_STRING_EXCEPTION = "Illegal Enum Value";
     }
 
+    public static class User {
+        final public static String USERNAME_DUPLICATE_ERROR = "Username Must Not Be Duplicated";
+    }
+
 }
