@@ -9,6 +9,7 @@ public class ExceptionCode {
 
     public static class User {
         final public static String USERNAME_DUPLICATE_ERROR = "Username Must Not Be Duplicated";
+        final public static String PASSWORD_CONDITION_ERROR = "Password Must Fit With Password Condition";
     }
 
 }
