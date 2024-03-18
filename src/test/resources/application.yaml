@@ -15,7 +15,7 @@ spring:
   datasource:
     username: root
     password: 1234
-    url: jdbc:mysql://localhost:13308/puzzle?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:13308/soundSurf?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     dbcp2:
       max-total: 3
