@@ -18,9 +18,9 @@ class UserControllerTest extends BaseTest {
     private final static String CLASS_URL = "/user";
     private final static String CREATE_URL = CLASS_URL + "/create";
 
-    @Description("유저 로그인 테스트")
+    @Description("유저 생성 테스트")
     @TestFactory
-    Collection<DynamicNode> login() {
+    Collection<DynamicNode> signUp() {
         final var userUuids = new ArrayList<String>();
         final var userTokens = new ArrayList<String>();
 

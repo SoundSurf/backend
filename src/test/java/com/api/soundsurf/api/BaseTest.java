@@ -20,7 +20,7 @@ import java.util.List;
 
 @SqlGroup({
         @Sql(config = @SqlConfig(dataSource = "dataSource"),
-                value = {"classpath:/db/drop_tables.sql", "classpath:/db/app_migration.sql"},
+                value = {"classpath:/db/drop_tables.sql", "classpath:/db/app_migration.sql", "classpath:/db/default_data.sql"},
                 executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = "spring.config.location=classpath:/application.yaml")

@@ -1,0 +1,1 @@
+INSERT INTO `soundSurf`.`users` (`id`, `uuid`, `username`, `password`, `email`, `deleted`, `locked`, `created_at`, `updated_at`) VALUES (1, '88d5cb2e-a064-4938-9a94-4fb68d06c5d9', 'default_user', '$2a$10$3BDlyafqu1D.R43ifkaAwuGkdwoZmzfEBVcdhKa1hwwRGunaOqA6.', 'email@email.com', 0, 0, '2024-03-18 15:41:56.760442', '2024-03-18 15:41:56.760442');
