@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,34 +26,32 @@ class UserControllerTest extends BaseTest {
 
         return group(
 
-                single("정상적으로 유저를 생성한다.", () -> {
-                    UserControllerTest.create_user("user1", "1234QWER!", "asdfa@gmail.com", userUuids);
-                }),
+                UserControllerTest.create_user("user1", "1234QWER!", "asdfa@gmail.com", userUuids),
 
                 single("같은 아이디로 유저 생성이 안되어야 한다. ", () -> {
-                    UserControllerTest.create_user_duplicate_username_error("user1", "1234QWER!", "asdfa@gmail.com");
+                    UserControllerTest.create_user_error("user1", "1234QWER!", "asdfa@gmail.com", UsernameDuplicateException.class);
                 }),
 
                 single("비밀번호에는 숫자가 포함되어야 한다.", () -> {
-                    UserControllerTest.create_user_password_condition_error("user2", "qwerQWER!", "asdfa@gmail.com");
+                    UserControllerTest.create_user_error("user2", "qwerQWER!", "asdfa@gmail.com", PasswordConditionException.class);
                 }),
 
                 single("비밀번호는 8자리 이상이어야 한다.", () -> {
-                    UserControllerTest.create_user_password_condition_error("user2", "12er!", "asdfa@gmail.com");
+                    UserControllerTest.create_user_error("user2", "12er!", "asdfa@gmail.com", MethodArgumentNotValidException.class);
                 }),
 
                 single("비밀번호에는 영어가 포함되어야 한다.", () -> {
-                    UserControllerTest.create_user_password_condition_error("user2", "12341234!", "asdfa@gmail.com");
+                    UserControllerTest.create_user_error("user2", "12341234!", "asdfa@gmail.com", PasswordConditionException.class);
                 }),
 
                 single("비밀번호에는 특수기호가 포함되어야 한다.", () -> {
-                    UserControllerTest.create_user_password_condition_error("user2", "1234QWERQWER", "asdfa@gmail.com");
+                    UserControllerTest.create_user_error("user2", "1234QWERQWER", "asdfa@gmail.com", PasswordConditionException.class);
                 })
         );
     }
 
     public static DynamicNode create_user(final String username, final String password, final String email, final ArrayList<String> userUuids) {
-        return single("유저 생성", () -> {
+        return single("정상적으로 유저 생성", () -> {
             final var createRequest = new JSONObject();
 
             createRequest.put("username", username);
@@ -67,25 +66,14 @@ class UserControllerTest extends BaseTest {
         });
     }
 
-    private static void create_user_password_condition_error(final String username, final String password, final String email) throws JSONException {
+    private static void create_user_error(final String username, final String password, final String email, final Class errorClass) throws JSONException {
         final var createRequest = new JSONObject();
 
         createRequest.put("username", username);
         createRequest.put("password", password);
         createRequest.put("email", email);
 
-        RestClientFactory.postAssertFail(CREATE_URL, createRequest, PasswordConditionException.class);
+        RestClientFactory.postAssertFail(CREATE_URL, createRequest, errorClass);
     }
-
-    private static void create_user_duplicate_username_error(final String username, final String password, final String email) throws JSONException {
-            final var createRequest = new JSONObject();
-
-            createRequest.put("username", username);
-            createRequest.put("password", password);
-            createRequest.put("email", email);
-
-            RestClientFactory.postAssertFail(CREATE_URL, createRequest, UsernameDuplicateException.class);
-    }
-
 
 }
