@@ -1,6 +1,8 @@
 package com.api.soundsurf.iam.domain;
 
+import com.api.soundsurf.api.config.LocalDateTimeUtcSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,20 +47,22 @@ public class User implements Persistable<Long> {
     private boolean locked = false;
 
     @Column(name = "created_at", nullable = false)
-    LocalDateTime createdAt;
+    @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = true)
-    LocalDateTime updatedAt;
+    @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
+    private LocalDateTime updatedAt;
 
     @PrePersist
-    protected void onPersist() {
-        if (this.createdAt == null) {
+    private void onPersist() {
+        if (this.getCreatedAt() == null) {
             this.createdAt = this.updatedAt = LocalDateTime.now();
         }
     }
 
     @PreUpdate
-    protected void onUpdate() {
+    private void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 

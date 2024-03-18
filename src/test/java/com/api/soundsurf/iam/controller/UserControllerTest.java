@@ -22,7 +22,6 @@ class UserControllerTest extends BaseTest {
     @TestFactory
     Collection<DynamicNode> signUp() {
         final var userUuids = new ArrayList<String>();
-        final var userTokens = new ArrayList<String>();
 
         return group(
 
@@ -49,6 +48,15 @@ class UserControllerTest extends BaseTest {
                 })
         );
     }
+
+    @Description("유저 로그인 테스트")
+    @TestFactory
+    Collection<DynamicNode> signIn() {
+        final var userTokens = new ArrayList<String>();
+
+        return group();
+    }
+
 
     public static DynamicNode create_user(final String username, final String password, final String email, final ArrayList<String> userUuids) {
         return single("정상적으로 유저 생성", () -> {
