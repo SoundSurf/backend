@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "session_tokens")
@@ -24,6 +25,9 @@ public class SessionToken implements Persistable<Long> {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "token", nullable = false)
+    private String token = UUID.randomUUID().toString();
 
     @Column(name="user_uuid", nullable = false)
     private String userUuid;
@@ -39,6 +43,7 @@ public class SessionToken implements Persistable<Long> {
     @PrePersist
     private void onPersist() {
         this.setCreatedAt(LocalDateTime.now());
+        this.setExpiredAt(LocalDateTime.now().plusDays(1));
     }
 
     @Override

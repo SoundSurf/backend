@@ -2,15 +2,34 @@ package com.api.soundsurf.iam.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 public class UserDto {
+    public static class Login {
+        @Getter
+        @Schema(name = "UserDto.LogIn.Request")
+        public static class Request {
+            @Length(min = 1)
+            private String username;
+            @NotNull
+            private String password;
+        }
+
+        @AllArgsConstructor
+        @Getter
+        public static class Response {
+            private String sessionToken;
+        }
+
+    }
     public static class Create {
         @Getter
         @Schema(name = "UserDto.Create.Request")
         public static class Request {
+            @Length(min = 1)
             private String username;
             @Length(min = 8)
             private String password;

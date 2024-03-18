@@ -1,7 +1,7 @@
 package com.api.soundsurf.api.exception;
 
 public class UnknownException extends ApiException {
-    private final static String exceptionCode = ExceptionCode.Api.UNKNOWN_EXCEPTION;
+    private final static String exceptionCode = ExceptionCode.API.UNKNOWN_EXCEPTION;
 
     UnknownException() {
         super(exceptionCode);

@@ -12,3 +12,12 @@ create table users
 
     Primary Key (id)
 );
+
+CREATE TABLE `session_tokens` (
+                                  `id` BIGINT NOT NULL AUTO_INCREMENT,
+                                  `token` VARCHAR(36) NOT NULL,
+                                  `user_uuid` VARCHAR(36) NOT NULL,
+                                  `created_at` DATETIME NOT NULL,
+                                  `expired_at` DATETIME NOT NULL,
+                                  PRIMARY KEY (`id`)
+);
