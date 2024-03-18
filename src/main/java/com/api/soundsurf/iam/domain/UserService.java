@@ -15,9 +15,9 @@ public class UserService {
 
     public Integer countByUsername(final String userName, final BooleanDeleted deleted) {
         if (deleted.isTrue()) {
-            return repository.findAllByUsername(userName);
+            return repository.countAllByUsername(userName);
         } else {
-            return repository.findAllByUsernameAndDeletedIsFalse(userName);
+            return repository.countAllByUsernameAndDeletedIsFalse(userName);
         }
 
     }

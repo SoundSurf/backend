@@ -3,7 +3,6 @@ package com.api.soundsurf.iam.controller;
 import com.api.soundsurf.iam.domain.UserTransferService;
 import com.api.soundsurf.iam.dto.UserDto;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -25,8 +24,4 @@ public class UserController {
         return transferService.create(request);
     }
 
-    @GetMapping
-    public void abc() {
-        System.out.println("abcbacba");
-    }
 }

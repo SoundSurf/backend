@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    public Integer findAllByUsername(final String userName);
-    public Integer findAllByUsernameAndDeletedIsFalse(final String userName);
+    Integer countAllByUsername(final String userName);
+    Integer countAllByUsernameAndDeletedIsFalse(final String userName);
 }
