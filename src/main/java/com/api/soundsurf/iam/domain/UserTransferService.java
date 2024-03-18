@@ -3,6 +3,7 @@ package com.api.soundsurf.iam.domain;
 
 import com.api.soundsurf.iam.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +22,6 @@ public class UserTransferService {
 
     private void hydrateNewUser(final UserDto.Create.Request requestDto, final User user) {
         user.setUsername(requestDto.getUsername());
-        user.setPassword(requestDto.getPassword());
         user.setEmail(requestDto.getEmail());
     }
 
