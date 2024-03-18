@@ -18,7 +18,7 @@ public class UserBusinessService {
     public String create(final User user) {
         validateCreate(user);
 
-        cryptPassword(user);
+        encryptPassword(user);
         return service.create(user);
     }
 
@@ -47,7 +47,7 @@ public class UserBusinessService {
         }
     }
 
-    private void cryptPassword(final User user){
+    private void encryptPassword(final User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 }
