@@ -3,7 +3,7 @@ package com.api.soundsurf.iam.controller;
 import com.api.soundsurf.RestClientFactory;
 import com.api.soundsurf.api.BaseTest;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
-import com.api.soundsurf.iam.exception.UsernameDuplicateException;
+import com.api.soundsurf.iam.exception.NicknameDuplicateException;
 import jdk.jfr.Description;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ class UserControllerTest extends BaseTest {
                 UserControllerTest.create_user("user1", "1234QWER!", "asdfa@gmail.com", userUuids),
 
                 single("같은 아이디로 유저 생성이 안되어야 한다. ", () -> {
-                    UserControllerTest.create_user_error("user1", "1234QWER!", "asdfa@gmail.com", UsernameDuplicateException.class);
+                    UserControllerTest.create_user_error("user1", "1234QWER!", "asdfa@gmail.com", NicknameDuplicateException.class);
                 }),
 
                 single("비밀번호에는 숫자가 포함되어야 한다.", () -> {

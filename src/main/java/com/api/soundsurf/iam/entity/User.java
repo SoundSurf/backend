@@ -16,7 +16,6 @@ import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -28,42 +27,36 @@ public class User implements Persistable<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "uuid", nullable = false)
-    private String uuid = UUID.randomUUID().toString();
-
-    @Column(name = "username", nullable = false)
-    private String username;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "username", nullable = true)
+    private String nickname;
 
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted = false;
+    @Column(name="car_id", nullable = false)
+    private Long carId = 1L;
 
-    @Column(name = "locked", nullable = false)
-    private boolean locked = false;
+    @Column(name="user_profile_id", nullable = false)
+    private Long userProfileId;
+
+    @Column(name="user_qr_id", nullable = false)
+    private Long userQrId;
+
+    @Column(name="new_user", nullable = false)
+    private Boolean newUser = true;
 
     @Column(name = "created_at", nullable = false)
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = true)
-    @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
-    private LocalDateTime updatedAt;
-
     @PrePersist
     private void onPersist() {
         if (this.getCreatedAt() == null) {
-            this.createdAt = this.updatedAt = LocalDateTime.now();
+            this.createdAt = LocalDateTime.now();
         }
-    }
-
-    @PreUpdate
-    private void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
     }
 
     @Override

@@ -11,18 +11,17 @@ public class UserDto {
         @Getter
         @Schema(name = "UserDto.Create.Request")
         public static class Request {
-            private String username;
-            @Length(min = 8)
-            private String password;
             @Email
             private String email;
+            @Length(min = 6, max = 16)
+            private String password;
         }
 
         @AllArgsConstructor
         @Schema(name = "UserDto.Create.Response")
         @Getter
         public static class Response {
-            private String uuid;
+            private Long id;
         }
     }
 }

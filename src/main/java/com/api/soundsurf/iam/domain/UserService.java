@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository repository;
 
-    public String create(final User user) {
-        return repository.save(user).getUuid();
+    public Long create(final User user) {
+        return repository.save(user).getId();
     }
 
     public Integer countByUsername(final String userName, final BooleanDeleted deleted) {
