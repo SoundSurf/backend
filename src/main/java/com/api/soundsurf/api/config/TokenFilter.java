@@ -43,8 +43,9 @@ public class TokenFilter extends OncePerRequestFilter {
 
         token = token.substring(TOKEN_HEADER.length());
 
+        //FIXME: after creating session token, push real user id
         final var userUuid = validateTokenAndGetUserId(token);
-        final var SessionUser = new SessionUser(userUuid);
+        final var SessionUser = new SessionUser(1L);
 
         final var authentication = new UsernamePasswordAuthenticationToken(SessionUser, null);
 

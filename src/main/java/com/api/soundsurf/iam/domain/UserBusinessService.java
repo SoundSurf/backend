@@ -20,6 +20,7 @@ public class UserBusinessService {
 
         encryptPassword(user);
 
+        //TODO: user session token 만들기
         //TODO: userProfile 만들기, 아랫줄 고치기
         user.setUserProfileId(1L);
         //TODO: userQr 만들기, 아릿줄 고치기
