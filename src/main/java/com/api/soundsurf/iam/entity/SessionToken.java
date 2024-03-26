@@ -29,8 +29,8 @@ public class SessionToken implements Persistable<Long> {
     @Column(name = "token", nullable = false)
     private String token = UUID.randomUUID().toString();
 
-    @Column(name="user_uuid", nullable = false)
-    private String userUuid;
+    @Column(name="userId", nullable = false)
+    private Long userId;
 
     @Column(name = "created_at", nullable = false)
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
