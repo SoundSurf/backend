@@ -1,5 +1,5 @@
 ## Swagger endPoint
-{host}/soundSurf.html
+{host}/api-docs
 
 ## Env variables set
 ```
