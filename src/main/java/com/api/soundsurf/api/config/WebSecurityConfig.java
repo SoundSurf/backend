@@ -11,6 +11,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -19,22 +23,24 @@ public class WebSecurityConfig {
     @Autowired
     private final SessionTokenRepository sessionTokenRepository;
 
+    private final  ArrayList<String> tokenIgnoreUrl = new ArrayList<>(List.of("/user/**"));
+
     @Bean
     public TokenFilter tokenFilter() {
-        return new TokenFilter(sessionTokenRepository);
+        return new TokenFilter(sessionTokenRepository, tokenIgnoreUrl);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/user/**").permitAll()
+                .addFilterAfter(tokenFilter(), BasicAuthenticationFilter.class);
+//                .authorizeHttpRequests((requests) -> requests
+//                                .requestMatchers("/user/**").permitAll()
 //                        .anyRequest().authenticated()
-                )
-//                .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .httpBasic().disable()
-                .logout().disable();
+//                );
+//                .httpBasic().disable()
+//                .logout().disable();
 //                .formLogin((form) -> form
 //                        .loginPage("/login")
 //                        .permitAll()
