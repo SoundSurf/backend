@@ -2,8 +2,9 @@ package com.api.soundsurf.iam.domain;
 
 
 import com.api.soundsurf.iam.dto.UserDto;
+import com.api.soundsurf.iam.entity.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,13 +12,14 @@ import org.springframework.stereotype.Service;
 public class UserTransferService {
     private final UserBusinessService businessService;
 
+    @Transactional
     public UserDto.Create.Response create(final UserDto.Create.Request requestDto) {
         final var user = new User();
         hydrateNewUser(requestDto, user);
 
-        final var newUserUuid = businessService.create(user);
+        final var newUserId = businessService.create(user);
 
-        return new UserDto.Create.Response(newUserUuid);
+        return new UserDto.Create.Response(newUserId);
     }
 
     public UserDto.Login.Response login(final UserDto.Login.Request requestDto) {
@@ -26,7 +28,6 @@ public class UserTransferService {
     }
 
     private void hydrateNewUser(final UserDto.Create.Request requestDto, final User user) {
-        user.setUsername(requestDto.getUsername());
         user.setPassword(requestDto.getPassword());
         user.setEmail(requestDto.getEmail());
     }

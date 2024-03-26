@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.entity;
 
 import com.api.soundsurf.api.config.LocalDateTimeUtcSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

@@ -8,8 +8,8 @@ public class ExceptionCode {
         final public static String UNAUTHORIZED_TOKEN_EXCEPTION = "Token is not usable";
     }
 
-    public static class USER {
-        final public static String USERNAME_DUPLICATE_ERROR = "Username Must Not Be Duplicated";
+    public static class User {
+        final public static String NICKNAME_DUPLICATE_ERROR = "Nickname Must Not Be Duplicated";
         final public static String PASSWORD_CONDITION_ERROR = "Password Must Fit With Password Condition";
     }
 
