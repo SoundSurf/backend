@@ -3,6 +3,7 @@ package com.api.soundsurf.iam.domain;
 
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserTransferService {
     private final UserBusinessService businessService;
 
+    @Transactional
     public UserDto.Create.Response create(final UserDto.Create.Request requestDto) {
         final var user = new User();
         hydrateNewUser(requestDto, user);
