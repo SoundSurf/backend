@@ -19,6 +19,7 @@ public class UserDto {
         }
 
         @AllArgsConstructor
+        @Schema(name = "UserDto.Create.Response")
         @Getter
         public static class Response {
             private String uuid;
