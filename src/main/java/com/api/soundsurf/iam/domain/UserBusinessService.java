@@ -1,6 +1,5 @@
 package com.api.soundsurf.iam.domain;
 
-import com.api.soundsurf.api.BooleanDeleted;
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
@@ -20,6 +19,12 @@ public class UserBusinessService {
         validateCreate(user);
 
         encryptPassword(user);
+
+        //TODO: userProfile 만들기, 아랫줄 고치기
+        user.setUserProfileId(1L);
+        //TODO: userQr 만들기, 아릿줄 고치기
+        user.setUserQrId(1L);
+
         return service.create(user);
     }
 
@@ -28,9 +33,9 @@ public class UserBusinessService {
         validatePasswordHaveEngAndDigit(user.getPassword());
     }
 
-    private void validateNoDuplicateNickname(final String userName) {
-        if (service.countByUsername(userName, BooleanDeleted.TRUE) > 0) {
-            throw new NicknameDuplicateException(userName);
+    private void validateNoDuplicateNickname(final String nickName) {
+        if (service.countByNickname(nickName) > 0) {
+            throw new NicknameDuplicateException(nickName);
         }
     }
 
