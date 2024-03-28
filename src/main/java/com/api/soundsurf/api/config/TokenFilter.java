@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 import static com.api.soundsurf.api.Const.TOKEN_HEADER;
 
+@Slf4j
 public class TokenFilter extends OncePerRequestFilter {
     private final ArrayList<String> tokenIgnoreUrl;
     private final SessionTokenRepository sessionTokenRepository;
@@ -30,7 +32,9 @@ public class TokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info(request.getRequestURI() + " comes");
         if (ignore(request.getRequestURI())) {
+            log.info(request.getRequestURI() + " filter pass");
             filterChain.doFilter(request, response);
             return;
         }
@@ -50,6 +54,8 @@ public class TokenFilter extends OncePerRequestFilter {
         final var authentication = new UsernamePasswordAuthenticationToken(SessionUser, null);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        log.info(request.getRequestURI() + " filter pass");
         filterChain.doFilter(request, response);
     }
 
