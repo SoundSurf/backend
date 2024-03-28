@@ -39,7 +39,7 @@ public class UserDto {
         @Schema(name = "UserDto.Create.Response")
         @Getter
         public static class Response {
-            private Long id;
+            private String userToken;
         }
     }
 }

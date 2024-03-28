@@ -10,6 +10,13 @@ import org.springframework.stereotype.Service;
 public class SessionTokenService {
     private final SessionTokenRepository repository;
 
+    public SessionToken create(final Long userId) {
+        final var newSessionToken = new SessionToken();
+
+        newSessionToken.setUserId(userId);
+        return newSessionToken;
+    }
+
     public SessionToken findByUserUuid(final String userUuid) {
         return null;
     }

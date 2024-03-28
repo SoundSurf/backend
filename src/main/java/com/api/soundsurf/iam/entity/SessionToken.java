@@ -43,7 +43,7 @@ public class SessionToken implements Persistable<Long> {
     @PrePersist
     private void onPersist() {
         this.setCreatedAt(LocalDateTime.now());
-        this.setExpiredAt(LocalDateTime.now().plusDays(1));
+        this.setExpiredAt(LocalDateTime.now().plusYears(100));
     }
 
     @Override
