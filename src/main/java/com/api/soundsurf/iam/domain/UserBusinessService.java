@@ -29,13 +29,13 @@ public class UserBusinessService {
     }
 
     private void validateCreate(final User user) {
-        validateNoDuplicateNickname(user.getNickname());
+        validateNoDuplicateEmail(user.getEmail());
         validatePasswordHaveEngAndDigit(user.getPassword());
     }
 
-    private void validateNoDuplicateNickname(final String nickName) {
-        if (service.countByNickname(nickName) > 0) {
-            throw new NicknameDuplicateException(nickName);
+    private void validateNoDuplicateEmail(final String email) {
+        if (service.countByEmail(email) > 0) {
+            throw new NicknameDuplicateException(email);
         }
     }
 

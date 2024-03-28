@@ -14,7 +14,8 @@ public class SessionTokenService {
         final var newSessionToken = new SessionToken();
 
         newSessionToken.setUserId(userId);
-        return newSessionToken;
+
+        return repository.save(newSessionToken);
     }
 
     public SessionToken findByUserUuid(final String userUuid) {
