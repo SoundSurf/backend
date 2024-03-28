@@ -1,5 +1,6 @@
 package com.api.soundsurf.api.config;
 
+import com.api.soundsurf.api.exception.ExceptionCode;
 import com.api.soundsurf.iam.domain.SessionTokenRepository;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.exception.UnauthorizedTokenException;
@@ -41,7 +42,8 @@ public class TokenFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
 
-        if (!token.startsWith(TOKEN_HEADER)) {
+        if (token==null || !token.startsWith(TOKEN_HEADER)) {
+            log.error(ExceptionCode.API.UNAUTHORIZED_TOKEN_EXCEPTION);
             throw new UnauthorizedTokenException();
         }
 
