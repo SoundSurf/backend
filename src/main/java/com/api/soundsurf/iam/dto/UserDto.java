@@ -8,23 +8,6 @@ import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 public class UserDto {
-    public static class Login {
-        @Getter
-        @Schema(name = "UserDto.LogIn.Request")
-        public static class Request {
-            @Length(min = 1)
-            private String username;
-            @NotNull
-            private String password;
-        }
-
-        @AllArgsConstructor
-        @Getter
-        public static class Response {
-            private String sessionToken;
-        }
-
-    }
     public static class Create {
         @Getter
         @Schema(name = "UserDto.Create.Request")

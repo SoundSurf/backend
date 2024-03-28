@@ -13,7 +13,7 @@ public class UserService {
         return repository.save(user).getId();
     }
 
-    public Integer countByNickname(final String userName) {
-            return repository.countAllByNickname(userName);
+    public Integer countByNickname(final String nickname) {
+            return repository.countAllByNickname(nickname);
     }
 }

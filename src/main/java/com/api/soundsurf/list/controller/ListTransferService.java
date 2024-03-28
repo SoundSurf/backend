@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ListTransferService {
     public void get(final SessionUser sessionUser) {
-        System.out.println(sessionUser.getUserUuid());
+        System.out.println(sessionUser.getUserId());
     }
 }

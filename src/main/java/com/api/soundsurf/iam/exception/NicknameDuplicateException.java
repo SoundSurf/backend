@@ -7,7 +7,7 @@ public class NicknameDuplicateException extends ApiException {
 
     private final static String exceptionCode = ExceptionCode.USER.NICKNAME_DUPLICATE_ERROR;
 
-    public NicknameDuplicateException(final String username) {
-        super(exceptionCode + " : " + username);
+    public NicknameDuplicateException(final String nickname) {
+        super(exceptionCode + " : " + nickname);
     }
 }
