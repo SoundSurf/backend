@@ -23,7 +23,7 @@ public class WebSecurityConfig {
     @Autowired
     private final SessionTokenRepository sessionTokenRepository;
 
-    private final  ArrayList<String> tokenIgnoreUrl = new ArrayList<>(List.of("/user/**"));
+    private final  ArrayList<String> tokenIgnoreUrl = new ArrayList<>(List.of("/user/**", "/api-docs", "/swagger-ui/**", "/v3/**"));
 
     @Bean
     public TokenFilter tokenFilter() {
