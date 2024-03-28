@@ -33,7 +33,7 @@ public class User implements Persistable<Long> {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "username", nullable = true)
+    @Column(name = "nickname", nullable = true)
     private String nickname;
 
     @Column(name="car_id", nullable = false)
