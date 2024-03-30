@@ -10,4 +10,6 @@ import java.util.ArrayList;
 @Repository
 public interface SessionTokenRepository extends JpaRepository<SessionToken, Long> {
     ArrayList<SessionToken> findAllByTokenAndCreatedAtBefore(String token, LocalDateTime localDateTime);
+
+    SessionToken findByUserId(Long userId);
 }
