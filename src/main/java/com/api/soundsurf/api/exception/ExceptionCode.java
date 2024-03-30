@@ -11,6 +11,7 @@ public class ExceptionCode {
     public static class USER {
         final public static String NICKNAME_DUPLICATE_ERROR = "Nickname Must Not Be Duplicated";
         final public static String PASSWORD_CONDITION_ERROR = "Password Must Fit With Password Condition";
+        final public static String USER_NOT_FOUND_ERROR = "User Not Found";
+        final public static String PASSWORD_NOT_MATCH_ERROR = "Password Not Match";
     }
-
 }
