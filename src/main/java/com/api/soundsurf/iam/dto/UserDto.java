@@ -25,4 +25,22 @@ public class UserDto {
             private String userToken;
         }
     }
+
+    public static class Login {
+        @Getter
+        @Schema(name = "UserDto.Login.Request")
+        public static class Request {
+            @Email
+            private String email;
+            @NotNull
+            private String password;
+        }
+
+        @AllArgsConstructor
+        @Schema(name = "UserDto.Login.Response")
+        @Getter
+        public static class Response {
+            private String userToken;
+        }
+    }
 }
