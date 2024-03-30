@@ -14,6 +14,10 @@ public class UserService {
     }
 
     public Integer countByEmail(final String email) {
-            return repository.countAllByEmail(email);
+        return repository.countAllByEmail(email);
+    }
+
+    public User findByEmail(final String email) {
+        return repository.getByEmailOrThrow(email);
     }
 }

@@ -1,6 +1,5 @@
 package com.api.soundsurf.iam.domain;
 
-import com.api.soundsurf.api.BooleanDeleted;
 import com.api.soundsurf.iam.entity.SessionToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,11 @@ public class SessionTokenService {
         return repository.save(newSessionToken);
     }
 
-    public SessionToken findByUserUuid(final String userUuid) {
-        return null;
+    public SessionToken findByUserId(final Long userId) {
+        return repository.getByUserIdOrThrow(userId);
     }
 
-    public String update(final String userUuid){
+    public String update(final String userUuid) {
         return null;
     }
 }
