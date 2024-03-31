@@ -64,7 +64,7 @@ class UserControllerTest extends BaseTest {
 
             final var actual = RestClientFactory.post(CREATE_URL, createRequest);
 
-            org.assertj.core.api.Assertions.assertThat(actual.get("uuid")).isNotNull().isNotEqualTo("");
+            org.assertj.core.api.Assertions.assertThat(actual.get("userToken")).isNotNull().isNotEqualTo("");
 
             userUuids.add(actual.getString("uuid"));
         });
