@@ -21,11 +21,11 @@ class UserControllerTest extends BaseTest {
     @Description("유저 생성 테스트")
     @TestFactory
     Collection<DynamicNode> signUp() {
-        final var userUuids = new ArrayList<String>();
+        final var userTokens = new ArrayList<String>();
 
         return group(
 
-                UserControllerTest.create_user("1234QWER!", "asdfa@gmail.com", userUuids),
+                UserControllerTest.create_user("1234QWER!", "asdfa@gmail.com", userTokens),
 
                 single("같은 이메일로 유저 생성이 안되어야 한다. ", () -> {
                     UserControllerTest.create_user_error("1234QWER!", "asdfa@gmail.com", NicknameDuplicateException.class);
@@ -55,7 +55,7 @@ class UserControllerTest extends BaseTest {
     }
 
 
-    public static DynamicNode create_user(final String password, final String email, final ArrayList<String> userUuids) {
+    public static DynamicNode create_user(final String password, final String email, final ArrayList<String> userTokens) {
         return single("정상적으로 유저 생성", () -> {
             final var createRequest = new JSONObject();
 
@@ -66,7 +66,7 @@ class UserControllerTest extends BaseTest {
 
             org.assertj.core.api.Assertions.assertThat(actual.get("userToken")).isNotNull().isNotEqualTo("");
 
-            userUuids.add(actual.getString("uuid"));
+            userTokens.add(actual.getString("userToken"));
         });
     }
 
