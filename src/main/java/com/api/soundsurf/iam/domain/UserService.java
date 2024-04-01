@@ -1,6 +1,7 @@
 package com.api.soundsurf.iam.domain;
 
 import com.api.soundsurf.iam.entity.User;
+import com.api.soundsurf.iam.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,6 @@ public class UserService {
     }
 
     public User findByEmail(final String email) {
-        return repository.getByEmailOrThrow(email);
+        return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 }
