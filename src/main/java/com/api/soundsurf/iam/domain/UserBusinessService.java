@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.domain;
 
+import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
@@ -29,11 +30,18 @@ public class UserBusinessService {
         return service.create(user);
     }
 
-    public User findByEmail(final String email) {
+    public User login(final UserDto.Login.Request requestDto) {
+        final var user = findByEmail(requestDto.getEmail());
+        validatePassword(user, requestDto.getPassword());
+
+        return user;
+    }
+
+    private User findByEmail(final String email) {
         return service.findByEmail(email);
     }
 
-    public void validatePassword(final User user, final String password) {
+    private void validatePassword(final User user, final String password) {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new PasswordNotMatchException();
         }

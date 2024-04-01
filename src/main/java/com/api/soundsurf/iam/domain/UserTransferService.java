@@ -26,10 +26,10 @@ public class UserTransferService {
 
     @Transactional
     public UserDto.Login.Response login(final UserDto.Login.Request requestDto) {
-        final var user = businessService.findByEmail(requestDto.getEmail());
-        businessService.validatePassword(user, requestDto.getPassword());
+        final var user = businessService.login(requestDto);
 
-        final var sessionToken = sessionTokenService.create(user.getId());
+        final var sessionToken = sessionTokenService.findByUserId(user.getId())
+                .orElseGet(() -> sessionTokenService.create(user.getId()));
 
         return new UserDto.Login.Response(sessionToken.getToken());
     }
