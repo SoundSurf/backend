@@ -12,6 +12,5 @@ import java.util.Optional;
 public interface SessionTokenRepository extends JpaRepository<SessionToken, Long> {
     ArrayList<SessionToken> findAllByTokenAndCreatedAtBefore(String token, LocalDateTime localDateTime);
 
-
     Optional<SessionToken> findByUserId(Long userId);
 }

@@ -4,8 +4,6 @@ import com.api.soundsurf.iam.entity.SessionToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class SessionTokenService {
@@ -19,8 +17,9 @@ public class SessionTokenService {
         return repository.save(newSessionToken);
     }
 
-    public Optional<SessionToken> findByUserId(final Long userId) {
-        return repository.findByUserId(userId);
+    public SessionToken findOrCreateNew(final Long userId) {
+        return repository.findByUserId(userId)
+                .orElseGet(() -> create(userId));
     }
 
     public String update(final String userUuid) {

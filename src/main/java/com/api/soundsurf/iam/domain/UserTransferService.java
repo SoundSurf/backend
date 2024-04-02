@@ -28,8 +28,7 @@ public class UserTransferService {
     public UserDto.Login.Response login(final UserDto.Login.Request requestDto) {
         final var user = businessService.login(requestDto);
 
-        final var sessionToken = sessionTokenService.findByUserId(user.getId())
-                .orElseGet(() -> sessionTokenService.create(user.getId()));
+        final var sessionToken = sessionTokenService.findOrCreateNew(user.getId());
 
         return new UserDto.Login.Response(sessionToken.getToken());
     }
