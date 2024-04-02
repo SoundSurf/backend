@@ -23,4 +23,9 @@ public class UserController {
         return transferService.create(request);
     }
 
+    @PostMapping(value = "/login")
+    public UserDto.Login.Response login(final @Valid @RequestBody UserDto.Login.Request request) {
+        return transferService.login(request);
+    }
+
 }

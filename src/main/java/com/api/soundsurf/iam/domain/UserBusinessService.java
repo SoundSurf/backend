@@ -1,8 +1,10 @@
 package com.api.soundsurf.iam.domain;
 
+import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
-import com.api.soundsurf.iam.exception.PasswordConditionException;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
+import com.api.soundsurf.iam.exception.PasswordConditionException;
+import com.api.soundsurf.iam.exception.PasswordNotMatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,23 @@ public class UserBusinessService {
         return service.create(user);
     }
 
+    public User login(final UserDto.Login.Request requestDto) {
+        final var user = findByEmail(requestDto.getEmail());
+        validatePassword(user, requestDto.getPassword());
+
+        return user;
+    }
+
+    private User findByEmail(final String email) {
+        return service.findByEmail(email);
+    }
+
+    private void validatePassword(final User user, final String password) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new PasswordNotMatchException();
+        }
+    }
+
     private void validateCreate(final User user) {
         validateNoDuplicateEmail(user.getEmail());
         validatePasswordHaveEngAndDigit(user.getPassword());
@@ -51,7 +70,7 @@ public class UserBusinessService {
         }
     }
 
-    private void encryptPassword(final User user){
+    private void encryptPassword(final User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 }

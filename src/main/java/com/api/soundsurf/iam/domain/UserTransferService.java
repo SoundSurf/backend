@@ -24,6 +24,15 @@ public class UserTransferService {
         return new UserDto.Create.Response(sessionToken.getToken());
     }
 
+    @Transactional
+    public UserDto.Login.Response login(final UserDto.Login.Request requestDto) {
+        final var user = businessService.login(requestDto);
+
+        final var sessionToken = sessionTokenService.findOrCreateNew(user.getId());
+
+        return new UserDto.Login.Response(sessionToken.getToken());
+    }
+
     private void hydrateNewUser(final UserDto.Create.Request requestDto, final User user) {
         user.setPassword(requestDto.getPassword());
         user.setEmail(requestDto.getEmail());
