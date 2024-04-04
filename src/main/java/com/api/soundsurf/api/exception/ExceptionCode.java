@@ -19,4 +19,10 @@ public class ExceptionCode {
     public static class SESSION_TOKEN {
         final public static String SESSION_TOKEN_NOT_FOUND_ERROR = "Session Token Not Found";
     }
+
+    public static class QR {
+        final public static String CANNOT_CREATE_QR_ERROR = "Cannot Create QR Code";
+        final public static String QR_ALREADY_EXIST_ERROR = "QR Code Already Exist";
+        final public static String QR_NOT_FOUND_ERROR = "QR Code Not Found";
+    }
 }
