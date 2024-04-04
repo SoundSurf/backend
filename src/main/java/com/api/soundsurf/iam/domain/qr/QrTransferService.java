@@ -16,4 +16,9 @@ public class QrTransferService {
         return new QrDto.Create.Response(businessService.create(sessionUser));
     }
 
+    @Transactional
+    public QrDto.find.Response find(final Long userId) {
+        return QrDto.find.Response.of(businessService.getByUserId(userId));
+    }
+
 }
