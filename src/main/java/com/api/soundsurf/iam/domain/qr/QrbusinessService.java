@@ -22,4 +22,8 @@ public class QrbusinessService {
         return service.create(new Qr(qrCode, user)).getQr();
     }
 
+    public Qr getByUserId(Long userId) {
+        return service.findByUserId(userId);
+    }
+
 }
