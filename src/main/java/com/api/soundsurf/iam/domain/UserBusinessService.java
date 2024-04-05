@@ -23,9 +23,9 @@ public class UserBusinessService {
         encryptPassword(user);
 
         //TODO: userProfile 만들기, 아랫줄 고치기
-        user.setUserProfileId(1L);
+//        user.setUserProfileId(1L);
         //TODO: userQr 만들기, 아릿줄 고치기
-        user.setUserQrId(1L);
+//        user.setUserQrId(1L);
 
         return service.create(user);
     }
