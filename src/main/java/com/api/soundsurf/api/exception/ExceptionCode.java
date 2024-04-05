@@ -9,7 +9,7 @@ public class ExceptionCode {
     }
 
     public static class USER {
-        final public static String NICKNAME_DUPLICATE_ERROR = "Nickname Must Not Be Duplicated";
+        final public static String NICKNAME_DUPLICATE_ERROR = "중복된 닉네임입니다.";
         final public static String NICKNAME_LENGTH_ERROR = "닉네임은 20자 미만으로 쓸 수 있어요.";
         final public static String PASSWORD_CONDITION_ERROR = "Password Must Fit With Password Condition";
         final public static String USER_NOT_FOUND_ERROR = "User Not Found";
