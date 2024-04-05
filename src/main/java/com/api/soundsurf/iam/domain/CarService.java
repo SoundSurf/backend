@@ -14,4 +14,8 @@ public class CarService {
     public List<Car> getAllCars() {
         return repository.findAll();
     }
+
+    public Car findByName(final String name) {
+        return repository.findByName(name);
+    }
 }

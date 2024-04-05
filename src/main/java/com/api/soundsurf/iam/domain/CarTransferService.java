@@ -19,4 +19,9 @@ public class CarTransferService {
         List<Car> cars = businessService.getAllCars();
         return cars.stream().map(car -> new CarDto.GetAll.Response(car.getId(), car.getImage(), car.getName(), car.getDescription())).collect(Collectors.toList());
     }
+
+    public CarDto.Select.Response selectCar(final CarDto.Select.Request requestDto) {
+        Car car = businessService.selectCar(requestDto);
+        return new CarDto.Select.Response(car.getName());
+    }
 }

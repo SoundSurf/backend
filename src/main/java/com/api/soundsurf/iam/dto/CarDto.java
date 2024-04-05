@@ -1,6 +1,7 @@
 package com.api.soundsurf.iam.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,6 +15,24 @@ public class CarDto {
             private byte[] image;
             private String name;
             private String description;
+        }
+    }
+
+    public static class Select {
+        @Getter
+        @Schema(name = "CarDto.Select.Request")
+        public static class Request {
+            @NotNull
+            private Long userId;
+            @NotNull
+            private String carName;
+        }
+
+        @AllArgsConstructor
+        @Getter
+        @Schema(name = "CarDto.Select.Response")
+        public static class Response {
+            private String carName;
         }
     }
 }
