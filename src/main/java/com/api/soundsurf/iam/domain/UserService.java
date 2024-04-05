@@ -22,7 +22,11 @@ public class UserService {
         return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 
-    public User getById(final Long id) {
-        return repository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public User findById(Long userId) {
+        return repository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    public void update(User user) {
+        repository.save(user);
     }
 }

@@ -65,7 +65,22 @@ public class UserDto {
                 this.profileId = profileId;
             }
         }
+    public static class SetNickname {
+        @Getter
+        @Schema(name = "UserDto.SetNickname.Request")
+        public static class Request {
+            @NotNull
+            private Long userId;
+            @NotNull
+            private String nickname;
+        }
 
-
+        @AllArgsConstructor
+        @Getter
+        @Schema(name = "UserDto.SetNickname.Response")
+        public static class Response {
+            private String nickname;
+        }
     }
+
 }

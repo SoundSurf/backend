@@ -36,4 +36,8 @@ public class UserController {
         return transferService.info(sessionUser);
     }
 
+    @PostMapping(value = "/nickname")
+    public UserDto.SetNickname.Response setNickname(final @Valid @RequestBody UserDto.SetNickname.Request request) {
+        return transferService.setNickname(request);
+    }
 }

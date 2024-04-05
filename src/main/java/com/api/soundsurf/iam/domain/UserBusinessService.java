@@ -81,4 +81,11 @@ public class UserBusinessService {
     private void encryptPassword(final User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
+
+    public String setNickname(Long userId, String nickname) {
+        final User user = service.findById(userId);
+        user.setNickname(nickname);
+        service.update(user);
+        return nickname;
+    }
 }

@@ -34,6 +34,12 @@ public class UserTransferService {
         return new UserDto.Login.Response(sessionToken.getToken());
     }
 
+    @Transactional
+    public UserDto.SetNickname.Response setNickname(final UserDto.SetNickname.Request requestDto) {
+        String nickname = businessService.setNickname(requestDto.getUserId(), requestDto.getNickname());
+        return new UserDto.SetNickname.Response(nickname);
+}
+
     public UserDto.Info.Response info(final SessionUser sessionUser) {
         final var userId= sessionUser.getUserId();
 
