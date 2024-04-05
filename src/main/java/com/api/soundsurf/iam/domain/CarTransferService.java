@@ -20,6 +20,7 @@ public class CarTransferService {
         return cars.stream().map(car -> new CarDto.GetAll.Response(car.getId(), car.getImage(), car.getName(), car.getDescription())).collect(Collectors.toList());
     }
 
+    @Transactional
     public CarDto.Select.Response selectCar(final CarDto.Select.Request requestDto) {
         Car car = businessService.selectCar(requestDto);
         return new CarDto.Select.Response(car.getName());

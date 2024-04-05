@@ -34,4 +34,9 @@ public class ProfileController {
     public List<GenreDto.GetAll.Response> getAllGenres() {
         return genreTransferService.getAllGenres();
     }
+
+    @PostMapping(value = "/select-genre")
+    public List<GenreDto.Select.Response> selectGenre(final @Valid @RequestBody List<GenreDto.Select.Request> requests) {
+        return genreTransferService.selectGenre(requests);
+    }
 }

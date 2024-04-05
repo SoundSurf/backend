@@ -17,6 +17,10 @@ public class ExceptionCode {
         final public static String USER_CAR_NOT_MATCH_ERROR = "User Car Not Found";
     }
 
+    public static class USERGENRE {
+        final public static String USERGENRE_ALEADY_EXISTS_ERROR = "UserGenre already exists";
+    }
+
     public static class SESSION_TOKEN {
         final public static String SESSION_TOKEN_NOT_FOUND_ERROR = "Session Token Not Found";
     }

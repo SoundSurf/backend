@@ -9,9 +9,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GenreService {
-    private final GenreRepository repository;
+    private final GenreRepository genreRepository;
 
     public List<Genre> getAllGenres() {
-        return repository.findAll();
+        return genreRepository.findAll();
+    }
+
+    public Genre findByName(final String name) {
+        return genreRepository.findByName(name);
     }
 }
