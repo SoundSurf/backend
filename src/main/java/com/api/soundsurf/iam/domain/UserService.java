@@ -29,4 +29,8 @@ public class UserService {
     public void update(User user) {
         repository.save(user);
     }
+
+    public boolean existsByNickname(String nickname) {
+        return repository.existsByNickname(nickname);
+    }
 }

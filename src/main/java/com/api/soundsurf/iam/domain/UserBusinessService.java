@@ -84,8 +84,15 @@ public class UserBusinessService {
 
     public String setNickname(Long userId, String nickname) {
         final User user = service.findById(userId);
+        validateNoDuplicateNickname(nickname);
         user.setNickname(nickname);
         service.update(user);
         return nickname;
+    }
+
+    private void validateNoDuplicateNickname(final String nickname) {
+        if (service.existsByNickname(nickname)) {
+            throw new NicknameDuplicateException(nickname);
+        }
     }
 }
