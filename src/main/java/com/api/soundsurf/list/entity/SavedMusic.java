@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Table(name = "saved_musics")
 public class SavedMusic {
     @Id

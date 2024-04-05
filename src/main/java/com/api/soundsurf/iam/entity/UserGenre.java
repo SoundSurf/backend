@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Table(name = "user_genres")
 public class UserGenre {
     @Id

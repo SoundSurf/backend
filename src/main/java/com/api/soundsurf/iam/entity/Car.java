@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Table(name = "cars")
 public class Car {
     @Id
