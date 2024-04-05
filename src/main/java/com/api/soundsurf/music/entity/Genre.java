@@ -23,10 +23,10 @@ public class Genre {
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "genres", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserGenre> userGenres = new ArrayList<>();
 
-    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "genres", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MusicGenre> musicGenres = new ArrayList<>();
 
     public Genre(String name, String description) {
