@@ -4,6 +4,7 @@ import com.api.soundsurf.iam.domain.qr.QrTransferService;
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
+import com.api.soundsurf.iam.exception.NicknameLengthException;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
 import com.api.soundsurf.iam.exception.PasswordNotMatchException;
 import lombok.RequiredArgsConstructor;
@@ -84,15 +85,27 @@ public class UserBusinessService {
 
     public String setNickname(Long userId, String nickname) {
         final User user = service.findById(userId);
-        validateNoDuplicateNickname(nickname);
+        validateNickname(nickname);
+//        validateNoDuplicateNickname(nickname);
         user.setNickname(nickname);
         service.update(user);
         return nickname;
     }
 
+    private void validateNickname(final String nickname) {
+        validateNoDuplicateNickname(nickname);
+        validateNicknameLength(nickname);
+    }
+
     private void validateNoDuplicateNickname(final String nickname) {
         if (service.existsByNickname(nickname)) {
             throw new NicknameDuplicateException(nickname);
+        }
+    }
+
+    private void validateNicknameLength(final String nickname) {
+        if (nickname.length() >= 20) {
+            throw new NicknameLengthException(nickname);
         }
     }
 }
