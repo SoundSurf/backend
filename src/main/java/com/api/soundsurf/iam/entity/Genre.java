@@ -17,6 +17,10 @@ public class Genre {
     private Long id;
 
     @Column
+    @Lob
+    private byte[] image;
+
+    @Column
     private String name;
 
     @Column
@@ -28,12 +32,13 @@ public class Genre {
     @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MusicGenre> musicGenres = new ArrayList<>();
 
-    public Genre(String name, String description) {
+    public Genre(byte[] image, String name, String description) {
+        this.image = image;
         this.name = name;
         this.description = description;
     }
 
-    public static final Genre newInstance(String name, String description) {
-        return new Genre(name, description);
+    public static final Genre newInstance(byte[] image, String name, String description) {
+        return new Genre(image, name, description);
     }
 }

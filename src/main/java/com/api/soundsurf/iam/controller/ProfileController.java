@@ -1,7 +1,9 @@
 package com.api.soundsurf.iam.controller;
 
 import com.api.soundsurf.iam.domain.CarTransferService;
+import com.api.soundsurf.iam.domain.GenreTransferService;
 import com.api.soundsurf.iam.dto.CarDto;
+import com.api.soundsurf.iam.dto.GenreDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import java.util.List;
 @Slf4j
 public class ProfileController {
     private final CarTransferService carTransferService;
+    private final GenreTransferService genreTransferService;
 
     @GetMapping("/cars")
     public List<CarDto.GetAll.Response> getAllCars() {
@@ -25,5 +28,10 @@ public class ProfileController {
     @PostMapping(value = "/select-car")
     public CarDto.Select.Response selectCar(final @Valid @RequestBody CarDto.Select.Request request) {
         return carTransferService.selectCar(request);
+    }
+
+    @GetMapping("/genres")
+    public List<GenreDto.GetAll.Response> getAllGenres() {
+        return genreTransferService.getAllGenres();
     }
 }
