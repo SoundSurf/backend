@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class CarDto {
-    public static class Get {
+    public static class GetAll {
         @AllArgsConstructor
         @Schema(name = "CarDto.Get.Response")
         @Getter

@@ -8,10 +8,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CarService {
-    private final CarRepository repository;
+public class CarBusinessService {
+    private final CarService service;
 
     public List<Car> getAllCars() {
-        return repository.findAll();
+        return service.getAllCars();
     }
 }

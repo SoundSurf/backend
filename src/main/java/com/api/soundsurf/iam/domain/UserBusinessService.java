@@ -86,7 +86,6 @@ public class UserBusinessService {
     public String setNickname(Long userId, String nickname) {
         final User user = service.findById(userId);
         validateNickname(nickname);
-//        validateNoDuplicateNickname(nickname);
         user.setNickname(nickname);
         service.update(user);
         return nickname;
