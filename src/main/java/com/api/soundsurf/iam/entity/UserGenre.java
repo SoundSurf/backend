@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "user_genres")
 public class UserGenre {
     @Id
@@ -29,7 +31,7 @@ public class UserGenre {
         this.genre = genre;
     }
 
-    public static final UserGenre newInstance(User user, Genre genre) {
+    public static UserGenre newInstance(final User user,final Genre genre) {
         return new UserGenre(user, genre);
     }
 }

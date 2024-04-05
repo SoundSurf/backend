@@ -6,10 +6,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "saved_musics")
 public class SavedMusic {
     @Id
@@ -30,7 +32,7 @@ public class SavedMusic {
         this.music = music;
     }
 
-    public static final SavedMusic newInstance(User user, Music music) {
+    public static SavedMusic newInstance(final User user,final Music music) {
         return new SavedMusic(user, music);
     }
 }

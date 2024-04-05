@@ -23,12 +23,12 @@ public class MusicGenre {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    public MusicGenre(Music music, Genre genre) {
+    public MusicGenre(final Music music, final Genre genre) {
         this.music = music;
         this.genre = genre;
     }
 
-    public static final MusicGenre newInstance(Music music, Genre genre) {
+    public static MusicGenre newInstance(final Music music, final Genre genre) {
         return new MusicGenre(music, genre);
     }
 }
