@@ -15,4 +15,6 @@ public interface UserGenreRepository extends JpaRepository<UserGenre, Long> {
     List<UserGenre> findAllByUser(User user);
 
     boolean existsByUserAndGenre(User user, Genre genre);
+
+    Integer countAllByUser(final User user);
 }

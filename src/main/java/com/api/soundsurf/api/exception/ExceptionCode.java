@@ -18,7 +18,8 @@ public class ExceptionCode {
     }
 
     public static class USERGENRE {
-        final public static String USERGENRE_ALEADY_EXISTS_ERROR = "UserGenre already exists";
+        final public static String USERGENRE_ALEADY_EXISTS_ERROR = "이미 선택한 장르입니다.";
+        final public static String USERGENRE_COUNT_LIMIT_ERROR = "장르는 최대 3가지 선택 가능합니다.";
     }
 
     public static class SESSION_TOKEN {

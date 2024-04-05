@@ -24,4 +24,8 @@ public class UserGenreService {
     public boolean existsByUserAndGenre(User user, Genre genre) {
         return userGenreRepository.existsByUserAndGenre(user, genre);
     }
+
+    public Integer countByUser(final User user) {
+        return userGenreRepository.countAllByUser(user);
+    }
 }
