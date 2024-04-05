@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.entity;
 
+import com.api.soundsurf.music.entity.Genre;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "USER_GENRE")
+@Table(name = "user_genres")
 public class UserGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

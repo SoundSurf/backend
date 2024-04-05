@@ -10,20 +10,20 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "CAR")
+@Table(name = "cars")
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     @Lob
     private byte[] image;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -35,7 +35,7 @@ public class Car {
         this.description = description;
     }
 
-    public static final Car newInstance(byte[] image, String name, String description) {
+    public static Car newInstance(byte[] image, String name, String description) {
         return new Car(image, name, description);
     }
 }

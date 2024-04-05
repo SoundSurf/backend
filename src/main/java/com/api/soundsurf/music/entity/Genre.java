@@ -1,5 +1,6 @@
-package com.api.soundsurf.iam.entity;
+package com.api.soundsurf.music.entity;
 
+import com.api.soundsurf.iam.entity.UserGenre;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "GENRE")
+@Table(name = "genres")
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

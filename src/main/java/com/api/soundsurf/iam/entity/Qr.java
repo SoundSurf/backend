@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "QR")
+@Table(name = "qrs")
 public class Qr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

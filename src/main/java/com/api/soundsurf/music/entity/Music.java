@@ -1,10 +1,10 @@
-package com.api.soundsurf.iam.entity;
+package com.api.soundsurf.music.entity;
 
+import com.api.soundsurf.list.entity.SavedMusic;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "MUSIC")
+@Table(name = "musics")
 public class Music {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

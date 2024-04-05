@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "USER_PROFILE")
+@Table(name = "user_profiles")
 public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
