@@ -25,4 +25,10 @@ public class CarTransferService {
         Car car = businessService.selectCar(requestDto);
         return new CarDto.Select.Response(car.getName());
     }
+
+    @Transactional
+    public CarDto.Select.Response cancelCar(final CarDto.Select.Request requestDto) {
+        Car car = businessService.cancelCar(requestDto);
+        return new CarDto.Select.Response(car.getName());
+    }
 }

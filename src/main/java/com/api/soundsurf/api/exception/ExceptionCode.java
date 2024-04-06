@@ -14,6 +14,7 @@ public class ExceptionCode {
         final public static String PASSWORD_CONDITION_ERROR = "Password Must Fit With Password Condition";
         final public static String USER_NOT_FOUND_ERROR = "User Not Found";
         final public static String PASSWORD_NOT_MATCH_ERROR = "Password Not Match";
+        final public static String ILLEGAL_CAR_ARGUMENT_EXCEPTION = "User does not have the specified car";
         final public static String USER_CAR_NOT_MATCH_ERROR = "User Car Not Found";
     }
 

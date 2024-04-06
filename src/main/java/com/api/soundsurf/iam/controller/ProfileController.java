@@ -20,7 +20,7 @@ public class ProfileController {
     private final CarTransferService carTransferService;
     private final GenreTransferService genreTransferService;
 
-    @GetMapping("/cars")
+    @GetMapping(value = "/cars")
     public List<CarDto.GetAll.Response> getAllCars() {
         return carTransferService.getAllCars();
     }
@@ -30,7 +30,12 @@ public class ProfileController {
         return carTransferService.selectCar(request);
     }
 
-    @GetMapping("/genres")
+    @DeleteMapping(value = "/cancel-car")
+    public CarDto.Select.Response cancelCar(final @Valid @RequestBody CarDto.Select.Request request) {
+        return carTransferService.cancelCar(request);
+    }
+
+    @GetMapping(value = "/genres")
     public List<GenreDto.GetAll.Response> getAllGenres() {
         return genreTransferService.getAllGenres();
     }
