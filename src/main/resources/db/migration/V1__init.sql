@@ -22,6 +22,16 @@ CREATE TABLE `genres` (
                           PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `musics` (
+                          `id` bigint NOT NULL AUTO_INCREMENT,
+                          `released_date` datetime(6) DEFAULT NULL,
+                          `album` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                          `artist` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                          `image_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                          `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                          PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `music_genres` (
                                 `genre_id` bigint DEFAULT NULL,
                                 `id` bigint NOT NULL AUTO_INCREMENT,
@@ -33,15 +43,18 @@ CREATE TABLE `music_genres` (
                                 CONSTRAINT `FKt91jx9wrovjwi8op9crnqdish` FOREIGN KEY (`music_id`) REFERENCES `musics` (`id`)
 );
 
-CREATE TABLE `musics` (
-                          `id` bigint NOT NULL AUTO_INCREMENT,
-                          `released_date` datetime(6) DEFAULT NULL,
-                          `album` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                          `artist` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          `image_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          PRIMARY KEY (`id`)
-) ;
+CREATE TABLE `users` (
+                         `id` bigint NOT NULL AUTO_INCREMENT,
+                         `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                         `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                         `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                         `new_user` tinyint(1) NOT NULL,
+                         `car_id` bigint DEFAULT NULL,
+                         `created_at` datetime(6) NOT NULL,
+                         PRIMARY KEY (`id`),
+                         KEY `FKfrbpbk3ue6xhdoi0sj1inyuu` (`car_id`),
+                         CONSTRAINT `FKfrbpbk3ue6xhdoi0sj1inyuu` FOREIGN KEY (`car_id`) REFERENCES `cars` (`id`)
+);
 
 CREATE TABLE `qrs` (
                        `id` bigint NOT NULL AUTO_INCREMENT,
@@ -83,16 +96,5 @@ CREATE TABLE `user_profiles` (
                                  CONSTRAINT `FKl3dwgmv5wjrw1yp3mox2d9lq1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ;
 
-CREATE TABLE `users` (
-                         `id` bigint NOT NULL AUTO_INCREMENT,
-                         `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                         `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                         `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                         `new_user` tinyint(1) NOT NULL,
-                         `car_id` bigint DEFAULT NULL,
-                         `created_at` datetime(6) NOT NULL,
-                         PRIMARY KEY (`id`),
-                         KEY `FKfrbpbk3ue6xhdoi0sj1inyuu` (`car_id`),
-                         CONSTRAINT `FKfrbpbk3ue6xhdoi0sj1inyuu` FOREIGN KEY (`car_id`) REFERENCES `cars` (`id`)
-);
+
 
