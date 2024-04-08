@@ -37,10 +37,10 @@ public class Music {
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDateTime releasedDate;
 
-    @OneToMany(mappedBy = "musics", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MusicGenre> musicGenres = new ArrayList<>();
 
-    @OneToMany(mappedBy = "musics", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavedMusic> savedMusics = new ArrayList<>();
 
     public Music(final String title, final String artist, final String album, final String imageUrl, final LocalDateTime releasedDate) {

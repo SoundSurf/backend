@@ -24,10 +24,10 @@ public class Genre {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "genres", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserGenre> userGenres = new ArrayList<>();
 
-    @OneToMany(mappedBy = "genres", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MusicGenre> musicGenres = new ArrayList<>();
 
     public Genre(final String name, final String description) {
