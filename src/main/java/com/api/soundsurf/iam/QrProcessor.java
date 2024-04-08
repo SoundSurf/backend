@@ -15,10 +15,10 @@ import java.io.IOException;
 public class QrProcessor {
 
     // TODO: QR 코드 URL 정하기
-    private final String baseUrl = "http://localhost:8888";
+    private final String baseUrl = "http://" + System.getenv("DB_HOST") + ":" + System.getenv("DB_PORT");
 
     public byte[] generateQrCode(Long userId) {
-        String url = baseUrl + "/api/v1/qr/" + userId;
+        final var url = baseUrl + "/api/v1/qr/" + userId;
 
         try {
             return generateQrCodeImage(url);
@@ -27,7 +27,7 @@ public class QrProcessor {
         }
     }
 
-    private byte[] generateQrCodeImage(String url) throws WriterException, IOException {
+    private byte[] generateQrCodeImage(final String url) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, 70, 70);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
