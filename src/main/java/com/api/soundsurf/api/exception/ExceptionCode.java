@@ -9,11 +9,10 @@ public class ExceptionCode {
     }
 
     public static class USER {
-        final public static String NICKNAME_DUPLICATE_ERROR = "Nickname Must Not Be Duplicated";
-        final public static String PASSWORD_CONDITION_ERROR = "Password Must Fit With Password Condition";
-        final public static String USER_NOT_FOUND_ERROR = "User Not Found";
-        final public static String PASSWORD_NOT_MATCH_ERROR = "Password Not Match";
-        final public static String USER_CAR_NOT_MATCH_ERROR = "User Car Not Found";
+        final public static String NICKNAME_DUPLICATE_ERROR = "닉네임은 중복될수 없습니다.";
+        final public static String PASSWORD_CONDITION_ERROR = "비밀번호는 비밀번호 정책과 맞아야 합니다.";
+        final public static String USER_NOT_FOUND_ERROR = "사용자를 찾지 못하였습니다.";
+        final public static String PASSWORD_NOT_MATCH_ERROR = "비밀번호가 일치 하지 않습니다.";
     }
 
     public static class SESSION_TOKEN {
