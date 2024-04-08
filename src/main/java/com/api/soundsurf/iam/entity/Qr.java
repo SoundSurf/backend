@@ -1,6 +1,7 @@
 package com.api.soundsurf.iam.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +20,8 @@ public class Qr {
     @Lob
     private byte[] qr;
 
-    @JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private User user;
 
     public Qr(byte[] qr, User user) {
@@ -29,7 +29,7 @@ public class Qr {
         this.user = user;
     }
 
-public static Qr newInstance(final byte[] qr, final User user) {
+    public static Qr newInstance(final byte[] qr, final User user) {
         return new Qr(qr, user);
     }
 }

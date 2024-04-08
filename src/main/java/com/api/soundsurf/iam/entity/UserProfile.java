@@ -1,6 +1,7 @@
 package com.api.soundsurf.iam.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,17 +23,8 @@ public class UserProfile {
     @Lob
     private byte[] image;
 
-    @JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "userProfile", orphanRemoval = true)
+    private List<User> user;
 
-    public UserProfile(byte[] image, User user) {
-        this.image = image;
-        this.user = user;
-    }
-
-    public static UserProfile newInstance(final byte[] image,final User user) {
-        return new UserProfile(image, user);
-    }
 }
