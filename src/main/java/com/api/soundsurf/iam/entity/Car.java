@@ -3,6 +3,7 @@ package com.api.soundsurf.iam.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,32 +11,32 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "CAR")
+@Table(name = "cars")
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     @Lob
     private byte[] image;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
 
-    public Car(byte[] image, String name, String description) {
+    public Car(final byte[] image,final String name,final String description) {
         this.image = image;
         this.name = name;
         this.description = description;
     }
 
-    public static final Car newInstance(byte[] image, String name, String description) {
+    public static Car newInstance(final byte[] image,final String name,final String description) {
         return new Car(image, name, description);
     }
 }

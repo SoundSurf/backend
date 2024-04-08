@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.entity;
+package com.api.soundsurf.music.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "PLAYLIST_MUSIC")
-public class PlaylistMusic {
+@Table(name = "music_genres")
+public class MusicGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,15 +20,15 @@ public class PlaylistMusic {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playlist_id")
-    private Playlist playlist;
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
-    public PlaylistMusic(Music music, Playlist playlist) {
+    public MusicGenre(final Music music, final Genre genre) {
         this.music = music;
-        this.playlist = playlist;
+        this.genre = genre;
     }
 
-    public static final PlaylistMusic newInstance(Music music, Playlist playlist) {
-        return new PlaylistMusic(music, playlist);
+    public static MusicGenre newInstance(final Music music, final Genre genre) {
+        return new MusicGenre(music, genre);
     }
 }

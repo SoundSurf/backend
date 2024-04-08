@@ -1,6 +1,7 @@
 package com.api.soundsurf.iam.entity;
 
 import com.api.soundsurf.api.config.LocalDateTimeUtcSerializer;
+import com.api.soundsurf.list.entity.SavedMusic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -56,9 +57,6 @@ public class User implements Persistable<Long> {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavedMusic> savedMusics = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Playlist> playlists = new ArrayList<>();
 
     @PrePersist
     private void onPersist() {

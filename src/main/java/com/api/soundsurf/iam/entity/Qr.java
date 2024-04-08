@@ -4,17 +4,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "QR")
+@Table(name = "qrs")
 public class Qr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     @Lob
     private byte[] qr;
 
@@ -28,7 +29,7 @@ public class Qr {
         this.user = user;
     }
 
-public static final Qr newInstance(byte[] qr, User user) {
+public static Qr newInstance(final byte[] qr, final User user) {
         return new Qr(qr, user);
     }
 }
