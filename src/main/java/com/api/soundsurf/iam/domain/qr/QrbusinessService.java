@@ -2,7 +2,6 @@ package com.api.soundsurf.iam.domain.qr;
 
 import com.api.soundsurf.iam.QrProcessor;
 import com.api.soundsurf.iam.domain.UserRepository;
-import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.entity.Qr;
 import com.api.soundsurf.iam.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +14,10 @@ public class QrbusinessService {
     private final QrProcessor processor;
     private final UserRepository userRepository;
 
-    public byte[] create(SessionUser sessionUser) {
-        Long userId = sessionUser.getUserId();
+    public void create(Long userId) {
         byte[] qrCode = processor.generateQrCode(userId);
         User user = userRepository.findById(userId).get();
-        return service.create(new Qr(qrCode, user)).getQr();
+        service.create(new Qr(qrCode, user));
     }
 
     public Qr getByUserId(Long userId) {
