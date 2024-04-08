@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.domain;
 
+import com.api.soundsurf.iam.domain.qr.QrTransferService;
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class UserBusinessService {
     private final UserService service;
+    private final QrTransferService qrTransferService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public Long create(final User user) {
@@ -24,10 +26,12 @@ public class UserBusinessService {
 
         //TODO: userProfile 만들기, 아랫줄 고치기
 //        user.setUserProfileId(1L);
-        //TODO: userQr 만들기, 아릿줄 고치기
-//        user.setUserQrId(1L);
+        
+        final var userId = service.create(user);
 
-        return service.create(user);
+        qrTransferService.create(userId);
+
+        return userId;
     }
 
     public User login(final UserDto.Login.Request requestDto) {
