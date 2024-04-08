@@ -21,10 +21,10 @@ public class Qr {
     private byte[] qr;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(mappedBy = "qr", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private User user;
 
-    public Qr(byte[] qr, User user) {
+    public Qr(final byte[] qr,final User user) {
         this.qr = qr;
         this.user = user;
     }
