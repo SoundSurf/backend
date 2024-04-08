@@ -31,7 +31,7 @@ public class UserController {
         return transferService.login(request);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public UserDto.Info.Response info(final @AuthenticationPrincipal SessionUser sessionUser) {
         return transferService.info(sessionUser);
     }
