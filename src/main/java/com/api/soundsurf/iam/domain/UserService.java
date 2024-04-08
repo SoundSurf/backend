@@ -21,4 +21,8 @@ public class UserService {
     public User findByEmail(final String email) {
         return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
+
+    public User getById(final Long id) {
+        return repository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+    }
 }

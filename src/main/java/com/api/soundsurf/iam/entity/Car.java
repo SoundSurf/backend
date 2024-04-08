@@ -27,7 +27,7 @@ public class Car {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "car", orphanRemoval = true)
     private List<User> users = new ArrayList<>();
 
     public Car(final byte[] image,final String name,final String description) {

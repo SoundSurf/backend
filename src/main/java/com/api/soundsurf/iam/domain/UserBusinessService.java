@@ -37,6 +37,10 @@ public class UserBusinessService {
         return user;
     }
 
+    public User info(final Long id) {
+        return service.getById(id);
+    }
+
     private User findByEmail(final String email) {
         return service.findByEmail(email);
     }

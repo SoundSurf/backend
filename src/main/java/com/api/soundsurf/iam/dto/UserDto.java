@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.dto;
 
+import com.api.soundsurf.iam.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -42,5 +43,29 @@ public class UserDto {
         public static class Response {
             private String userToken;
         }
+    }
+
+    public static class Info {
+        @Schema(name = "UserDto.Info.Response")
+        @Getter
+        public static class Response {
+            final Long userId;
+            final String userEmail;
+            final String nickname;
+            final Boolean newUser;
+            final Long carId;
+            final Long profileId;
+
+            public Response(final User user, final Long carId, final Long profileId) {
+                this.userId = user.getId();
+                this.userEmail = user.getEmail();
+                this.nickname = user.getNickname();
+                this.newUser = user.getNewUser();
+                this.carId = carId;
+                this.profileId = profileId;
+            }
+        }
+
+
     }
 }
