@@ -19,7 +19,6 @@ public class QrDto {
     public static class find {
         @Getter
         @Schema(name = "QrDto.find.Request")
-        @AllArgsConstructor
         @Builder
         public static class Response {
             private Long id;
