@@ -1,11 +1,10 @@
 package com.api.soundsurf.iam.domain.user;
 
 import com.api.soundsurf.iam.domain.qr.QrTransferService;
-import com.api.soundsurf.iam.domain.user.UserService;
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.Car;
 import com.api.soundsurf.iam.entity.User;
-import com.api.soundsurf.iam.exception.IllegalCarArgumentException;
+import com.api.soundsurf.iam.entity.UserProfile;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
 import com.api.soundsurf.iam.exception.PasswordNotMatchException;
@@ -22,19 +21,15 @@ public class UserBusinessService {
     private final QrTransferService qrTransferService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public Long create(final User user) {
-        validateCreate(user);
+    public Long create(final String email, final String password, final UserProfile defaultUserProfile) {
+        validateCreate(email, password);
 
-        encryptPassword(user);
+        final var encryptPassword = encryptPassword(password);
+        final var qr = qrTransferService.create(email);
 
-        //TODO: userProfile 만들기, 아랫줄 고치기
-//        user.setUserProfileId(1L);
+        final var newUser = new User(email, encryptPassword, qr, defaultUserProfile);
 
-        final var userId = service.create(user);
-
-        qrTransferService.create(userId);
-
-        return userId;
+        return service.create(newUser);
     }
 
     public User login(final UserDto.Login.Request requestDto) {
@@ -55,6 +50,19 @@ public class UserBusinessService {
         service.update(user);
     }
 
+    public Car getUserCar(final Long id) {
+        return service.findById(id).getCar();
+    }
+
+    public User getUser(final Long id) {
+        return service.findById(id);
+    }
+
+    public void updateProfileImage(final User user, final UserProfile newUserProfile) {
+        user.setUserProfile(newUserProfile);
+        service.update(user);
+    }
+
     private User findByEmail(final String email) {
         return service.findByEmail(email);
     }
@@ -65,9 +73,9 @@ public class UserBusinessService {
         }
     }
 
-    private void validateCreate(final User user) {
-        validateNoDuplicateEmail(user.getEmail());
-        validatePasswordHaveEngAndDigit(user.getPassword());
+    private void validateCreate(final String email, final String password) {
+        validateNoDuplicateEmail(email);
+        validatePasswordHaveEngAndDigit(password);
     }
 
     private void validateNoDuplicateEmail(final String email) {
@@ -88,8 +96,8 @@ public class UserBusinessService {
         }
     }
 
-    private void encryptPassword(final User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    private String encryptPassword(final String password) {
+        return passwordEncoder.encode(password);
     }
 
     public String setNickname(final Long userId, final String nickname) {

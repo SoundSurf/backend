@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +17,14 @@ public class CarTransferService {
     private final UserBusinessService userBusinessService;
 
     @Transactional
-    public List<CarDto.GetAll.Response> getAllCars() {
+    public CarDto.GetAll.Response getAllCars() {
         List<Car> cars = businessService.getAllCars();
-        return cars.stream().map(car -> new CarDto.GetAll.Response(car.getId(), car.getImage(), car.getName(), car.getDescription())).collect(Collectors.toList());
+
+        return new CarDto.GetAll.Response(
+                cars.stream()
+                        .map(CarDto.Car::new)
+                        .toList()
+        );
     }
 
     @Transactional
@@ -33,5 +37,11 @@ public class CarTransferService {
     @Transactional
     public void cancelCar(final SessionUser sessionUser) {
         userBusinessService.setCar(sessionUser.getUserId(), null);
+    }
+
+    public CarDto.GetUserCar.Response  getUserCar(final SessionUser sessionUser) {
+        final var car = userBusinessService.getUserCar(sessionUser.getUserId());
+
+        return new CarDto.GetUserCar.Response(new CarDto.Car(car));
     }
 }

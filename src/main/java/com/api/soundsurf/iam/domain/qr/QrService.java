@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 public class QrService {
     private final QrRepository repository;
 
-    public void create(final Qr qr) {
+    public Qr create(final Qr qr) {
         if (repository.findByUserId(qr.getUser().getId()).isPresent()) {
             throw new QrExistException();
         }
-        repository.save(qr);
+        return repository.save(qr);
     }
 
     public Qr findByUserId(final Long userId) {

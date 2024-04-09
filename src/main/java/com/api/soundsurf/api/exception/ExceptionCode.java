@@ -18,7 +18,7 @@ public class ExceptionCode {
         final public static String USER_CAR_NOT_MATCH_ERROR = "User Car Not Found";
     }
 
-    public static class USERGENRE {
+    public static class USER_GENRE {
         final public static String USERGENRE_ALEADY_EXISTS_ERROR = "이미 선택한 장르입니다.";
         final public static String USERGENRE_COUNT_LIMIT_ERROR = "장르는 최대 3가지 선택 가능합니다.";
     }
@@ -35,5 +35,9 @@ public class ExceptionCode {
 
     public static class GENRE {
         final public static String GENRE_NOT_FOUND_EXCEPTION = "Genre Not Found";
+    }
+
+    public static class USER_PROFILE {
+        final public static String USER_PROFILE_NOT_FOUND_EXCEPTION = "User Profile Not Found";
     }
 }

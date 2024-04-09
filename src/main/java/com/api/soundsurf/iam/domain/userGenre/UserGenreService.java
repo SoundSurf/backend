@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain.usergenre;
+package com.api.soundsurf.iam.domain.userGenre;
 
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.entity.UserGenre;

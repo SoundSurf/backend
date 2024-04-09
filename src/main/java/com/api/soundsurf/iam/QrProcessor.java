@@ -17,8 +17,8 @@ public class QrProcessor {
     // TODO: QR 코드 URL 정하기
     private final String baseUrl = "http://" + System.getenv("DB_HOST") + ":" + System.getenv("DB_PORT");
 
-    public byte[] generateQrCode(Long userId) {
-        final var url = baseUrl + "/api/v1/qr/" + userId;
+    public byte[] generateQrCode(final String userEmail) {
+        final var url = baseUrl + "/api/v1/qr/" + userEmail;
 
         try {
             return generateQrCodeImage(url);

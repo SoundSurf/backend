@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+@NoArgsConstructor
 public class User implements Persistable<Long> {
     @Id
     @Column(name = "id", nullable = false)
@@ -72,5 +74,12 @@ public class User implements Persistable<Long> {
     @JsonIgnore
     public boolean isNew() {
         return null == getId();
+    }
+
+    public User(final String email, final String password, final Qr qr,final UserProfile userProfile ) {
+        this.email = email;
+        this.password = password;
+        this.qr = qr;
+        this.userProfile = userProfile;
     }
 }

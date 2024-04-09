@@ -1,6 +1,8 @@
 package com.api.soundsurf.iam.domain.qr;
 
 import com.api.soundsurf.iam.dto.QrDto;
+import com.api.soundsurf.iam.dto.SessionUser;
+import com.api.soundsurf.iam.entity.Qr;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +13,13 @@ public class QrTransferService {
     private final QrbusinessService businessService;
 
     @Transactional
-    public void create(final Long userId) {
-        businessService.create(userId);
+    public Qr create(final String userEmail) {
+        return businessService.create(userEmail);
     }
 
     @Transactional
-    public QrDto.find.Response find(final Long userId) {
-        return QrDto.find.Response.of(businessService.getByUserId(userId));
+    public QrDto.find.Response find(final SessionUser sessionUser) {
+        return QrDto.find.Response.of(businessService.getByUserId(sessionUser.getUserId()));
     }
 
 }

@@ -18,7 +18,7 @@ public class QrController {
 
     @GetMapping
     public QrDto.find.Response find(@AuthenticationPrincipal SessionUser sessionUser) {
-        return transferService.find(sessionUser.getUserId());
+        return transferService.find(sessionUser);
     }
 
 }
