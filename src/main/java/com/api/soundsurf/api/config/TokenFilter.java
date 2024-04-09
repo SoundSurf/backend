@@ -3,7 +3,7 @@ package com.api.soundsurf.api.config;
 import com.api.soundsurf.api.exception.ExceptionCode;
 import com.api.soundsurf.iam.domain.SessionTokenRepository;
 import com.api.soundsurf.iam.dto.SessionUser;
-import com.api.soundsurf.iam.exception.UnauthorizedTokenException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +18,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.api.soundsurf.api.Const.TOKEN_HEADER;
 
@@ -44,13 +45,12 @@ public class TokenFilter extends OncePerRequestFilter {
 
         if (token==null || !token.startsWith(TOKEN_HEADER)) {
             log.error(ExceptionCode.API.UNAUTHORIZED_TOKEN_EXCEPTION);
-            throw new UnauthorizedTokenException();
+            tokenException(response);
         }
 
         token = token.substring(TOKEN_HEADER.length());
 
-        //FIXME: after creating session token, push real user id
-        final var userId = validateTokenAndGetUserId(token);
+        final var userId = validateTokenAndGetUserId(token, response);
         final var SessionUser = new SessionUser(userId);
 
         final var authentication = new UsernamePasswordAuthenticationToken(SessionUser, null);
@@ -68,13 +68,29 @@ public class TokenFilter extends OncePerRequestFilter {
         });
     }
 
-    private Long validateTokenAndGetUserId(final String token) {
+    private Long validateTokenAndGetUserId(final String token, final HttpServletResponse response) throws IOException {
         final var sessionTokens = sessionTokenRepository.findAllByTokenAndCreatedAtBefore(token, LocalDateTime.now());
         if (sessionTokens.size() == 1) {
             return sessionTokens.get(0).getUserId();
         }
 
-        throw new UnauthorizedTokenException();
+        tokenException(response);
+        return 0L;
+    }
+
+    private void tokenException(final HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        final var errorDetails = new HashMap<>();
+
+        errorDetails.put("path", "token filter");
+        errorDetails.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        errorDetails.put("message", ExceptionCode.API.UNAUTHORIZED_TOKEN_EXCEPTION);
+        errorDetails.put("exception", ExceptionCode.API.UNAUTHORIZED_TOKEN_EXCEPTION);
+
+        new ObjectMapper().writeValue(response.getOutputStream(), errorDetails);
     }
 
 }
