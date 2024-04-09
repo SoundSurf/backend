@@ -1,7 +1,7 @@
 package com.api.soundsurf.iam.domain.qr;
 
 import com.api.soundsurf.iam.QrProcessor;
-import com.api.soundsurf.iam.domain.UserRepository;
+import com.api.soundsurf.iam.domain.user.UserRepository;
 import com.api.soundsurf.iam.entity.Qr;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

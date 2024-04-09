@@ -1,10 +1,12 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.user;
 
 import com.api.soundsurf.iam.domain.qr.QrTransferService;
+import com.api.soundsurf.iam.domain.user.UserService;
 import com.api.soundsurf.iam.dto.UserDto;
+import com.api.soundsurf.iam.entity.Car;
 import com.api.soundsurf.iam.entity.User;
+import com.api.soundsurf.iam.exception.IllegalCarArgumentException;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
-import com.api.soundsurf.iam.exception.NicknameLengthException;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
 import com.api.soundsurf.iam.exception.PasswordNotMatchException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class UserBusinessService {
 
         //TODO: userProfile 만들기, 아랫줄 고치기
 //        user.setUserProfileId(1L);
-        
+
         final var userId = service.create(user);
 
         qrTransferService.create(userId);
@@ -43,7 +45,14 @@ public class UserBusinessService {
     }
 
     public User info(final Long id) {
-        return service.getById(id);
+        return service.findById(id);
+    }
+
+    public void setCar(final Long id, final Car car) {
+        final var user = service.findById(id);
+        user.setCar(car);
+
+        service.update(user);
     }
 
     private User findByEmail(final String email) {
@@ -83,28 +92,19 @@ public class UserBusinessService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
-    public String setNickname(Long userId, String nickname) {
+    public String setNickname(final Long userId, final String nickname) {
         final User user = service.findById(userId);
-        validateNickname(nickname);
+        validateNoDuplicateNickname(nickname);
+
         user.setNickname(nickname);
         service.update(user);
-        return nickname;
-    }
 
-    private void validateNickname(final String nickname) {
-        validateNoDuplicateNickname(nickname);
-        validateNicknameLength(nickname);
+        return nickname;
     }
 
     private void validateNoDuplicateNickname(final String nickname) {
         if (service.existsByNickname(nickname)) {
             throw new NicknameDuplicateException(nickname);
-        }
-    }
-
-    private void validateNicknameLength(final String nickname) {
-        if (nickname.length() >= 20) {
-            throw new NicknameLengthException(nickname);
         }
     }
 }

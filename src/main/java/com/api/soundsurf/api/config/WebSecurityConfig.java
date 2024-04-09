@@ -28,6 +28,7 @@ public class WebSecurityConfig {
 
     private final String[] apiIgnoreUrl = {"/api-docs", "/swagger-ui/**", "/v3/**"};
     private final String[] userIgnoreUrl = {"/user/create", "/user/login"};
+    private final String[] profileIgnoreUrl = {"/profile/cars", "/profile/genres"};
     private final ArrayList<String> tokenIgnoreUrl = new ArrayList<>(Stream.of(apiIgnoreUrl, userIgnoreUrl).flatMap(Arrays::stream).toList());
 
     @Bean

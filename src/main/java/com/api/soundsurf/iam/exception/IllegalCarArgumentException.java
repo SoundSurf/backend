@@ -10,4 +10,8 @@ public class IllegalCarArgumentException extends ApiException {
     public IllegalCarArgumentException(final Car userCar, final Car selectedCar) {
         super(exceptionCode + " : " + userCar.getName() + ", " + selectedCar.getName());
     }
+
+    public IllegalCarArgumentException(final Long id) {
+        super (exceptionCode + " : " + id);
+    }
 }

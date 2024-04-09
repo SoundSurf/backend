@@ -1,6 +1,7 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.music.domain;
 
-import com.api.soundsurf.iam.entity.Genre;
+import com.api.soundsurf.music.entity.Genre;
+import com.api.soundsurf.music.exception.GenreNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class GenreService {
         return genreRepository.findAll();
     }
 
-    public Genre findByName(final String name) {
-        return genreRepository.findByName(name);
+    public Genre findById(final Long id) {
+        return genreRepository.findById(id).orElseThrow(() -> new GenreNotFoundException(id));
     }
 }

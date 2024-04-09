@@ -23,16 +23,8 @@ public class CarDto {
         @Schema(name = "CarDto.Select.Request")
         public static class Request {
             @NotNull
-            private Long userId;
-            @NotNull
-            private String carName;
+            private Long id;
         }
 
-        @AllArgsConstructor
-        @Getter
-        @Schema(name = "CarDto.Select.Response")
-        public static class Response {
-            private String carName;
-        }
     }
 }

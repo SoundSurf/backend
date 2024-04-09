@@ -2,7 +2,6 @@ package com.api.soundsurf.iam.exception;
 
 import com.api.soundsurf.api.exception.ApiException;
 import com.api.soundsurf.api.exception.ExceptionCode;
-import com.api.soundsurf.iam.entity.Genre;
 import com.api.soundsurf.iam.entity.User;
 
 public class UserGenreAlreadyExistsException extends ApiException {

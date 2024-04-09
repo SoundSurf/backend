@@ -32,4 +32,8 @@ public class ExceptionCode {
         final public static String QR_ALREADY_EXIST_ERROR = "QR Code Already Exist";
         final public static String QR_NOT_FOUND_ERROR = "QR Code Not Found";
     }
+
+    public static class GENRE {
+        final public static String GENRE_NOT_FOUND_EXCEPTION = "Genre Not Found";
+    }
 }

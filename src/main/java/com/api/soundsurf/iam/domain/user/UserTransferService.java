@@ -1,6 +1,7 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.user;
 
 
+import com.api.soundsurf.iam.domain.SessionTokenService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
@@ -37,11 +38,12 @@ public class UserTransferService {
     @Transactional
     public UserDto.SetNickname.Response setNickname(final UserDto.SetNickname.Request requestDto) {
         String nickname = businessService.setNickname(requestDto.getUserId(), requestDto.getNickname());
+
         return new UserDto.SetNickname.Response(nickname);
-}
+    }
 
     public UserDto.Info.Response info(final SessionUser sessionUser) {
-        final var userId= sessionUser.getUserId();
+        final var userId = sessionUser.getUserId();
 
         final var userInfo = businessService.info(userId);
         final var userCar = userInfo.getCar();

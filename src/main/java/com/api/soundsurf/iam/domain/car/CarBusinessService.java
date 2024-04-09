@@ -1,8 +1,8 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.car;
 
+import com.api.soundsurf.iam.domain.user.UserService;
 import com.api.soundsurf.iam.dto.CarDto;
 import com.api.soundsurf.iam.entity.Car;
-import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.IllegalCarArgumentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,18 +19,14 @@ public class CarBusinessService {
         return carService.getAllCars();
     }
 
-    public Car selectCar(final CarDto.Select.Request requestDto) {
-        final User user = userService.findById(requestDto.getUserId());
-        Car selectedCar = carService.findByName(requestDto.getCarName());
-        user.setCar(selectedCar);
-        userService.update(user);
-        return selectedCar;
+    public Car getCar(final Long id) {
+        return carService.findById(id);
     }
 
-    public Car cancelCar(final CarDto.Select.Request requestDto) {
-        final User user = userService.findById(requestDto.getUserId());
-        Car userCar = user.getCar();
-        Car selectedCar = carService.findByName(requestDto.getCarName());
+    public Car cancelCar(final Long userId,  final CarDto.Select.Request requestDto) {
+        final var user = userService.findById(userId);
+        final var  userCar = user.getCar();
+        final var selectedCar = carService.findByName(requestDto.getCarName());
 
         if (userCar == null || !userCar.getName().equals(requestDto.getCarName())) {
             throw new IllegalCarArgumentException(userCar, selectedCar);

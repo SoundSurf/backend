@@ -1,6 +1,6 @@
 package com.api.soundsurf.iam.controller;
 
-import com.api.soundsurf.iam.domain.UserTransferService;
+import com.api.soundsurf.iam.domain.user.UserTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.car;
 
 import com.api.soundsurf.iam.entity.Car;
 import org.springframework.data.jpa.repository.JpaRepository;

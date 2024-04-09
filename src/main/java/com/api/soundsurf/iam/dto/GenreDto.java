@@ -1,9 +1,12 @@
 package com.api.soundsurf.iam.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.List;
 
 public class GenreDto {
     public static class GetAll {
@@ -11,8 +14,13 @@ public class GenreDto {
         @Schema(name = "GenreDto.Get.Response")
         @Getter
         public static class Response {
+            private List<Genre> genres;
+        }
+
+        @Getter
+        @AllArgsConstructor
+        public static class Genre{
             private Long id;
-            private byte[] image;
             private String name;
             private String description;
         }
@@ -23,16 +31,15 @@ public class GenreDto {
         @Schema(name = "GenreDto.Select.Request")
         public static class Request {
             @NotNull
-            private Long userId;
-            @NotNull
-            private String genreName;
+            @Max(3)
+            private List<Long> ids;
         }
 
         @AllArgsConstructor
         @Getter
         @Schema(name = "GenreDto.Select.Response")
         public static class Response {
-            private String genreName;
+            private List<String> names;
         }
     }
 }

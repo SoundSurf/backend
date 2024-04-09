@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.user;
 
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.UserNotFoundException;
@@ -30,7 +30,7 @@ public class UserService {
         repository.save(user);
     }
 
-    public boolean existsByNickname(String nickname) {
+    public boolean existsByNickname(final String nickname) {
         return repository.existsByNickname(nickname);
     }
 }

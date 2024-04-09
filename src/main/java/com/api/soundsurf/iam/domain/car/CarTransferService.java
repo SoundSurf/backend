@@ -1,6 +1,8 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.car;
 
+import com.api.soundsurf.iam.domain.user.UserBusinessService;
 import com.api.soundsurf.iam.dto.CarDto;
+import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.entity.Car;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CarTransferService {
     private final CarBusinessService businessService;
+    private final UserBusinessService userBusinessService;
 
     @Transactional
     public List<CarDto.GetAll.Response> getAllCars() {
@@ -21,14 +24,14 @@ public class CarTransferService {
     }
 
     @Transactional
-    public CarDto.Select.Response selectCar(final CarDto.Select.Request requestDto) {
-        Car car = businessService.selectCar(requestDto);
-        return new CarDto.Select.Response(car.getName());
+    public void selectCar(final SessionUser sessionUser, final CarDto.Select.Request requestDto) {
+        final var car = businessService.getCar(requestDto.getId());
+
+        userBusinessService.setCar(sessionUser.getUserId(), car);
     }
 
     @Transactional
-    public CarDto.Select.Response cancelCar(final CarDto.Select.Request requestDto) {
-        Car car = businessService.cancelCar(requestDto);
-        return new CarDto.Select.Response(car.getName());
+    public void cancelCar(final SessionUser sessionUser) {
+        userBusinessService.setCar(sessionUser.getUserId(), null);
     }
 }

@@ -1,8 +1,8 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.usergenre;
 
-import com.api.soundsurf.iam.entity.Genre;
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.entity.UserGenre;
+import com.api.soundsurf.music.entity.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +13,15 @@ import java.util.List;
 public class UserGenreService {
     private final UserGenreRepository userGenreRepository;
 
-    public UserGenre setUserGenre(final User user, Genre genre) {
+    public UserGenre setUserGenre(final User user,final Genre genre) {
         return userGenreRepository.save(UserGenre.newInstance(user, genre));
     }
 
-    public List<UserGenre> getAllByUser(User user) {
+    public List<UserGenre> getAllByUser(final User user) {
         return userGenreRepository.findAllByUser(user);
     }
 
-    public boolean existsByUserAndGenre(User user, Genre genre) {
+    public boolean existsByUserAndGenre(final User user,final Genre genre) {
         return userGenreRepository.existsByUserAndGenre(user, genre);
     }
 

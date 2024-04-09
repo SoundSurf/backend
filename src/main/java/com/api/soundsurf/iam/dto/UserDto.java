@@ -65,6 +65,8 @@ public class UserDto {
                 this.profileId = profileId;
             }
         }
+    }
+
     public static class SetNickname {
         @Getter
         @Schema(name = "UserDto.SetNickname.Request")
@@ -72,6 +74,7 @@ public class UserDto {
             @NotNull
             private Long userId;
             @NotNull
+            @Length(max=20)
             private String nickname;
         }
 
