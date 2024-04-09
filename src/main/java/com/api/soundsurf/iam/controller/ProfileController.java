@@ -10,6 +10,7 @@ import com.api.soundsurf.iam.dto.GenreDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class ProfileController {
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true)
+                            required = true, content = @Content(mediaType = "application/json"))
             })
     public void selectCar(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody CarDto.Select.Request request) {
         carTransferService.selectCar(sessionUser, request);
@@ -50,7 +51,7 @@ public class ProfileController {
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true)
+                            required = true, content = @Content(mediaType = "application/json"))
             })
     public CarDto.GetUserCar.Response getUserCar(final @AuthenticationPrincipal SessionUser sessionUser) {
         return carTransferService.getUserCar(sessionUser);
@@ -60,7 +61,7 @@ public class ProfileController {
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true)
+                            required = true, content = @Content(mediaType = "application/json"))
             })
     public GenreDto.Select.Response selectGenre(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody GenreDto.Select.Request request) {
         return genreTransferService.selectGenre(sessionUser, request);
@@ -70,7 +71,7 @@ public class ProfileController {
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true)
+                            required = true, content = @Content(mediaType = "application/json"))
             })
     public void uploadImage(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody UserProfileDto.Image.Request request) {
         userProfileTransferService.upload(sessionUser, request);
@@ -80,7 +81,7 @@ public class ProfileController {
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true)
+                            required = true, content = @Content(mediaType = "application/json"))
             })
     public UserProfileDto.Get.Response getImage(final @AuthenticationPrincipal SessionUser sessionUser) {
         return userProfileTransferService.get(sessionUser);

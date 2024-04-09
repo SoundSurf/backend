@@ -6,6 +6,7 @@ import com.api.soundsurf.iam.dto.SessionUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,7 @@ public class QrController {
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true)
+                            required = true, content = @Content(mediaType = "application/json"))
             })
     public QrDto.find.Response find(@AuthenticationPrincipal SessionUser sessionUser) {
         return transferService.find(sessionUser);
