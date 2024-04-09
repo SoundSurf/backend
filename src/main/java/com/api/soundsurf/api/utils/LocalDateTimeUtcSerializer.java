@@ -1,4 +1,4 @@
-package com.api.soundsurf.api.config;
+package com.api.soundsurf.api.utils;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

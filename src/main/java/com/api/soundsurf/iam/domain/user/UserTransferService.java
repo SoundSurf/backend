@@ -2,6 +2,7 @@ package com.api.soundsurf.iam.domain.user;
 
 
 import com.api.soundsurf.iam.domain.SessionTokenService;
+import com.api.soundsurf.iam.domain.car.CarTransferService;
 import com.api.soundsurf.iam.domain.userProfile.UserProfileTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
@@ -15,13 +16,15 @@ import org.springframework.stereotype.Service;
 public class UserTransferService {
     private final UserBusinessService businessService;
     private final UserProfileTransferService userProfileTransferService;
+    private final CarTransferService carTransferService;
     private final SessionTokenService sessionTokenService;
 
     @Transactional
     public UserDto.Create.Response create(final UserDto.Create.Request requestDto) {
         final var defaultUserProfile = userProfileTransferService.getDefaultProfileImage();
+        final var defaultCar = carTransferService.getDefaultCar();
 
-        final var userId = businessService.create(requestDto.getEmail(), requestDto.getPassword(),  defaultUserProfile);
+        final var userId = businessService.create(requestDto.getEmail(), requestDto.getPassword(),  defaultUserProfile, defaultCar);
         final var sessionToken = sessionTokenService.create(userId);
 
         return new UserDto.Create.Response(sessionToken.getToken());
@@ -37,8 +40,8 @@ public class UserTransferService {
     }
 
     @Transactional
-    public UserDto.SetNickname.Response setNickname(final UserDto.SetNickname.Request requestDto) {
-        String nickname = businessService.setNickname(requestDto.getUserId(), requestDto.getNickname());
+    public UserDto.SetNickname.Response setNickname(final SessionUser sessionUser, final UserDto.SetNickname.Request requestDto) {
+        String nickname = businessService.setNickname(sessionUser.getUserId(), requestDto.getNickname());
 
         return new UserDto.SetNickname.Response(nickname);
     }

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserProfileBusinessService {
-    private static UserProfileService service;
-    private static UserBusinessService userBusinessService;
+    private final UserProfileService service;
+    private final UserBusinessService userBusinessService;
 
     public void upload(final User user, final byte[] image) {
         final var userProfile = new UserProfile();

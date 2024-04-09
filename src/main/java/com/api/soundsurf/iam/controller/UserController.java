@@ -31,13 +31,13 @@ public class UserController {
         return transferService.login(request);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public UserDto.Info.Response info(final @AuthenticationPrincipal SessionUser sessionUser) {
         return transferService.info(sessionUser);
     }
 
     @PostMapping(value = "/nickname")
-    public UserDto.SetNickname.Response setNickname(final @Valid @RequestBody UserDto.SetNickname.Request request) {
-        return transferService.setNickname(request);
+    public UserDto.SetNickname.Response setNickname(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody UserDto.SetNickname.Request request) {
+        return transferService.setNickname(sessionUser, request);
     }
 }

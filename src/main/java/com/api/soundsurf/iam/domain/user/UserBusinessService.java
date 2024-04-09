@@ -21,13 +21,13 @@ public class UserBusinessService {
     private final QrTransferService qrTransferService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public Long create(final String email, final String password, final UserProfile defaultUserProfile) {
+    public Long create(final String email, final String password, final UserProfile defaultUserProfile, final Car defaultCar) {
         validateCreate(email, password);
 
         final var encryptPassword = encryptPassword(password);
         final var qr = qrTransferService.create(email);
 
-        final var newUser = new User(email, encryptPassword, qr, defaultUserProfile);
+        final var newUser = new User(email, encryptPassword, qr, defaultUserProfile, defaultCar);
 
         return service.create(newUser);
     }
@@ -35,6 +35,9 @@ public class UserBusinessService {
     public User login(final UserDto.Login.Request requestDto) {
         final var user = findByEmail(requestDto.getEmail());
         validatePassword(user, requestDto.getPassword());
+
+        user.setNewUser(false);
+        service.update(user);
 
         return user;
     }

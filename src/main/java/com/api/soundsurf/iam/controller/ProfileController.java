@@ -38,11 +38,6 @@ public class ProfileController {
         carTransferService.selectCar(sessionUser, request);
     }
 
-    @PatchMapping(value = "/car/cancel")
-    public void cancelCar(final @AuthenticationPrincipal SessionUser sessionUser) {
-        carTransferService.cancelCar(sessionUser);
-    }
-
     @GetMapping(value = "/user-car")
     public CarDto.GetUserCar.Response getUserCar(final @AuthenticationPrincipal SessionUser sessionUser) {
         return carTransferService.getUserCar(sessionUser);
@@ -56,5 +51,10 @@ public class ProfileController {
     @PostMapping(value = "/image")
     public void uploadImage(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody UserProfileDto.Image.Request request) {
         userProfileTransferService.upload(sessionUser, request);
+    }
+
+    @GetMapping(value = "/image")
+    public UserProfileDto.Get.Response getImage(final @AuthenticationPrincipal SessionUser sessionUser) {
+        return userProfileTransferService.get(sessionUser);
     }
 }

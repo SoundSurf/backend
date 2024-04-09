@@ -12,14 +12,7 @@ public class QrService {
     private final QrRepository repository;
 
     public Qr create(final Qr qr) {
-        if (repository.findByUserId(qr.getUser().getId()).isPresent()) {
-            throw new QrExistException();
-        }
         return repository.save(qr);
-    }
-
-    public Qr findByUserId(final Long userId) {
-        return repository.findByUserId(userId).orElseThrow(QrNotFoundException::new);
     }
 
 }

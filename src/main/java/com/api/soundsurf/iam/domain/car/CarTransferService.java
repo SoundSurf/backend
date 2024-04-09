@@ -34,9 +34,8 @@ public class CarTransferService {
         userBusinessService.setCar(sessionUser.getUserId(), car);
     }
 
-    @Transactional
-    public void cancelCar(final SessionUser sessionUser) {
-        userBusinessService.setCar(sessionUser.getUserId(), null);
+    public Car getDefaultCar() {
+        return businessService.getCar(1L);
     }
 
     public CarDto.GetUserCar.Response  getUserCar(final SessionUser sessionUser) {

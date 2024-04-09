@@ -72,8 +72,6 @@ public class UserDto {
         @Schema(name = "UserDto.SetNickname.Request")
         public static class Request {
             @NotNull
-            private Long userId;
-            @NotNull
             @Length(max=20)
             private String nickname;
         }

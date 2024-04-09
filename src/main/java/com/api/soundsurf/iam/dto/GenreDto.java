@@ -3,6 +3,7 @@ package com.api.soundsurf.iam.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -31,7 +32,7 @@ public class GenreDto {
         @Schema(name = "GenreDto.Select.Request")
         public static class Request {
             @NotNull
-            @Max(3)
+            @Size(min = 1, max = 3)
             private List<Long> ids;
         }
 
