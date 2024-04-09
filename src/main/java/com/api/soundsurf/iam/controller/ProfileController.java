@@ -7,6 +7,9 @@ import com.api.soundsurf.iam.dto.UserProfileDto;
 import com.api.soundsurf.music.domain.GenreTransferService;
 import com.api.soundsurf.iam.dto.CarDto;
 import com.api.soundsurf.iam.dto.GenreDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,26 +37,51 @@ public class ProfileController {
     }
 
     @PatchMapping(value = "/car/select")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true)
+            })
     public void selectCar(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody CarDto.Select.Request request) {
         carTransferService.selectCar(sessionUser, request);
     }
 
     @GetMapping(value = "/user-car")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true)
+            })
     public CarDto.GetUserCar.Response getUserCar(final @AuthenticationPrincipal SessionUser sessionUser) {
         return carTransferService.getUserCar(sessionUser);
     }
 
     @PostMapping(value = "/genre")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true)
+            })
     public GenreDto.Select.Response selectGenre(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody GenreDto.Select.Request request) {
         return genreTransferService.selectGenre(sessionUser, request);
     }
 
     @PostMapping(value = "/image")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true)
+            })
     public void uploadImage(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody UserProfileDto.Image.Request request) {
         userProfileTransferService.upload(sessionUser, request);
     }
 
     @GetMapping(value = "/image")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true)
+            })
     public UserProfileDto.Get.Response getImage(final @AuthenticationPrincipal SessionUser sessionUser) {
         return userProfileTransferService.get(sessionUser);
     }

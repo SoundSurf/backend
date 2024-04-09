@@ -3,6 +3,9 @@ package com.api.soundsurf.iam.controller;
 import com.api.soundsurf.iam.domain.user.UserTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +35,21 @@ public class UserController {
     }
 
     @GetMapping("")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true)
+            })
     public UserDto.Info.Response info(final @AuthenticationPrincipal SessionUser sessionUser) {
         return transferService.info(sessionUser);
     }
 
     @PostMapping(value = "/nickname")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true)
+            })
     public UserDto.SetNickname.Response setNickname(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody UserDto.SetNickname.Request request) {
         return transferService.setNickname(sessionUser, request);
     }
