@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.user;
 
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.UserNotFoundException;
@@ -22,7 +22,15 @@ public class UserService {
         return repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 
-    public User getById(final Long id) {
-        return repository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public User findById(final Long userId) {
+        return repository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    public void update(final User user) {
+        repository.save(user);
+    }
+
+    public boolean existsByNickname(final String nickname) {
+        return repository.existsByNickname(nickname);
     }
 }

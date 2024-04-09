@@ -11,7 +11,7 @@ CREATE TABLE `cars` (
                         `id` bigint NOT NULL AUTO_INCREMENT,
                         `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                         `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                        `image` tinyblob NOT NULL,
+                        `image` blob NOT NULL,
                         PRIMARY KEY (`id`)
 );
 
@@ -45,13 +45,13 @@ CREATE TABLE `music_genres` (
 
 CREATE TABLE `qrs` (
                        `id` bigint NOT NULL AUTO_INCREMENT,
-                       `qr` tinyblob NOT NULL,
+                       `qr` blob NOT NULL,
                        PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `user_profiles` (
                                  `id` bigint NOT NULL AUTO_INCREMENT,
-                                 `image` tinyblob NOT NULL,
+                                 `image` blob NOT NULL,
                                  PRIMARY KEY (`id`)
 );
 

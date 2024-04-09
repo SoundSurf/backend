@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.user;
 
 import com.api.soundsurf.iam.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(final String email);
 
+    boolean existsByNickname(final String nickname);
     Optional<User> findUserById(final Long id);
 }

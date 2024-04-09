@@ -1,6 +1,9 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.user;
 
 
+import com.api.soundsurf.iam.domain.SessionTokenService;
+import com.api.soundsurf.iam.domain.car.CarTransferService;
+import com.api.soundsurf.iam.domain.userProfile.UserProfileTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
@@ -12,15 +15,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserTransferService {
     private final UserBusinessService businessService;
+    private final UserProfileTransferService userProfileTransferService;
+    private final CarTransferService carTransferService;
     private final SessionTokenService sessionTokenService;
 
     @Transactional
     public UserDto.Create.Response create(final UserDto.Create.Request requestDto) {
-        final var user = new User();
-        hydrateNewUser(requestDto, user);
+        final var defaultUserProfile = userProfileTransferService.getDefaultProfileImage();
+        final var defaultCar = carTransferService.getDefaultCar();
 
-        businessService.create(user);
-        final var sessionToken = sessionTokenService.create(user.getId());
+        final var userId = businessService.create(requestDto.getEmail(), requestDto.getPassword(),  defaultUserProfile, defaultCar);
+        final var sessionToken = sessionTokenService.create(userId);
 
         return new UserDto.Create.Response(sessionToken.getToken());
     }
@@ -34,19 +39,21 @@ public class UserTransferService {
         return new UserDto.Login.Response(sessionToken.getToken());
     }
 
+    @Transactional
+    public UserDto.SetNickname.Response setNickname(final SessionUser sessionUser, final UserDto.SetNickname.Request requestDto) {
+        String nickname = businessService.setNickname(sessionUser.getUserId(), requestDto.getNickname());
+
+        return new UserDto.SetNickname.Response(nickname);
+    }
+
     public UserDto.Info.Response info(final SessionUser sessionUser) {
-        final var userId= sessionUser.getUserId();
+        final var userId = sessionUser.getUserId();
 
         final var userInfo = businessService.info(userId);
         final var userCar = userInfo.getCar();
         final var userProfile = userInfo.getUserProfile();
 
         return new UserDto.Info.Response(userInfo, userCar.getId(), userProfile.getId());
-    }
-
-    private void hydrateNewUser(final UserDto.Create.Request requestDto, final User user) {
-        user.setPassword(requestDto.getPassword());
-        user.setEmail(requestDto.getEmail());
     }
 
 }

@@ -14,7 +14,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +26,10 @@ public class WebSecurityConfig {
     @Autowired
     private final SessionTokenRepository sessionTokenRepository;
 
-    private final  ArrayList<String> tokenIgnoreUrl = new ArrayList<>(List.of("/user/**", "/api-docs", "/swagger-ui/**", "/v3/**"));
+    private final String[] apiIgnoreUrl = {"/api-docs", "/swagger-ui/**", "/v3/**"};
+    private final String[] userIgnoreUrl = {"/user/create", "/user/login"};
+    private final String[] profileIgnoreUrl = {"/profile/cars", "/profile/genres"};
+    private final ArrayList<String> tokenIgnoreUrl = new ArrayList<>(Stream.of(apiIgnoreUrl, userIgnoreUrl).flatMap(Arrays::stream).toList());
 
     @Bean
     public TokenFilter tokenFilter() {

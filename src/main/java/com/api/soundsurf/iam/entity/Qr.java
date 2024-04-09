@@ -24,12 +24,11 @@ public class Qr {
     @OneToOne(mappedBy = "qr", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private User user;
 
-    public Qr(final byte[] qr,final User user) {
+    public Qr(final byte[] qr) {
         this.qr = qr;
-        this.user = user;
     }
 
-    public static Qr newInstance(final byte[] qr, final User user) {
-        return new Qr(qr, user);
+    public static Qr newInstance(final byte[] qr) {
+        return new Qr(qr);
     }
 }

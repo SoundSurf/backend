@@ -1,13 +1,13 @@
 package com.api.soundsurf.iam.entity;
 
-import com.api.soundsurf.api.config.LocalDateTimeUtcSerializer;
+import com.api.soundsurf.api.utils.LocalDateTimeUtcSerializer;
 import com.api.soundsurf.list.entity.SavedMusic;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
@@ -19,6 +19,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+@NoArgsConstructor
 public class User implements Persistable<Long> {
     @Id
     @Column(name = "id", nullable = false)
@@ -34,7 +35,7 @@ public class User implements Persistable<Long> {
     @Column(name = "nickname", nullable = true)
     private String nickname;
 
-    @Column(name="new_user", nullable = false)
+    @Column(name = "new_user", nullable = false)
     private Boolean newUser = true;
 
     @Column(name = "created_at", nullable = false)
@@ -72,5 +73,13 @@ public class User implements Persistable<Long> {
     @JsonIgnore
     public boolean isNew() {
         return null == getId();
+    }
+
+    public User(final String email, final String password, final Qr qr, final UserProfile userProfile, final Car car) {
+        this.email = email;
+        this.password = password;
+        this.qr = qr;
+        this.userProfile = userProfile;
+        this.car = car;
     }
 }

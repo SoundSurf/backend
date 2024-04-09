@@ -1,6 +1,6 @@
 package com.api.soundsurf.music.entity;
 
-import com.api.soundsurf.api.config.LocalDateTimeUtcSerializer;
+import com.api.soundsurf.api.utils.LocalDateTimeUtcSerializer;
 import com.api.soundsurf.list.entity.SavedMusic;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
