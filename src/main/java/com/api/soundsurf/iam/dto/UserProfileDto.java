@@ -11,7 +11,7 @@ public class UserProfileDto {
         @Schema(name = "ProfileDto.Image.Request")
         public static class Request {
             @NotNull
-            private String imageStr;
+            private String imgStr;
         }
 
     }

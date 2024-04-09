@@ -18,7 +18,7 @@ public class UserProfileTransferService {
 
     public void upload(final SessionUser sessionUser, final UserProfileDto.Image.Request request) {
         final var user = userBusinessService.getUser(sessionUser.getUserId());
-        final var byteImage = stringByteConverter.stringToByte(request.getImageStr());
+        final var byteImage = stringByteConverter.stringToByte(request.getImgStr());
 
         businessService.upload(user, byteImage);
     }
