@@ -1,6 +1,7 @@
 package com.api.soundsurf;
 
 import com.api.soundsurf.api.config.DataSourcePropertyLoader;
+import com.api.soundsurf.api.quartz.QuartzJobGetSpotifyAccessToken;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,6 @@ public class SoundSurfApplication extends SpringBootServletInitializer implement
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         startQuartz();
-        System.out.println("ababbcaxcx");
         log.info("SoundSurf application successfully started.");
     }
 

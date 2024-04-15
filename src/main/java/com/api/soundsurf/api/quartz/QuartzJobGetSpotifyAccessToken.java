@@ -1,4 +1,4 @@
-package com.api.soundsurf;
+package com.api.soundsurf.api.quartz;
 
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -11,7 +11,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 @Component
 public class QuartzJobGetSpotifyAccessToken {
     public void conf(final Scheduler scheduler) throws SchedulerException {
-        final var job = newJob(SimpleJob.class)
+        final var job = newJob(GetSpotifyAccessTokenJob.class)
                 .withIdentity("spotifyToken", "group1")
                 .build();
 
@@ -20,7 +20,7 @@ public class QuartzJobGetSpotifyAccessToken {
                 .withIdentity("spotifyToken", "group1")
                 .startNow()
                 .withSchedule(simpleSchedule()
-                        .withIntervalInSeconds(5)
+                        .withIntervalInMinutes(55)
                         .repeatForever())
                 .build();
 
