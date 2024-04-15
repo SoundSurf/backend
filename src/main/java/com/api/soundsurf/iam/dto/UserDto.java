@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.dto;
 
+import com.api.soundsurf.iam.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -25,4 +26,62 @@ public class UserDto {
             private String userToken;
         }
     }
+
+    public static class Login {
+        @Getter
+        @Schema(name = "UserDto.Login.Request")
+        public static class Request {
+            @Email
+            private String email;
+            @NotNull
+            private String password;
+        }
+
+        @AllArgsConstructor
+        @Schema(name = "UserDto.Login.Response")
+        @Getter
+        public static class Response {
+            private String userToken;
+        }
+    }
+
+    public static class Info {
+        @Schema(name = "UserDto.Info.Response")
+        @Getter
+        public static class Response {
+            final Long userId;
+            final String userEmail;
+            final String nickname;
+            final Boolean newUser;
+            final Long carId;
+            final Long profileId;
+
+            public Response(final User user, final Long carId, final Long profileId) {
+                this.userId = user.getId();
+                this.userEmail = user.getEmail();
+                this.nickname = user.getNickname();
+                this.newUser = user.getNewUser();
+                this.carId = carId;
+                this.profileId = profileId;
+            }
+        }
+    }
+
+    public static class SetNickname {
+        @Getter
+        @Schema(name = "UserDto.SetNickname.Request")
+        public static class Request {
+            @NotNull
+            @Length(max=20)
+            private String nickname;
+        }
+
+        @AllArgsConstructor
+        @Getter
+        @Schema(name = "UserDto.SetNickname.Response")
+        public static class Response {
+            private String nickname;
+        }
+    }
+
 }

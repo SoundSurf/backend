@@ -6,6 +6,7 @@ bradle/
 !**/src/main/**/build/
 !**/src/test/**/build/
 **/resources/db/app_migration.sql
+**/.DS_Store
 
 ### STS ###
 .apt_generated

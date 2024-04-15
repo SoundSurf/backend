@@ -1,6 +1,6 @@
 package com.api.soundsurf.iam.entity;
 
-import com.api.soundsurf.api.config.LocalDateTimeUtcSerializer;
+import com.api.soundsurf.api.utils.LocalDateTimeUtcSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

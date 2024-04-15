@@ -4,6 +4,7 @@ import com.api.soundsurf.RestClientFactory;
 import com.api.soundsurf.api.BaseTest;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
+import com.api.soundsurf.iam.exception.PasswordNotMatchException;
 import jdk.jfr.Description;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,15 +18,16 @@ import java.util.Collection;
 class UserControllerTest extends BaseTest {
     private final static String CLASS_URL = "/user";
     private final static String CREATE_URL = CLASS_URL + "/create";
+    private final static String LOGIN = CLASS_URL + "/login";
 
     @Description("유저 생성 테스트")
     @TestFactory
     Collection<DynamicNode> signUp() {
-        final var userUuids = new ArrayList<String>();
+        final var userTokens = new ArrayList<String>();
 
         return group(
 
-                UserControllerTest.create_user("1234QWER!", "asdfa@gmail.com", userUuids),
+                UserControllerTest.create_user("1234QWER!", "asdfa@gmail.com", userTokens),
 
                 single("같은 이메일로 유저 생성이 안되어야 한다. ", () -> {
                     UserControllerTest.create_user_error("1234QWER!", "asdfa@gmail.com", NicknameDuplicateException.class);
@@ -50,12 +52,43 @@ class UserControllerTest extends BaseTest {
     @TestFactory
     Collection<DynamicNode> signIn() {
         final var userTokens = new ArrayList<String>();
+        final var userEmail = "asdfa@gmail.com";
+        final var userPassword = "1234QWER!";
 
-        return group();
+        return group(
+                UserControllerTest.create_user(userPassword, userEmail, userTokens),
+
+                UserControllerTest.login(userEmail, userPassword, userTokens),
+                UserControllerTest.login_fail(userEmail, "wrongPassword123")
+        );
+    }
+
+    public static DynamicNode login(final String email, final String password, final ArrayList<String> userTokens) {
+        return single("정상적으로 로그인", () -> {
+            final var loginRequest = new JSONObject();
+
+            loginRequest.put("password", password);
+            loginRequest.put("email", email);
+
+            final var actual = RestClientFactory.post(LOGIN, loginRequest);
+
+            org.assertj.core.api.Assertions.assertThat(actual.get("userToken")).isNotNull().isNotEqualTo(userTokens.get(0));
+        });
+    }
+
+    private static DynamicNode login_fail(final String email, final String password) {
+        return single("틀린 비밀번호를 입력하면  로그인 실패", () -> {
+            final var loginRequest = new JSONObject();
+
+            loginRequest.put("password", password);
+            loginRequest.put("email", email);
+
+            RestClientFactory.postAssertFail(LOGIN, loginRequest, PasswordNotMatchException.class);
+        });
     }
 
 
-    public static DynamicNode create_user(final String password, final String email, final ArrayList<String> userUuids) {
+    public static DynamicNode create_user(final String password, final String email, final ArrayList<String> userTokens) {
         return single("정상적으로 유저 생성", () -> {
             final var createRequest = new JSONObject();
 
@@ -64,9 +97,9 @@ class UserControllerTest extends BaseTest {
 
             final var actual = RestClientFactory.post(CREATE_URL, createRequest);
 
-            org.assertj.core.api.Assertions.assertThat(actual.get("uuid")).isNotNull().isNotEqualTo("");
+            org.assertj.core.api.Assertions.assertThat(actual.get("userToken")).isNotNull().isNotEqualTo("");
 
-            userUuids.add(actual.getString("uuid"));
+            userTokens.add(actual.getString("userToken"));
         });
     }
 
