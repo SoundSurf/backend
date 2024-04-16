@@ -6,8 +6,6 @@ import com.api.soundsurf.iam.exception.SpotifyRecommendationException;
 import com.api.soundsurf.iam.exception.SpotifySearchException;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
-import com.wrapper.spotify.model_objects.specification.Image;
 import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.model_objects.specification.TrackSimplified;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +13,8 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -40,7 +37,7 @@ public class SpotifyService {
     public MusicDto.Genre.Response getGenres() {
         try {
             final var genres = spotifyApi.getAvailableGenreSeeds().build().execute();
-            return new MusicDto.Genre.Response(List.of(genres));
+            return new MusicDto.Genre.Response(Arrays.asList(genres));
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyGenreException(e.getMessage());
         }
@@ -60,56 +57,17 @@ public class SpotifyService {
         }
     }
 
-    private List<MusicDto.Common.Track> convertToTrackDtoList(Track[] tracks) {
-        List<MusicDto.Common.Track> trackDtos = new ArrayList<>();
-
-        for (Track track : tracks) {
-            if (track.getPreviewUrl() == null) continue;
-
-            final var images = Stream.of(track.getAlbum().getImages())
-                    .map(Image::getUrl)
-                    .collect(Collectors.toList());
-
-            final var artists = Stream.of(track.getArtists())
-                    .map(ArtistSimplified::getName)
-                    .collect(Collectors.toList());
-
-            trackDtos.add(new MusicDto.Common.Track(
-                    track.getAlbum().getName(),
-                    artists,
-                    images,
-                    track.getAlbum().getReleaseDate(),
-                    track.getName(),
-                    track.getPreviewUrl(),
-                    track.getDurationMs()
-            ));
-        }
-
-        return trackDtos;
+    private List<MusicDto.Common.Song> convertToTrackDtoList(Track[] tracks) {
+        return Stream.of(tracks)
+                .filter(track -> track.getPreviewUrl() != null)
+                .map(MusicDto.Common.Song::new)
+                .toList();
     }
 
-    private List<MusicDto.Common.Track> convertToTrackDtoList(TrackSimplified[] tracks) {
-        List<MusicDto.Common.Track> trackDtos = new ArrayList<>();
-
-        for (TrackSimplified track : tracks) {
-            if (track.getPreviewUrl() == null) continue;
-
-            final var artists = Stream.of(track.getArtists())
-                    .map(ArtistSimplified::getName)
-                    .collect(Collectors.toUnmodifiableList());
-
-            trackDtos.add(new MusicDto.Common.Track(
-                    track.getName(),
-                    artists,
-                    null,
-                    null,
-                    track.getName(),
-                    track.getPreviewUrl(),
-                    track.getDurationMs()
-            ));
-        }
-
-        return trackDtos;
+    private List<MusicDto.Common.Song> convertToTrackDtoList(TrackSimplified[] tracks) {
+        return Stream.of(tracks)
+                .filter(track -> track.getPreviewUrl() != null)
+                .map(MusicDto.Common.Song::new)
+                .toList();
     }
-
 }
