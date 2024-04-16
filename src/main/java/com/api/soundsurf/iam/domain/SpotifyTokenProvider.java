@@ -22,7 +22,7 @@ public class SpotifyTokenProvider {
             spotifyApi.setAccessToken(token);
             log.info("Access token: " + token);
         } catch (Exception e) {
-            log.info("Error: " + e.getMessage());
+            log.error("Error: " + e.getMessage());
             throw new CannotCreateSpotifyTokenException(e.getMessage());
         }
     }

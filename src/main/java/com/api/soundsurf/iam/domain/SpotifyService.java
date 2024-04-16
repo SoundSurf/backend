@@ -23,7 +23,7 @@ public class SpotifyService {
 
     private final SpotifyApi spotifyApi;
 
-    public MusicDto.Common.Response search(MusicDto.Search.Request request) {
+    public MusicDto.Common.Response search(final MusicDto.Search.Request request) {
         final var searchItemRequest = spotifyApi.searchTracks(request.getTitle()).build();
 
         try {
@@ -43,7 +43,7 @@ public class SpotifyService {
         }
     }
 
-    public MusicDto.Common.Response recommendation(MusicDto.Recommendation.Request request) {
+    public MusicDto.Common.Response recommendation(final MusicDto.Recommendation.Request request) {
         try {
             final var recommendations = spotifyApi.getRecommendations()
                     .seed_genres(request.getGenre())
@@ -57,14 +57,14 @@ public class SpotifyService {
         }
     }
 
-    private List<MusicDto.Common.Song> convertToTrackDtoList(Track[] tracks) {
+    private List<MusicDto.Common.Song> convertToTrackDtoList(final Track[] tracks) {
         return Stream.of(tracks)
                 .filter(track -> track.getPreviewUrl() != null)
                 .map(MusicDto.Common.Song::new)
                 .toList();
     }
 
-    private List<MusicDto.Common.Song> convertToTrackDtoList(TrackSimplified[] tracks) {
+    private List<MusicDto.Common.Song> convertToTrackDtoList(final TrackSimplified[] tracks) {
         return Stream.of(tracks)
                 .filter(track -> track.getPreviewUrl() != null)
                 .map(MusicDto.Common.Song::new)
