@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.dto;
 
+import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
 import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.model_objects.specification.TrackSimplified;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,7 +28,7 @@ public class MusicDto {
         ) {
             public Song(TrackSimplified track) {
                 this(track.getName(),
-                        Arrays.asList(track.getArtists()).stream().map(artist -> artist.getName()).toList(),
+                        Arrays.stream(track.getArtists()).map(ArtistSimplified::getName).toList(),
                         null,
                         null,
                         track.getName(),
@@ -37,8 +38,8 @@ public class MusicDto {
 
             public Song(Track track) {
                 this(track.getAlbum().getName(),
-                        Arrays.asList(track.getArtists()).stream().map(artist -> artist.getName()).toList(),
-                        Arrays.asList(track.getAlbum().getImages()).stream().map(image -> image.getUrl()).toList(),
+                        Arrays.stream(track.getArtists()).map(ArtistSimplified::getName).toList(),
+                        Arrays.stream(track.getAlbum().getImages()).map(image -> image.getUrl()).toList(),
                         track.getAlbum().getReleaseDate(),
                         track.getName(),
                         track.getPreviewUrl(),
