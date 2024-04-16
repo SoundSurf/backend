@@ -15,7 +15,6 @@ import java.util.List;
 public class MusicDto {
 
     public static class Common {
-        @Getter
         @Schema(name = "MusicDto.Common.Track")
         public record Song(
                 String albumName,
