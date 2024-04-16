@@ -1,33 +1,56 @@
 package com.api.soundsurf.iam.dto;
 
+import com.wrapper.spotify.model_objects.specification.Track;
+import com.wrapper.spotify.model_objects.specification.TrackSimplified;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MusicDto {
 
     public static class Common {
         @Getter
-        @AllArgsConstructor
         @Schema(name = "MusicDto.Common.Track")
-        public static class Track {
-            private String albumName;
-            private List<String> artistName;
-            private List<String> images;
-            private String releaseDate;
-            private String trackName;
-            private String previewUrl;
-            private int durationMs;
+        public record Song(
+                String albumName,
+                List<String> artistName,
+                List<String> images,
+                String releaseDate,
+                String trackName,
+                String previewUrl,
+                int durationMs
+        ) {
+            public Song(TrackSimplified track) {
+                this(track.getName(),
+                        Arrays.asList(track.getArtists()).stream().map(artist -> artist.getName()).toList(),
+                        null,
+                        null,
+                        track.getName(),
+                        track.getPreviewUrl(),
+                        track.getDurationMs());
+            }
+
+            public Song(Track track) {
+                this(track.getAlbum().getName(),
+                        Arrays.asList(track.getArtists()).stream().map(artist -> artist.getName()).toList(),
+                        Arrays.asList(track.getAlbum().getImages()).stream().map(image -> image.getUrl()).toList(),
+                        track.getAlbum().getReleaseDate(),
+                        track.getName(),
+                        track.getPreviewUrl(),
+                        track.getDurationMs());
+            }
         }
 
-
         @Getter
-        @AllArgsConstructor
+        @RequiredArgsConstructor
         @Schema(name = "MusicDto.Common.Response")
         public static class Response {
-            private List<Track> tracks;
+            private final List<Song> songs;
         }
     }
 
@@ -35,17 +58,16 @@ public class MusicDto {
         @Getter
         @Schema(name = "MusicDto.Search.Request")
         public static class Request {
+            @NotNull
             private String title;
 
         }
-
-
     }
 
     public static class Genre {
         @Getter
-        @AllArgsConstructor
         @Schema(name = "MusicDto.Genre.Response")
+        @AllArgsConstructor
         public static class Response {
             private List<String> genres;
         }
