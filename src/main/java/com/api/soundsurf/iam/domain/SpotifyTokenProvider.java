@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.domain;
 
+import com.api.soundsurf.iam.exception.CannotCreateSpotifyTokenException;
 import com.wrapper.spotify.SpotifyApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,12 @@ public class SpotifyTokenProvider {
 
         try {
             final var clientCredentials = clientCredentialsRequest.execute();
-            spotifyApi.setAccessToken(clientCredentials.getAccessToken());
-            log.info("Access token: " + clientCredentials.getAccessToken());
+            final var token = clientCredentials.getAccessToken();
+            spotifyApi.setAccessToken(token);
+            log.info("Access token: " + token);
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            log.info("Error: " + e.getMessage());
+            throw new CannotCreateSpotifyTokenException(e.getMessage());
         }
     }
 }

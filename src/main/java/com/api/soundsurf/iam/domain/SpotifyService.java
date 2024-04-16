@@ -1,6 +1,9 @@
 package com.api.soundsurf.iam.domain;
 
 import com.api.soundsurf.iam.dto.MusicDto;
+import com.api.soundsurf.iam.exception.SpotifyGenreException;
+import com.api.soundsurf.iam.exception.SpotifyRecommendationException;
+import com.api.soundsurf.iam.exception.SpotifySearchException;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
@@ -23,29 +26,38 @@ public class SpotifyService {
 
     private final SpotifyApi spotifyApi;
 
-    public MusicDto.Common.Response search(MusicDto.Search.Request request) throws IOException, ParseException, SpotifyWebApiException {
-
+    public MusicDto.Common.Response search(MusicDto.Search.Request request) {
         final var searchItemRequest = spotifyApi.searchTracks(request.getTitle()).build();
 
-        final var searchResult = searchItemRequest.execute().getItems();
-
-        return new MusicDto.Common.Response(convertToTrackDtoList(searchResult));
+        try {
+            final var searchResult = searchItemRequest.execute().getItems();
+            return new MusicDto.Common.Response(convertToTrackDtoList(searchResult));
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            throw new SpotifySearchException(e.getMessage());
+        }
     }
 
-    public MusicDto.Genre.Response getGenres() throws IOException, ParseException, SpotifyWebApiException {
-        final var genres = spotifyApi.getAvailableGenreSeeds().build().execute();
-        return new MusicDto.Genre.Response(List.of(genres));
+    public MusicDto.Genre.Response getGenres() {
+        try {
+            final var genres = spotifyApi.getAvailableGenreSeeds().build().execute();
+            return new MusicDto.Genre.Response(List.of(genres));
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            throw new SpotifyGenreException(e.getMessage());
+        }
     }
 
-    public MusicDto.Common.Response recommendation(MusicDto.Recommendation.Request request) throws IOException, ParseException, SpotifyWebApiException {
-        final var recommendations = spotifyApi.getRecommendations()
-                .seed_genres(request.getGenre())
-                .build()
-                .execute()
-                .getTracks();
+    public MusicDto.Common.Response recommendation(MusicDto.Recommendation.Request request) {
+        try {
+            final var recommendations = spotifyApi.getRecommendations()
+                    .seed_genres(request.getGenre())
+                    .build()
+                    .execute()
+                    .getTracks();
 
-
-        return new MusicDto.Common.Response(convertToTrackDtoList(recommendations));
+            return new MusicDto.Common.Response(convertToTrackDtoList(recommendations));
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            throw new SpotifyRecommendationException(e.getMessage());
+        }
     }
 
     private List<MusicDto.Common.Track> convertToTrackDtoList(Track[] tracks) {
