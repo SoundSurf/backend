@@ -23,13 +23,13 @@ public class SpotifyService {
 
     private final SpotifyApi spotifyApi;
 
-    public List<MusicDto.Common.Response> search(MusicDto.Search.Request request) throws IOException, ParseException, SpotifyWebApiException {
+    public MusicDto.Common.Response search(MusicDto.Search.Request request) throws IOException, ParseException, SpotifyWebApiException {
 
         final var searchItemRequest = spotifyApi.searchTracks(request.getTitle()).build();
 
         final var searchResult = searchItemRequest.execute().getItems();
 
-        return convertToTrackDtoList(searchResult);
+        return new MusicDto.Common.Response(convertToTrackDtoList(searchResult));
     }
 
     public MusicDto.Genre.Response getGenres() throws IOException, ParseException, SpotifyWebApiException {
@@ -37,7 +37,7 @@ public class SpotifyService {
         return new MusicDto.Genre.Response(List.of(genres));
     }
 
-    public List<MusicDto.Common.Response> recommendation(MusicDto.Recommendation.Request request) throws IOException, ParseException, SpotifyWebApiException {
+    public MusicDto.Common.Response recommendation(MusicDto.Recommendation.Request request) throws IOException, ParseException, SpotifyWebApiException {
         final var recommendations = spotifyApi.getRecommendations()
                 .seed_genres(request.getGenre())
                 .build()
@@ -45,24 +45,24 @@ public class SpotifyService {
                 .getTracks();
 
 
-        return convertToTrackDtoList(recommendations);
+        return new MusicDto.Common.Response(convertToTrackDtoList(recommendations));
     }
 
-    private List<MusicDto.Common.Response> convertToTrackDtoList(Track[] tracks) {
-        List<MusicDto.Common.Response> trackDtos = new ArrayList<>();
+    private List<MusicDto.Common.Track> convertToTrackDtoList(Track[] tracks) {
+        List<MusicDto.Common.Track> trackDtos = new ArrayList<>();
 
         for (Track track : tracks) {
             if (track.getPreviewUrl() == null) continue;
 
-            List<String> images = Stream.of(track.getAlbum().getImages())
+            final var images = Stream.of(track.getAlbum().getImages())
                     .map(Image::getUrl)
                     .collect(Collectors.toList());
 
-            List<String> artists = Stream.of(track.getArtists())
+            final var artists = Stream.of(track.getArtists())
                     .map(ArtistSimplified::getName)
                     .collect(Collectors.toList());
 
-            trackDtos.add(new MusicDto.Common.Response(
+            trackDtos.add(new MusicDto.Common.Track(
                     track.getAlbum().getName(),
                     artists,
                     images,
@@ -76,17 +76,17 @@ public class SpotifyService {
         return trackDtos;
     }
 
-    private List<MusicDto.Common.Response> convertToTrackDtoList(TrackSimplified[] tracks) {
-        List<MusicDto.Common.Response> trackDtos = new ArrayList<>();
+    private List<MusicDto.Common.Track> convertToTrackDtoList(TrackSimplified[] tracks) {
+        List<MusicDto.Common.Track> trackDtos = new ArrayList<>();
 
         for (TrackSimplified track : tracks) {
             if (track.getPreviewUrl() == null) continue;
 
-            List<String> artists = Stream.of(track.getArtists())
+            final var artists = Stream.of(track.getArtists())
                     .map(ArtistSimplified::getName)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
 
-            trackDtos.add(new MusicDto.Common.Response(
+            trackDtos.add(new MusicDto.Common.Track(
                     track.getName(),
                     artists,
                     null,

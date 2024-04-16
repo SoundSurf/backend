@@ -11,8 +11,8 @@ public class MusicDto {
     public static class Common {
         @Getter
         @AllArgsConstructor
-        @Schema(name = "MusicDto.Common.Response")
-        public static class Response {
+        @Schema(name = "MusicDto.Common.Track")
+        public static class Track {
             private String albumName;
             private List<String> artistName;
             private List<String> images;
@@ -20,6 +20,14 @@ public class MusicDto {
             private String trackName;
             private String previewUrl;
             private int durationMs;
+        }
+
+
+        @Getter
+        @AllArgsConstructor
+        @Schema(name = "MusicDto.Common.Response")
+        public static class Response {
+            private List<Track> tracks;
         }
     }
 

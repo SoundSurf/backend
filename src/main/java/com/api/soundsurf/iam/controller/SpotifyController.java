@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class SpotifyController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public List<MusicDto.Common.Response> search(
+    public MusicDto.Common.Response search(
             final @AuthenticationPrincipal SessionUser sessionUser,
             @Valid @RequestBody MusicDto.Search.Request request) throws IOException, ParseException, SpotifyWebApiException {
         return service.search(request);
@@ -57,7 +56,7 @@ public class SpotifyController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public List<MusicDto.Common.Response> recommendation(
+    public MusicDto.Common.Response recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
             @Valid @RequestBody MusicDto.Recommendation.Request request) throws IOException, ParseException, SpotifyWebApiException {
         return service.recommendation(request);
