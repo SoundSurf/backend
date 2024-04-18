@@ -1,10 +1,10 @@
 package com.api.soundsurf.iam.domain;
 
 import com.api.soundsurf.iam.exception.CannotCreateSpotifyTokenException;
-import com.wrapper.spotify.SpotifyApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import se.michaelthelin.spotify.SpotifyApi;
 
 @RequiredArgsConstructor
 @Slf4j

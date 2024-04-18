@@ -4,13 +4,13 @@ import com.api.soundsurf.iam.dto.MusicDto;
 import com.api.soundsurf.iam.exception.SpotifyGenreException;
 import com.api.soundsurf.iam.exception.SpotifyRecommendationException;
 import com.api.soundsurf.iam.exception.SpotifySearchException;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.Track;
-import com.wrapper.spotify.model_objects.specification.TrackSimplified;
 import lombok.RequiredArgsConstructor;
 import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Service;
+import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.Track;
+import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
 import java.io.IOException;
 import java.util.Arrays;
