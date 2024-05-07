@@ -15,7 +15,7 @@ import java.time.Duration;
 @Service
 @RequiredArgsConstructor
 public class CrawlerService {
-    public String[] getMusicGenres(String title, String artist) {
+    public String[] getMusicGenresRating(String title, String artist) {
         System.setProperty("webdriver.chrome.driver", "/chromedriver-mac-arm64/chromedriver.exe");
 
         ChromeOptions options = new ChromeOptions();
