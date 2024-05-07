@@ -15,7 +15,7 @@ import java.time.Duration;
 @Service
 @RequiredArgsConstructor
 public class CrawlerService {
-    public String getMusicGenres(String title, String artist) {
+    public String[] getMusicGenres(String title, String artist) {
         System.setProperty("webdriver.chrome.driver", "/chromedriver-mac-arm64/chromedriver.exe");
 
         ChromeOptions options = new ChromeOptions();
@@ -30,8 +30,11 @@ public class CrawlerService {
         WebElement genreElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.release_pri_genres")));
         String genres = genreElement.getText();
 
+        WebElement ratingElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.avg_rating")));
+        String rating = ratingElement.getText();
+
         driver.quit();
 
-        return genres;
+        return new String[]{genres, rating};
     }
 }
