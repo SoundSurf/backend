@@ -32,8 +32,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-config'
     implementation group: 'com.google.zxing', name: 'javase', version: '3.5.3'
     implementation group: 'com.google.zxing', name: 'core', version: '3.5.3'
+    implementation 'org.seleniumhq.selenium:selenium-java'
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.3.6'
-
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
