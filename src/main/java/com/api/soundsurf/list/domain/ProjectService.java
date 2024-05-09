@@ -5,6 +5,8 @@ import com.api.soundsurf.list.exception.ProjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -18,7 +20,7 @@ public class ProjectService {
         return repository.existsByUserIdAndName(userId, name);
     }
 
-    public Long create(final Long userId, final String name, final Long genreId){
+    public Long create(final Long userId, final String name, final Long genreId) {
         final var newProject = repository.save(new Project(userId, name, genreId));
 
         return newProject.getId();
@@ -32,6 +34,10 @@ public class ProjectService {
         }
 
         return project;
+    }
+
+    public List<Project> find(final Long userId) {
+        return repository.findAllByUserIdAndDeletedIsFalse(userId);
     }
 
 }

@@ -5,10 +5,16 @@ import com.api.soundsurf.list.exception.DuplicateProjectNameException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectBusinessService {
     private ProjectService service;
+
+    public List<Project> find(final Long userId) {
+        return service.find(userId);
+    }
 
     public Long create(final Long userId, final String name, final Long genreId) {
         validateName(userId, name);

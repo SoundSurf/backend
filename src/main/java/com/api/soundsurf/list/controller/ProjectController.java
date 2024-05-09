@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ProjectController {
     private final ProjectTransferService transferService;
+
+    @GetMapping()
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public ProjectDto.List.Response list(final @AuthenticationPrincipal SessionUser sessionUser) {
+        return transferService.list(sessionUser);
+    }
 
     @PostMapping()
     @Operation(
@@ -43,7 +54,7 @@ public class ProjectController {
                             required = true, content = @Content(mediaType = "application/json"))
             })
     public void update(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Update.Request req) {
-        transferService.update(sessionUser, id,req);
+        transferService.update(sessionUser, id, req);
     }
 
     @PatchMapping("/{id}/complete")
@@ -76,5 +87,13 @@ public class ProjectController {
         transferService.delete(sessionUser, id);
     }
 
-//    @PostMapping("/{id}/")
+    @PostMapping("/{id}/entity")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void saveEntity(final @AuthenticationPrincipal SessionUser sessionUser, final @PathVariable Long id, final @Valid @RequestBody ProjectDto.SaveEntity.Request req) {
+        transferService.saveEntity(sessionUser, id, req);
+    }
 }
