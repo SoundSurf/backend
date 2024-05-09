@@ -2,8 +2,6 @@ package com.api.soundsurf.iam.domain;
 
 import com.api.soundsurf.iam.dto.MusicDto;
 import com.api.soundsurf.iam.exception.SpotifyGenreException;
-import com.api.soundsurf.iam.exception.SpotifyRecommendationException;
-import com.api.soundsurf.iam.exception.SpotifyRecommendationSeedException;
 import com.api.soundsurf.iam.exception.SpotifySearchException;
 import com.neovisionaries.i18n.CountryCode;
 import lombok.RequiredArgsConstructor;
@@ -24,22 +22,9 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class SpotifyService {
+    // TODO : Search 로직 수정 및 DTO 변경
 
     private final SpotifyApi spotifyApi;
-
-    public MusicDto.Common.Response search(final MusicDto.Search.Request request) {
-        switch (request.getType()) {
-            case ARTIST:
-
-                break;
-            case ALBUM:
-                break;
-            case TRACK:
-                return new MusicDto.Common.Response(searchTracks(request.getTitle()));
-        }
-        // TODO: Search exception 으로 변경
-        throw new SpotifyRecommendationSeedException();
-    }
 
     public MusicDto.Genre.Response getGenres() {
         try {
@@ -50,44 +35,7 @@ public class SpotifyService {
         }
     }
 
-    public MusicDto.Common.Response recommendation(final MusicDto.Recommendation.Request request) {
-        try {
-//            if (request.getGenres().isEmpty() && request.getTrack().isEmpty() && request.getArtist().isEmpty()) {
-//                throw new SpotifyRecommendationSeedException();
-//            }
-
-            final var joinedGenres = String.join(",", request.getGenres());
-
-            final var recommendations = spotifyApi.getRecommendations()
-                    .seed_genres(joinedGenres)
-                    .seed_tracks(request.getTrack())
-//                    .seed_artists(request.getArtist())
-                    .market(CountryCode.KR)
-                    .limit(30)
-                    .build()
-                    .execute()
-                    .getTracks();
-
-            return new MusicDto.Common.Response(convertToTrackDtoList(recommendations));
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifyRecommendationException(e.getMessage());
-        }
-    }
-
-    private List<MusicDto.Common.Song> searchTracks(String title) {
-        try {
-            final var searchItemRequest = spotifyApi.searchTracks(title)
-                    .market(CountryCode.KR)
-                    .limit(3)
-                    .build();
-            final var searchResult = searchItemRequest.execute().getItems();
-            return convertToTrackDtoList(searchResult);
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifySearchException(e.getMessage());
-        }
-    }
-
-    public Track[] searchTracks2(String title) {
+    public Track[] searchTracks(String title) {
         try {
             final var searchItemRequest = spotifyApi.searchTracks(title)
                     .market(CountryCode.KR)
@@ -108,21 +56,6 @@ public class SpotifyService {
             return searchItemRequest.execute().getItems();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifySearchException(e.getMessage());
-        }
-    }
-
-    public Track[] recommend() {
-        try {
-            final var recommendations = spotifyApi.getRecommendations()
-                    .seed_genres("synth-pop")
-                    .market(CountryCode.KR)
-                    .limit(10)
-                    .build()
-                    .execute()
-                    .getTracks();
-            return recommendations;
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifyRecommendationException(e.getMessage());
         }
     }
 
