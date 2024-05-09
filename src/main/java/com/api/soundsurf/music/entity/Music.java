@@ -29,7 +29,7 @@ public class Music {
     @Column(nullable = true)
     private String album;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "image_url")
     private String imageUrl;
 
     @Column(nullable = true)
