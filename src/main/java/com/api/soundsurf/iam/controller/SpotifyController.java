@@ -3,6 +3,7 @@ package com.api.soundsurf.iam.controller;
 import com.api.soundsurf.iam.domain.SpotifyService;
 import com.api.soundsurf.iam.dto.MusicDto;
 import com.api.soundsurf.iam.dto.SessionUser;
+import com.api.soundsurf.music.domain.CrawlerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/spotify")
 public class SpotifyController {
     private final SpotifyService service;
+    private final CrawlerService crawlerService;
 
     @GetMapping("/search")
     @Operation(
@@ -55,6 +57,11 @@ public class SpotifyController {
             final @AuthenticationPrincipal SessionUser sessionUser,
             @Valid @RequestBody MusicDto.Recommendation.Request request) {
         return service.recommendation(request);
+    }
+
+    @GetMapping("/")
+    public String[] a () {
+        return crawlerService.getMusicGenresRating("butter", "bts");
     }
     
 }

@@ -2,6 +2,7 @@ package com.api.soundsurf;
 
 import com.api.soundsurf.api.config.DataSourcePropertyLoader;
 import com.api.soundsurf.api.quartz.QuartzJobGetSpotifyAccessToken;
+import com.api.soundsurf.music.HttpClientSingleton;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,12 @@ public class SoundSurfApplication extends SpringBootServletInitializer implement
     }
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(APPLICATION_SOURCE).listeners(new DataSourcePropertyLoader()).run(args);
+        try {
+            HttpClientSingleton.createHttpClient();
+            new SpringApplicationBuilder(APPLICATION_SOURCE).listeners(new DataSourcePropertyLoader()).run(args);
+        } finally {
+            HttpClientSingleton.closeHttpClient();
+        }
     }
 
     @Override
