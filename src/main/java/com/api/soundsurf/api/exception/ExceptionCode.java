@@ -43,8 +43,10 @@ public class ExceptionCode {
 
     public static class SPOTIFY {
         final public static String SPOTIFY_TOKEN_NOT_CREATED = "토큰을 생성할 수 없습니다.";
+        final public static String SPOTIFY_ALBUM_INFO_EXCEPTION = "앨범 정보 검색 중 오류가 발생했습니다.";
         final public static String SPOTIFY_SEARCH_ERROR = "음악 검색 중 오류가 발생했습니다.";
         final public static String SPOTIFY_RECOMMENDATION_ERROR = "음악 추천 중 오류가 발생했습니다.";
         final public static String SPOTIFY_GENRE_ERROR = "장르 검색 중 오류가 발생했습니다.";
+        final public static String SPOTIFY_SEED_EXCEPTION = "장르, 아티스트, 트랙 중 하나를 필수로 입력해주세요.";
     }
 }
