@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.spotify;
 
 import com.api.soundsurf.iam.exception.CannotCreateSpotifyTokenException;
 import lombok.RequiredArgsConstructor;
