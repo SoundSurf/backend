@@ -91,7 +91,7 @@ public class SpotifyController {
     public Track[] searchTracks(
             final @AuthenticationPrincipal SessionUser sessionUser,
             @Valid @RequestBody MusicDto.Search.Request request) {
-        return service.searchTracks2(request.getTitle());
+        return service.searchTracks(request.getTitle());
     }
 
     @GetMapping("/now-playing")
