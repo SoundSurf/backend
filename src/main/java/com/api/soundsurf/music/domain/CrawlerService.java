@@ -36,8 +36,10 @@ public class CrawlerService {
             final var html = EntityUtils.toString(entity);
             final var doc = Jsoup.parse(html);
 
-            final var genres = doc.select("span.release_pri_genres").text();
-            final var rating = doc.select("span.avg_rating").text();
+            var genres = doc.select("span.release_pri_genres").text();
+            genres = genres.isEmpty() ? "Unknown" : genres;
+            var rating = doc.select("span.avg_rating").text();
+            rating = rating.isEmpty() ? "Unknown" : rating;
 
             return new String[]{genres, rating};
         } catch (IOException | ParseException e) {
