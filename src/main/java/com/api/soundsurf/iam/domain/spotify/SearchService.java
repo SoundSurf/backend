@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain;
+package com.api.soundsurf.iam.domain.spotify;
 
 import com.api.soundsurf.iam.dto.MusicDto;
 import com.api.soundsurf.iam.exception.SpotifyGenreException;
@@ -12,12 +12,9 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Track;
-import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -68,21 +65,6 @@ public class SpotifyService {
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifySearchException(e.getMessage());
         }
-    }
-
-
-    private List<MusicDto.Common.Song> convertToTrackDtoList(final Track[] tracks) {
-        return Stream.of(tracks)
-                .filter(track -> track.getPreviewUrl() != null)
-                .map(MusicDto.Common.Song::new)
-                .toList();
-    }
-
-    private List<MusicDto.Common.Song> convertToTrackDtoList(final TrackSimplified[] tracks) {
-        return Stream.of(tracks)
-                .filter(track -> track.getPreviewUrl() != null)
-                .map(MusicDto.Common.Song::new)
-                .toList();
     }
 
 }
