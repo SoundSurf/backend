@@ -9,59 +9,71 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
-import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
-import se.michaelthelin.spotify.model_objects.specification.Artist;
-import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
-public class SpotifyService {
-    // TODO : Search 로직 수정 및 DTO 변경
+public class SearchService {
 
-    private final SpotifyApi spotifyApi;
+    private final SpotifyApi api;
 
     public MusicDto.Genre.Response getGenres() {
         try {
-            final var genres = spotifyApi.getAvailableGenreSeeds().build().execute();
+            final var genres = api.getAvailableGenreSeeds().build().execute();
             return new MusicDto.Genre.Response(Arrays.asList(genres));
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyGenreException(e.getMessage());
         }
     }
 
-    public Track[] searchTracks(String title) {
+    public MusicDto.Search.Response.Track searchTracks(MusicDto.Search.Request request) {
         try {
-            final var searchItemRequest = spotifyApi.searchTracks(title)
+            final var tracks = api.searchTracks(request.getTitle())
                     .market(CountryCode.KR)
-                    .limit(3)
-                    .build();
-            return searchItemRequest.execute().getItems();
+                    .limit(request.getLimit())
+                    .offset(request.getOffset())
+                    .build()
+                    .execute()
+                    .getItems();
+
+            return new MusicDto.Search.Response.Track(
+                    Arrays.stream(tracks).map(MusicDto.Common.Song::new).toList());
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifySearchException(e.getMessage());
         }
     }
 
-    public Artist[] searchArtist(String title) {
+    public MusicDto.Search.Response.Artist searchArtist(MusicDto.Search.Request request) {
         try {
-            final var searchItemRequest = spotifyApi.searchArtists(title)
+            final var artists = api.searchArtists(request.getTitle())
                     .market(CountryCode.KR)
-                    .limit(3)
-                    .build();
-            return searchItemRequest.execute().getItems();
+                    .limit(request.getLimit())
+                    .offset(request.getOffset())
+                    .build()
+                    .execute()
+                    .getItems();
+
+            return new MusicDto.Search.Response.Artist(
+                    Arrays.stream(artists).map(MusicDto.ArtistSimpleInfo.Musician::new).toList());
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifySearchException(e.getMessage());
         }
     }
 
-    public AlbumSimplified[] searchAlbum(String title) {
+    public MusicDto.Search.Response.Album searchAlbum(MusicDto.Search.Request request) {
         try {
-            final var searchItemRequest = spotifyApi.searchAlbums(title)
+            final var albums = api.searchAlbums(request.getTitle())
                     .market(CountryCode.KR)
-                    .build();
-            return searchItemRequest.execute().getItems();
+                    .limit(request.getLimit())
+                    .offset(request.getOffset())
+                    .build()
+                    .execute()
+                    .getItems();
+
+            return new MusicDto.Search.Response.Album(
+                    Arrays.stream(albums).map(MusicDto.AlbumSimpleInfo.Info::new).toList());
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifySearchException(e.getMessage());
         }
