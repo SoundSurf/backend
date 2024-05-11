@@ -1,6 +1,7 @@
 package com.api.soundsurf.music.dto;
 
 import com.api.soundsurf.music.entity.GenreType;
+import com.api.soundsurf.music.entity.SearchType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -144,6 +145,9 @@ public class MusicDto {
         }
     }
 
+    public interface SearchResult {
+    }
+
     public static class Search {
         @Getter
         @Schema(name = "MusicDto.Search.Request")
@@ -157,6 +161,9 @@ public class MusicDto {
 
             @NotNull
             private int offset;
+
+            @NotNull
+            private SearchType type;
         }
 
 
@@ -164,25 +171,24 @@ public class MusicDto {
             @Getter
             @Schema(name = "MusicDto.Search.Response")
             @AllArgsConstructor
-            public static class Album {
+            public static class Album implements SearchResult {
                 private List<AlbumSimpleInfo.Info> albums;
             }
 
             @Getter
             @Schema(name = "MusicDto.Search.Response")
             @AllArgsConstructor
-            public static class Artist {
+            public static class Artist implements SearchResult {
                 private List<ArtistSimpleInfo.Musician> artists;
             }
 
             @Getter
             @Schema(name = "MusicDto.Search.Response")
             @AllArgsConstructor
-            public static class Track {
+            public static class Track implements SearchResult {
                 private List<Common.Song> tracks;
             }
         }
-
     }
 
     public static class Genre {

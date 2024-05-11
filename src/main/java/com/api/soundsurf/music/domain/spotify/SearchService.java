@@ -18,55 +18,31 @@ public class SearchService {
 
     private final SpotifyApi api;
 
-    public MusicDto.Search.Response.Track searchTracks(MusicDto.Search.Request request) {
+    public MusicDto.SearchResult search(MusicDto.Search.Request request) {
         try {
-            final var tracks = api.searchTracks(request.getTitle())
+            final var result = api.searchItem(request.getTitle(), request.getType().getType())
                     .market(CountryCode.KR)
                     .limit(request.getLimit())
                     .offset(request.getOffset())
                     .build()
-                    .execute()
-                    .getItems();
+                    .execute();
 
-            return new MusicDto.Search.Response.Track(
-                    Arrays.stream(tracks).map(MusicDto.Common.Song::new).toList());
+            switch (request.getType()) {
+                case TRACK:
+                    return new MusicDto.Search.Response.Track(
+                            Arrays.stream(result.getTracks().getItems()).map(MusicDto.Common.Song::new).toList());
+                case ARTIST:
+                    return new MusicDto.Search.Response.Artist(
+                            Arrays.stream(result.getArtists().getItems()).map(MusicDto.ArtistSimpleInfo.Musician::new).toList());
+                case ALBUM:
+                    return new MusicDto.Search.Response.Album(
+                            Arrays.stream(result.getAlbums().getItems()).map(MusicDto.AlbumSimpleInfo.Info::new).toList());
+            }
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifySearchException(e.getMessage());
         }
+        return null;
     }
 
-    public MusicDto.Search.Response.Artist searchArtist(MusicDto.Search.Request request) {
-        try {
-            final var artists = api.searchArtists(request.getTitle())
-                    .market(CountryCode.KR)
-                    .limit(request.getLimit())
-                    .offset(request.getOffset())
-                    .build()
-                    .execute()
-                    .getItems();
-
-            return new MusicDto.Search.Response.Artist(
-                    Arrays.stream(artists).map(MusicDto.ArtistSimpleInfo.Musician::new).toList());
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifySearchException(e.getMessage());
-        }
-    }
-
-    public MusicDto.Search.Response.Album searchAlbum(MusicDto.Search.Request request) {
-        try {
-            final var albums = api.searchAlbums(request.getTitle())
-                    .market(CountryCode.KR)
-                    .limit(request.getLimit())
-                    .offset(request.getOffset())
-                    .build()
-                    .execute()
-                    .getItems();
-
-            return new MusicDto.Search.Response.Album(
-                    Arrays.stream(albums).map(MusicDto.AlbumSimpleInfo.Info::new).toList());
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifySearchException(e.getMessage());
-        }
-    }
 
 }
