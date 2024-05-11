@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.dto;
+package com.api.soundsurf.music.dto;
 
 import com.api.soundsurf.music.entity.GenreType;
 import io.swagger.v3.oas.annotations.media.Schema;

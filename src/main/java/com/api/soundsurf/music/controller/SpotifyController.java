@@ -1,10 +1,10 @@
 package com.api.soundsurf.music.controller;
 
-import com.api.soundsurf.iam.dto.MusicDto;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.music.domain.CrawlerService;
 import com.api.soundsurf.music.domain.spotify.DriveService;
 import com.api.soundsurf.music.domain.spotify.SearchService;
+import com.api.soundsurf.music.dto.MusicDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -23,19 +23,6 @@ public class SpotifyController {
     private final DriveService driveService;
     private final SearchService service;
     private final CrawlerService crawlerService;
-
-
-    @GetMapping("/genres")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public MusicDto.Genre.Response getGenres(
-            final @AuthenticationPrincipal SessionUser sessionUser
-    ) {
-        return service.getGenres();
-    }
 
     @GetMapping("/recommendation")
     @Operation(
