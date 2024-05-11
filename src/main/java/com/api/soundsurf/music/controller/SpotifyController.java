@@ -42,41 +42,17 @@ public class SpotifyController {
     public String[] a() {
         return crawlerService.getMusicGenresRating("butter", "bts");
     }
-
-    @GetMapping("/search/artist")
+    
+    @GetMapping("/search")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public MusicDto.Search.Response.Artist searchArtist(
+    public MusicDto.SearchResult search(
             final @AuthenticationPrincipal SessionUser sessionUser,
             final @Valid MusicDto.Search.Request request) {
-        return service.searchArtist(request);
-    }
-
-    @GetMapping("/search/album")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public MusicDto.Search.Response.Album searchAlbum(
-            final @AuthenticationPrincipal SessionUser sessionUser,
-            final @Valid MusicDto.Search.Request request) {
-        return service.searchAlbum(request);
-    }
-
-    @GetMapping("/search/track")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public MusicDto.Search.Response.Track searchTracks(
-            final @AuthenticationPrincipal SessionUser sessionUser,
-            final @Valid MusicDto.Search.Request request) {
-        return service.searchTracks(request);
+        return service.search(request);
     }
 
 
