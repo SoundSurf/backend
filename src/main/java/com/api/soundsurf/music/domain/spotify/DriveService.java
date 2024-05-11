@@ -1,10 +1,10 @@
-package com.api.soundsurf.iam.domain.spotify;
+package com.api.soundsurf.music.domain.spotify;
 
 import com.api.soundsurf.iam.dto.MusicDto;
-import com.api.soundsurf.iam.exception.SpotifyNowPlayingException;
-import com.api.soundsurf.iam.exception.SpotifyRecommendationException;
 import com.api.soundsurf.music.domain.CrawlerService;
 import com.api.soundsurf.music.entity.GenreType;
+import com.api.soundsurf.music.exception.SpotifyNowPlayingException;
+import com.api.soundsurf.music.exception.SpotifyRecommendationException;
 import com.neovisionaries.i18n.CountryCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.hc.core5.http.ParseException;
@@ -15,7 +15,7 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-import static com.api.soundsurf.iam.domain.spotify.Utils.convertToTrackDtoList;
+import static com.api.soundsurf.music.domain.spotify.Utils.convertToTrackDtoList;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +59,6 @@ public class DriveService {
             throw new SpotifyNowPlayingException(e.getMessage());
         }
     }
-    
+
 
 }

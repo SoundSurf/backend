@@ -1,8 +1,8 @@
-package com.api.soundsurf.iam.domain.spotify;
+package com.api.soundsurf.music.domain.spotify;
 
 import com.api.soundsurf.iam.dto.MusicDto;
-import com.api.soundsurf.iam.exception.SpotifyGenreException;
-import com.api.soundsurf.iam.exception.SpotifySearchException;
+import com.api.soundsurf.music.exception.SpotifyGenreException;
+import com.api.soundsurf.music.exception.SpotifySearchException;
 import com.neovisionaries.i18n.CountryCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.hc.core5.http.ParseException;

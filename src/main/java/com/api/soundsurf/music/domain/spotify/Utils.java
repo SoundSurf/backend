@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.domain.spotify;
+package com.api.soundsurf.music.domain.spotify;
 
 import com.api.soundsurf.iam.dto.MusicDto;
 import se.michaelthelin.spotify.model_objects.specification.Track;
@@ -22,5 +22,5 @@ public class Utils {
                 .map(MusicDto.Common.Song::new)
                 .toList();
     }
-    
+
 }
