@@ -1,6 +1,6 @@
 package com.api.soundsurf.api.quartz;
 
-import com.api.soundsurf.iam.domain.spotify.SpotifyTokenProvider;
+import com.api.soundsurf.music.domain.spotify.SpotifyTokenProvider;
 import org.quartz.Job;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;

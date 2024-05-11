@@ -1,4 +1,4 @@
-package com.api.soundsurf.iam.exception;
+package com.api.soundsurf.music.exception;
 
 import com.api.soundsurf.api.exception.ApiException;
 import com.api.soundsurf.api.exception.ExceptionCode;

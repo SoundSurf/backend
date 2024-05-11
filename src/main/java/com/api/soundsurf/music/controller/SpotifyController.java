@@ -1,10 +1,10 @@
-package com.api.soundsurf.iam.controller;
+package com.api.soundsurf.music.controller;
 
-import com.api.soundsurf.iam.domain.spotify.DriveService;
-import com.api.soundsurf.iam.domain.spotify.SearchService;
 import com.api.soundsurf.iam.dto.MusicDto;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.music.domain.CrawlerService;
+import com.api.soundsurf.music.domain.spotify.DriveService;
+import com.api.soundsurf.music.domain.spotify.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
