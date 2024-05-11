@@ -2,10 +2,10 @@ package com.api.soundsurf.music.dto;
 
 import com.api.soundsurf.music.entity.GenreType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import se.michaelthelin.spotify.model_objects.specification.*;
 
 import java.util.Arrays;
@@ -146,13 +146,16 @@ public class MusicDto {
 
     public static class Search {
         @Getter
-        @Setter
         @Schema(name = "MusicDto.Search.Request")
+        @AllArgsConstructor
         public static class Request {
+            @NotNull
             private String title;
 
+            @NotNull
             private int limit;
 
+            @NotNull
             private int offset;
         }
 
@@ -194,8 +197,12 @@ public class MusicDto {
     public static class Recommendation {
         @Getter
         @Schema(name = "MusicDto.Recommendation.Request")
+        @AllArgsConstructor
         public static class Request {
+            @NotNull
             private List<GenreType> genres;
+
+            @NotNull
             private int limit;
         }
     }
@@ -203,7 +210,9 @@ public class MusicDto {
     public static class NowPlaying {
         @Getter
         @Schema(name = "MusicDto.NowPlaying.Request")
+        @AllArgsConstructor
         public static class Request {
+            @NotNull
             private String id;
         }
 

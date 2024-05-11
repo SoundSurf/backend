@@ -13,7 +13,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -32,7 +34,7 @@ public class SpotifyController {
             })
     public MusicDto.Common.Response recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @RequestBody @Valid MusicDto.Recommendation.Request request) {
+            final @Valid MusicDto.Recommendation.Request request) {
         return driveService.recommendation(request);
     }
 
@@ -86,7 +88,7 @@ public class SpotifyController {
             })
     public MusicDto.NowPlaying.Response getNowPlaying(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @ModelAttribute @Valid String albumId) {
+            final @Valid String albumId) {
         return driveService.getNowPlayingAlbum(albumId);
     }
 
