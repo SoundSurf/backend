@@ -1,7 +1,7 @@
 package com.api.soundsurf.music.domain.spotify;
 
-import com.api.soundsurf.iam.dto.MusicDto;
 import com.api.soundsurf.music.domain.CrawlerService;
+import com.api.soundsurf.music.dto.MusicDto;
 import com.api.soundsurf.music.entity.GenreType;
 import com.api.soundsurf.music.exception.SpotifyNowPlayingException;
 import com.api.soundsurf.music.exception.SpotifyRecommendationException;

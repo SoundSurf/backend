@@ -1,6 +1,6 @@
 package com.api.soundsurf.music.domain.spotify;
 
-import com.api.soundsurf.iam.dto.MusicDto;
+import com.api.soundsurf.music.dto.MusicDto;
 import com.api.soundsurf.music.exception.SpotifyGenreException;
 import com.api.soundsurf.music.exception.SpotifySearchException;
 import com.neovisionaries.i18n.CountryCode;

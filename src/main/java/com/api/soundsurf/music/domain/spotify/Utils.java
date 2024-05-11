@@ -1,6 +1,6 @@
 package com.api.soundsurf.music.domain.spotify;
 
-import com.api.soundsurf.iam.dto.MusicDto;
+import com.api.soundsurf.music.dto.MusicDto;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
