@@ -1,7 +1,6 @@
 package com.api.soundsurf.music.domain.spotify;
 
 import com.api.soundsurf.music.dto.MusicDto;
-import com.api.soundsurf.music.exception.SpotifyGenreException;
 import com.api.soundsurf.music.exception.SpotifySearchException;
 import com.neovisionaries.i18n.CountryCode;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +17,6 @@ import java.util.Arrays;
 public class SearchService {
 
     private final SpotifyApi api;
-
-    public MusicDto.Genre.Response getGenres() {
-        try {
-            final var genres = api.getAvailableGenreSeeds().build().execute();
-            return new MusicDto.Genre.Response(Arrays.asList(genres));
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifyGenreException(e.getMessage());
-        }
-    }
 
     public MusicDto.Search.Response.Track searchTracks(MusicDto.Search.Request request) {
         try {
