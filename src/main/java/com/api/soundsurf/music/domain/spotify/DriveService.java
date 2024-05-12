@@ -2,7 +2,7 @@ package com.api.soundsurf.music.domain.spotify;
 
 import com.api.soundsurf.music.domain.CrawlerService;
 import com.api.soundsurf.music.dto.MusicDto;
-import com.api.soundsurf.music.entity.GenreType;
+import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.exception.SpotifyNowPlayingException;
 import com.api.soundsurf.music.exception.SpotifyRecommendationException;
 import com.neovisionaries.i18n.CountryCode;
@@ -11,11 +11,10 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
-
-import static com.api.soundsurf.music.domain.spotify.Utils.convertToTrackDtoList;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class DriveService {
     private final SpotifyApi api;
     private final CrawlerService crawler;
 
-    public MusicDto.Common.Response recommendation(final MusicDto.Recommendation.Request request) {
+    public Track[] recommendation(final MusicDto.Recommendation.Request request) {
         var genres = request.getGenres();
         try {
             if (genres.isEmpty()) {
@@ -34,7 +33,7 @@ public class DriveService {
             final var genreStrings = genres.stream().map(GenreType::getValue).collect(Collectors.toList());
             final var joinedGenres = String.join(",", genreStrings);
 
-            final var recommendations = api.getRecommendations()
+            return api.getRecommendations()
                     .seed_genres(joinedGenres)
                     .market(CountryCode.KR)
                     .limit(request.getLimit())
@@ -42,7 +41,6 @@ public class DriveService {
                     .execute()
                     .getTracks();
 
-            return new MusicDto.Common.Response(convertToTrackDtoList(recommendations));
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyRecommendationException(e.getMessage());
         }

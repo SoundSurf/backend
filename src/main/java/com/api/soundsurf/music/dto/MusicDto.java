@@ -1,12 +1,15 @@
 package com.api.soundsurf.music.dto;
 
-import com.api.soundsurf.music.entity.GenreType;
-import com.api.soundsurf.music.entity.SearchType;
+import com.api.soundsurf.music.constant.GenreType;
+import com.api.soundsurf.music.constant.SearchType;
+import com.api.soundsurf.music.domain.spotify.Utils;
+import com.api.soundsurf.music.entity.UserRecommendationMusic;
+import com.google.gson.JsonObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import se.michaelthelin.spotify.model_objects.specification.*;
 
 import java.util.Arrays;
@@ -16,7 +19,8 @@ public class MusicDto {
 
     public static class Common {
         @Schema(name = "MusicDto.Common.Song")
-        public record Song(
+        @Getter
+        public record Response(
                 String id,
                 String name,
                 String previewUrl,
@@ -25,19 +29,21 @@ public class MusicDto {
                 AlbumSimpleInfo.Info album,
                 List<ArtistSimpleInfo.Musician> artists
         ) {
-            public Song(TrackSimplified track) {
+
+            public Response(UserRecommendationMusic now) {
                 this(
-                        track.getId(),
-                        track.getName(),
-                        track.getPreviewUrl(),
-                        track.getExternalUrls().getExternalUrls().get("spotify"),
-                        track.getDurationMs(),
+                        now.getTrackId(),
+                        now.getTrackName(),
+                        now.getTrackPreviewUrl(),
+                        now.getTrackSpotifyUrl(),
+                        now.getTrackDurationMs(),
                         null,
-                        Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
-                );
+                        Utils.convertJsonStringToMusicianDtoList(now.getArtistsMetadata()
+                        ));
             }
 
-            public Song(Track track) {
+
+            public Response(Track track) {
                 this(
                         track.getId(),
                         track.getName(),
@@ -50,12 +56,6 @@ public class MusicDto {
             }
         }
 
-        @Getter
-        @RequiredArgsConstructor
-        @Schema(name = "MusicDto.Common.Response")
-        public static class Response {
-            private final List<Song> songs;
-        }
     }
 
     public static class AlbumSimpleInfo {
@@ -140,6 +140,14 @@ public class MusicDto {
                         artist.getName(),
                         artist.getId(),
                         artist.getExternalUrls().getExternalUrls().get("spotify")
+                );
+            }
+
+            public Musician(final JSONObject nowArtist) {
+                this(
+                        nowArtist.getString("artistName"),
+                        nowArtist.getString("id"),
+                        nowArtist.getString("spotifyUrl")
                 );
             }
         }

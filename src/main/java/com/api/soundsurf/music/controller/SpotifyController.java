@@ -4,6 +4,7 @@ import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.music.domain.CrawlerService;
 import com.api.soundsurf.music.domain.spotify.DriveService;
 import com.api.soundsurf.music.domain.spotify.SearchService;
+import com.api.soundsurf.music.domain.spotify.SpotifyTransferService;
 import com.api.soundsurf.music.dto.MusicDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -24,8 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/spotify")
 public class SpotifyController {
     private final DriveService driveService;
-    private final SearchService service;
+    private final SearchService searchService;
     private final CrawlerService crawlerService;
+    private final SpotifyTransferService transferService;
 
     @GetMapping("/recommendation")
     @Operation(
@@ -36,6 +37,8 @@ public class SpotifyController {
     public MusicDto.Common.Response recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
             final @Valid MusicDto.Recommendation.Request request) {
+
+        return transferService.recommend(request, sessionUser);
         return driveService.recommendation(request);
     }
 
@@ -48,7 +51,7 @@ public class SpotifyController {
     public MusicDto.SearchResult search(
             final @AuthenticationPrincipal SessionUser sessionUser,
             final @Valid MusicDto.Search.Request request) {
-        return service.search(request);
+        return searchService.search(request);
     }
 
 
