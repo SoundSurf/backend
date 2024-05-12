@@ -4,7 +4,6 @@ import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.constant.SearchType;
 import com.api.soundsurf.music.domain.spotify.Utils;
 import com.api.soundsurf.music.entity.UserRecommendationMusic;
-import com.google.gson.JsonObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,7 @@ public class MusicDto {
     public static class Common {
         @Schema(name = "MusicDto.Common.Song")
         @Getter
-        public record Response(
+        public record Song(
                 String id,
                 String name,
                 String previewUrl,
@@ -30,7 +29,7 @@ public class MusicDto {
                 List<ArtistSimpleInfo.Musician> artists
         ) {
 
-            public Response(UserRecommendationMusic now) {
+            public Song(UserRecommendationMusic now) {
                 this(
                         now.getTrackId(),
                         now.getTrackName(),
@@ -43,7 +42,7 @@ public class MusicDto {
             }
 
 
-            public Response(Track track) {
+            public Song(Track track) {
                 this(
                         track.getId(),
                         track.getName(),
@@ -215,9 +214,6 @@ public class MusicDto {
         public static class Request {
             @NotNull
             private List<GenreType> genres;
-
-            @NotNull
-            private int limit;
         }
     }
 

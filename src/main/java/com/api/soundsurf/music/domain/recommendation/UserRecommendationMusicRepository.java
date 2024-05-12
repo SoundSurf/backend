@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface UserRecommendationMusicRepository extends JpaRepository<UserRecommendationMusic, Long> {
     List<UserRecommendationMusic> findAllByUserIdAndDeletedIsFalseOrderByOrder(Long userId);
+    UserRecommendationMusic findByUserIdAndIdAndDeletedIsFalse(Long userId, Long id);
 }

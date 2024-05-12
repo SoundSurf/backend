@@ -34,12 +34,11 @@ public class SpotifyController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public MusicDto.Common.Response recommendation(
+    public MusicDto.Common.Song recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
             final @Valid MusicDto.Recommendation.Request request) {
 
         return transferService.recommend(request, sessionUser);
-        return driveService.recommendation(request);
     }
 
     @GetMapping("/search")

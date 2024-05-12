@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class GenreTransferService {
-    private final com.api.soundsurf.music.domain.genre.UserRecommendationMusicBusinessService businessService;
+    private final com.api.soundsurf.music.domain.genre.GenreBusinessService businessService;
 
     @Transactional
     public GenreDto.GetAll.Response getAllGenres() {

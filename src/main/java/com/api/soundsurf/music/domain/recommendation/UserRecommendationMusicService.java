@@ -15,5 +15,14 @@ public class UserRecommendationMusicService {
         return repository.findAllByUserIdAndDeletedIsFalseOrderByOrder(userId);
     }
 
+    public UserRecommendationMusic get(final Long userId, final Long id) {
+        return repository.findByUserIdAndIdAndDeletedIsFalse(userId, id);
+    }
+
+    public void save(final UserRecommendationMusic music) {
+        repository.save(music);
+    }
+
+
 
 }

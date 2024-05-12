@@ -1,7 +1,7 @@
 CREATE TABLE `user_recommendation_musics`
 (`id` bigint AUTO_INCREMENT,
 `user_id` bigint NOT NULL,
-`order` smallint NOT NULL,
+`order` bigint NOT NULL,
 `track_id` varchar(32) NOT NULL,
  `track_name` varchar(255) NOT NULL ,
  `track_preview_url` varchar(255) NULL,

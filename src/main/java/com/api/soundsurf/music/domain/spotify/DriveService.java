@@ -14,6 +14,7 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,11 +24,14 @@ public class DriveService {
     private final SpotifyApi api;
     private final CrawlerService crawler;
 
-    public Track[] recommendation(final MusicDto.Recommendation.Request request) {
-        var genres = request.getGenres();
+    public Track[] recommendation(final List<GenreType> requestGenres) {
+        List<GenreType> genres;
+
         try {
-            if (genres.isEmpty()) {
+            if (requestGenres.isEmpty()) {
                 genres = GenreType.getRandomGenres(5);
+            } else {
+                genres = requestGenres;
             }
 
             final var genreStrings = genres.stream().map(GenreType::getValue).collect(Collectors.toList());
@@ -36,7 +40,7 @@ public class DriveService {
             return api.getRecommendations()
                     .seed_genres(joinedGenres)
                     .market(CountryCode.KR)
-                    .limit(request.getLimit())
+                    .limit(3)
                     .build()
                     .execute()
                     .getTracks();

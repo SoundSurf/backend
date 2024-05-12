@@ -1,5 +1,7 @@
 package com.api.soundsurf.music.entity;
 
+import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
+import com.api.soundsurf.music.domain.spotify.Utils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 
 @Entity
 @Getter
@@ -22,7 +25,7 @@ public class UserRecommendationMusic {
     private Long userId;
 
     @Column(nullable = false)
-    private Integer order;
+    private Long order;
 
     @Column(name = "track_id", nullable = false)
     private String trackId;
@@ -44,4 +47,19 @@ public class UserRecommendationMusic {
 
     @Column(nullable = false)
     private boolean deleted;
+
+    public UserRecommendationMusic(final Track track, final Long order, final Long userId, final String artistsMetadata) {
+        this.userId = userId;
+        this.order = order;
+        this.trackId = track.getId();
+        this.trackName = track.getName();
+        this.trackPreviewUrl = track.getPreviewUrl();
+        this.trackSpotifyUrl = track.getExternalUrls().getExternalUrls().get("spotify");
+        this.trackDurationMs = track.getDurationMs();
+        this.artistsMetadata = artistsMetadata;
+    }
+
+    public void delete() {
+        this.deleted = true;
+    }
 }
