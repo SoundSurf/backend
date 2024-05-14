@@ -1,4 +1,4 @@
-package com.api.soundsurf.music.domain;
+package com.api.soundsurf.music.domain.genre;
 
 import com.api.soundsurf.iam.domain.userGenre.UserGenreService;
 import com.api.soundsurf.iam.domain.user.UserService;

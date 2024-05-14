@@ -1,4 +1,4 @@
-package com.api.soundsurf.music.domain;
+package com.api.soundsurf.music.domain.genre;
 
 import com.api.soundsurf.music.entity.Genre;
 import com.api.soundsurf.music.exception.GenreNotFoundException;

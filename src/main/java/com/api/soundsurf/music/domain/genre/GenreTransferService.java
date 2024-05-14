@@ -1,9 +1,8 @@
-package com.api.soundsurf.music.domain;
+package com.api.soundsurf.music.domain.genre;
 
 import com.api.soundsurf.iam.dto.GenreDto;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.entity.UserGenre;
-import com.api.soundsurf.music.entity.Genre;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class GenreTransferService {
-    private final GenreBusinessService businessService;
+    private final com.api.soundsurf.music.domain.genre.GenreBusinessService businessService;
 
     @Transactional
     public GenreDto.GetAll.Response getAllGenres() {

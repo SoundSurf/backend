@@ -32,7 +32,11 @@ dependencies {
     implementation 'org.springframework.security:spring-security-config'
     implementation group: 'com.google.zxing', name: 'javase', version: '3.5.3'
     implementation group: 'com.google.zxing', name: 'core', version: '3.5.3'
+    implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.3.6'
 
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.17.2'
+
+    implementation group: 'org.json', name: 'json', version: '20240303'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -42,9 +46,16 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33'
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
 
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 
 tasks.named('test') {
