@@ -53,8 +53,8 @@ public class DriveService {
     public MusicDto.NowPlaying.Response getNowPlayingAlbum(final String albumId) {
         try {
             final var album = api.getAlbum(albumId).build().execute();
-            final var artist = album.getArtists()[0].getName().toLowerCase().replace(' ', '-');
-            final var title = album.getName().toLowerCase().replace(' ', '-');
+            final var artist = Utils.searchAbleString(album.getArtists()[0].getName());
+            final var title = Utils.searchAbleString(album.getName());
             final var crawled = crawler.getAlbumGenresRating(title, artist);
             return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled));
         } catch (IOException | SpotifyWebApiException | ParseException e) {

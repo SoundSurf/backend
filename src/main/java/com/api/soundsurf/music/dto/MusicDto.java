@@ -18,7 +18,6 @@ public class MusicDto {
 
     public static class Common {
         @Schema(name = "MusicDto.Common.Song")
-        @Getter
         public record Song(
                 String id,
                 String name,
@@ -36,7 +35,7 @@ public class MusicDto {
                         now.getTrackPreviewUrl(),
                         now.getTrackSpotifyUrl(),
                         now.getTrackDurationMs(),
-                        null,
+                        Utils.convertJsonStringToAlbumDto(now.getAlbumMetadata()),
                         Utils.convertJsonStringToMusicianDtoList(now.getArtistsMetadata()
                         ));
             }
@@ -50,6 +49,18 @@ public class MusicDto {
                         track.getExternalUrls().getExternalUrls().get("spotify"),
                         track.getDurationMs(),
                         new AlbumSimpleInfo.Info(track.getAlbum(), null, null),
+                        Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
+                );
+            }
+
+            public Song(TrackSimplified track) {
+                this(
+                        track.getId(),
+                        track.getName(),
+                        track.getPreviewUrl(),
+                        track.getExternalUrls().getExternalUrls().get("spotify"),
+                        track.getDurationMs(),
+                        null,
                         Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
                 );
             }

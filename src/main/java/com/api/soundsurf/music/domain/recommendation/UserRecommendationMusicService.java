@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserRecommendationMusicService {
-    private UserRecommendationMusicRepository repository;
+    private final UserRecommendationMusicRepository repository;
 
     public List<UserRecommendationMusic> get(final Long userId) {
         return repository.findAllByUserIdAndDeletedIsFalseOrderByOrder(userId);

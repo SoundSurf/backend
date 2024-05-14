@@ -45,10 +45,13 @@ public class UserRecommendationMusic {
     @Column(name = "artists_metadata", nullable = false)
     private String artistsMetadata;
 
+    @Column(name = "album_metadata", nullable = false)
+    private String albumMetadata;
+
     @Column(nullable = false)
     private boolean deleted;
 
-    public UserRecommendationMusic(final Track track, final Long order, final Long userId, final String artistsMetadata) {
+    public UserRecommendationMusic(final Track track, final Long order, final Long userId, final String albumMetadata, final String artistsMetadata) {
         this.userId = userId;
         this.order = order;
         this.trackId = track.getId();
@@ -56,6 +59,7 @@ public class UserRecommendationMusic {
         this.trackPreviewUrl = track.getPreviewUrl();
         this.trackSpotifyUrl = track.getExternalUrls().getExternalUrls().get("spotify");
         this.trackDurationMs = track.getDurationMs();
+        this.albumMetadata = albumMetadata;
         this.artistsMetadata = artistsMetadata;
     }
 

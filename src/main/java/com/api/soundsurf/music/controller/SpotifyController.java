@@ -1,7 +1,8 @@
 package com.api.soundsurf.music.controller;
 
 import com.api.soundsurf.iam.dto.SessionUser;
-import com.api.soundsurf.music.domain.CrawlerService;
+import com.api.soundsurf.music.constant.GenreType;
+import com.api.soundsurf.music.constant.SearchType;
 import com.api.soundsurf.music.domain.spotify.DriveService;
 import com.api.soundsurf.music.domain.spotify.SearchService;
 import com.api.soundsurf.music.domain.spotify.SpotifyTransferService;
@@ -10,13 +11,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -25,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpotifyController {
     private final DriveService driveService;
     private final SearchService searchService;
-    private final CrawlerService crawlerService;
     private final SpotifyTransferService transferService;
 
     @GetMapping("/recommendation")
@@ -36,9 +38,9 @@ public class SpotifyController {
             })
     public MusicDto.Common.Song recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @Valid MusicDto.Recommendation.Request request) {
+            final @RequestParam List<GenreType> genres) {
 
-        return transferService.recommend(request, sessionUser);
+        return transferService.recommend(genres, sessionUser);
     }
 
     @GetMapping("/search")
@@ -49,8 +51,11 @@ public class SpotifyController {
             })
     public MusicDto.SearchResult search(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @Valid MusicDto.Search.Request request) {
-        return searchService.search(request);
+            final @RequestParam() String title,
+            final @RequestParam int limit,
+            final @RequestParam int offset,
+            final @RequestParam SearchType type) {
+        return searchService.search(title, limit, offset, type);
     }
 
 
@@ -62,7 +67,7 @@ public class SpotifyController {
             })
     public MusicDto.NowPlaying.Response getNowPlaying(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @Valid String albumId) {
+            final @RequestParam String albumId) {
         return driveService.getNowPlayingAlbum(albumId);
     }
 
