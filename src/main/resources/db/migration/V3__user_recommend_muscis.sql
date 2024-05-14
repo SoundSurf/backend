@@ -8,5 +8,6 @@ CREATE TABLE `user_recommendation_musics`
  `track_spotify_url` varchar(255) NULL,
  `track_duration_ms` int NULL,
  `artists_metadata` text NULL ,
+ `album_metadata` text NULL,
  `deleted` tinyint(1) NOT NULL DEFAULT '0',
 PRIMARY KEY (id));

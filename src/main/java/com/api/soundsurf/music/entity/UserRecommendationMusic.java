@@ -15,7 +15,7 @@ import se.michaelthelin.spotify.model_objects.specification.Track;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "user_recommendation_muscis")
+@Table(name = "user_recommendation_musics")
 public class UserRecommendationMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
