@@ -4,7 +4,7 @@ import com.api.soundsurf.iam.domain.car.CarTransferService;
 import com.api.soundsurf.iam.domain.userProfile.UserProfileTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserProfileDto;
-import com.api.soundsurf.music.domain.GenreTransferService;
+import com.api.soundsurf.music.domain.genre.GenreTransferService;
 import com.api.soundsurf.iam.dto.CarDto;
 import com.api.soundsurf.iam.dto.GenreDto;
 import io.swagger.v3.oas.annotations.Operation;
