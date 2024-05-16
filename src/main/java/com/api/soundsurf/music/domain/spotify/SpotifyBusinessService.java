@@ -23,18 +23,30 @@ public class SpotifyBusinessService {
 
     public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<GenreType> genres, final Long userId) {
         if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
-            final var recommendations = driveService.recommendation(genres);
-            publisher.publishEvent(new SaveRecommendationEvent(this,0L, recommendations, userId));
-            return new MusicDto.Common.Song(recommendations[0]);
+            return getRecommendationAndSave(genres, userId);
 
         } else if (prevRecommendedMusics.size() <= 3) {
-            final var lastOrder = prevRecommendedMusics.get(prevRecommendedMusics.size() - 1).getOrder();
-            final var nowRecommendedMusic = prevRecommendedMusics.get(0);
-            publisher.publishEvent(new GetRecommendationsAndSaveRecommendationEvent(this , genres, userId, lastOrder ));
-            userRecommendationMusicBusinessService.listenAndDelete(userId, nowRecommendedMusic.getId());
-            return new MusicDto.Common.Song(nowRecommendedMusic);
+            return returnAndGetRecommendationAndSave(prevRecommendedMusics, genres, userId);
         }
 
+        return returnFirstOrderRecommendation(prevRecommendedMusics, userId);
+    }
+
+    private MusicDto.Common.Song getRecommendationAndSave(final List<GenreType> genres, final Long userId) {
+        final var recommendations = driveService.recommendation(genres);
+        publisher.publishEvent(new SaveRecommendationEvent(this, 0L, recommendations, userId));
+        return new MusicDto.Common.Song(recommendations[0]);
+    }
+
+    private MusicDto.Common.Song returnAndGetRecommendationAndSave(final List<UserRecommendationMusic> prevRecommendedMusics, final List<GenreType> genres, final Long userId) {
+        final var lastOrder = prevRecommendedMusics.get(prevRecommendedMusics.size() - 1).getOrder();
+        final var nowRecommendedMusic = prevRecommendedMusics.get(0);
+        publisher.publishEvent(new GetRecommendationsAndSaveRecommendationEvent(this, genres, userId, lastOrder));
+        userRecommendationMusicBusinessService.listenAndDelete(userId, nowRecommendedMusic.getId());
+        return new MusicDto.Common.Song(nowRecommendedMusic);
+    }
+
+    private MusicDto.Common.Song returnFirstOrderRecommendation(final List<UserRecommendationMusic> prevRecommendedMusics, final Long userId) {
         userRecommendationMusicBusinessService.listenAndDelete(userId, prevRecommendedMusics.get(0).getId());
         return new MusicDto.Common.Song(prevRecommendedMusics.get(0));
     }
