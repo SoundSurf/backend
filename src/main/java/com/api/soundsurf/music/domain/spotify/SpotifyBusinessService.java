@@ -35,6 +35,7 @@ public class SpotifyBusinessService {
     private MusicDto.Common.Song getRecommendationAndSave(final List<GenreType> genres, final Long userId) {
         final var recommendations = driveService.recommendation(genres);
         publisher.publishEvent(new SaveRecommendationEvent(this, 0L, recommendations, userId));
+
         return new MusicDto.Common.Song(recommendations[0]);
     }
 
@@ -43,11 +44,13 @@ public class SpotifyBusinessService {
         final var nowRecommendedMusic = prevRecommendedMusics.get(0);
         publisher.publishEvent(new GetRecommendationsAndSaveRecommendationEvent(this, genres, userId, lastOrder));
         userRecommendationMusicBusinessService.listenAndDelete(userId, nowRecommendedMusic.getId());
+
         return new MusicDto.Common.Song(nowRecommendedMusic);
     }
 
     private MusicDto.Common.Song returnFirstOrderRecommendation(final List<UserRecommendationMusic> prevRecommendedMusics, final Long userId) {
         userRecommendationMusicBusinessService.listenAndDelete(userId, prevRecommendedMusics.get(0).getId());
+
         return new MusicDto.Common.Song(prevRecommendedMusics.get(0));
     }
 }
