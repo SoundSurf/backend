@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -39,5 +40,9 @@ public class SavedMusicService {
 
         Boolean isSaved = !Objects.isNull(savedMusic);
         return isSaved;
+    }
+
+    public List<SavedMusic> getSavedMusics(final Long userId) {
+        return savedMusicRepository.findAllByUserId(userId);
     }
 }

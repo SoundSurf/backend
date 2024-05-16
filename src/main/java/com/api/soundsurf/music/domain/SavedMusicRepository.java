@@ -6,10 +6,14 @@ import com.api.soundsurf.music.entity.Music;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SavedMusicRepository extends JpaRepository<SavedMusic, Long> {
     void deleteByUserAndMusic(User user, Music music);
 
     SavedMusic findByUserIdAndMusicId(Long userId, Long musicId);
+
+    List<SavedMusic> findAllByUserId(Long userId);
 
 }

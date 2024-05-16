@@ -7,6 +7,8 @@ import com.api.soundsurf.iam.dto.UserProfileDto;
 import com.api.soundsurf.music.domain.GenreTransferService;
 import com.api.soundsurf.iam.dto.CarDto;
 import com.api.soundsurf.iam.dto.GenreDto;
+import com.api.soundsurf.music.domain.SavedMusicTransferService;
+import com.api.soundsurf.music.dto.SavedMusicDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -26,6 +28,7 @@ public class ProfileController {
     private final CarTransferService carTransferService;
     private final GenreTransferService genreTransferService;
     private final UserProfileTransferService userProfileTransferService;
+    private final SavedMusicTransferService savedMusicTransferService;
 
     @GetMapping(value = "/cars/all")
     public CarDto.GetAll.Response getAllCars() {
@@ -85,5 +88,15 @@ public class ProfileController {
             })
     public UserProfileDto.Get.Response getImage(final @AuthenticationPrincipal SessionUser sessionUser) {
         return userProfileTransferService.get(sessionUser);
+    }
+
+    @GetMapping(value = "/saved-musics")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public SavedMusicDto.GetAll.Response getSavedMusics(final @AuthenticationPrincipal SessionUser sessionUser) {
+        return savedMusicTransferService.getSavedMusics(sessionUser);
     }
 }
