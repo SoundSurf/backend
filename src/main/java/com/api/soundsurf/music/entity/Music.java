@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class Music {
 
     @Column(nullable = true)
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
-    private LocalDateTime releasedDate;
+    private LocalDate releasedDate;
 
     @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MusicGenre> musicGenres = new ArrayList<>();
@@ -44,7 +44,7 @@ public class Music {
     @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavedMusic> savedMusics = new ArrayList<>();
 
-    public Music(final String title, final String artist, final String album, final String imageUrl, final LocalDateTime releasedDate) {
+    public Music(final String title, final String artist, final String album, final String imageUrl, final LocalDate releasedDate) {
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -52,7 +52,7 @@ public class Music {
         this.releasedDate = releasedDate;
     }
 
-    public static Music newInstance(final String title, final String artist, final String album, final String imageUrl, final LocalDateTime releasedDate) {
+    public static Music newInstance(final String title, final String artist, final String album, final String imageUrl, final LocalDate releasedDate) {
         return new Music(title, artist, album, imageUrl, releasedDate);
     }
 }

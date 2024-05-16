@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public class SavedMusicDto {
@@ -16,7 +16,7 @@ public class SavedMusicDto {
         private final String artist;
         private final String album;
         private final String imageUrl;
-        private final LocalDateTime releasedDate;
+        private final LocalDate releasedDate;
         public SavedMusic(com.api.soundsurf.list.entity.SavedMusic entitySavedMusic) {
             this.id = entitySavedMusic.getId();
             this.title = entitySavedMusic.getMusic().getTitle();
