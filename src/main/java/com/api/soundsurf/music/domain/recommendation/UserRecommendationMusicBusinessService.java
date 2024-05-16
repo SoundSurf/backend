@@ -13,6 +13,7 @@ import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Image;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -22,7 +23,15 @@ public class UserRecommendationMusicBusinessService {
     private final UserRecommendationMusicService service;
     private final CrawlerService crawlerService;
 
-    public void save(final Track[] data, final Long lastOrder, final Long userId) {
+    public void firstRecommendAndSave(final Track[] data, final Long lastOrder, final Long userId) {
+        final var recommendedMusics = save(data, lastOrder, userId);
+        listenAndDelete(userId, recommendedMusics.get(0).getId());
+    }
+
+
+    public ArrayList<UserRecommendationMusic> save(final Track[] data, final Long lastOrder, final Long userId) {
+        final var recommendMusics = new ArrayList<UserRecommendationMusic>();
+
         for (var i = 0; i < data.length; i++) {
 
             final var jsonMusicians = new JSONArray();
@@ -42,8 +51,10 @@ public class UserRecommendationMusicBusinessService {
             final var artistsMetadata = musicianJsonToString(jsonMusicians);
 
             final var music = new UserRecommendationMusic(data[i], lastOrder + i, userId, albumMetadata, artistsMetadata);
-            service.save(music);
+            recommendMusics.add(service.save(music));
         }
+
+        return recommendMusics;
     }
 
     public void listenAndDelete(final Long userId, final Long id) {
