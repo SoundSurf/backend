@@ -36,7 +36,7 @@ public class TrackController {
     public MusicDto.Track previous(
             final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam(required = false) Long logId) {
 
-        return spotifyTransferService.previous(sessionUser, logId);
+        return transferService.previous(sessionUser, logId);
     }
 
     @GetMapping("/following")
