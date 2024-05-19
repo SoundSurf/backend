@@ -5,16 +5,47 @@ import com.api.soundsurf.music.constant.SearchType;
 import com.api.soundsurf.music.domain.spotify.Utils;
 import com.api.soundsurf.music.entity.UserRecommendationMusic;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.json.JSONObject;
 import se.michaelthelin.spotify.model_objects.specification.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MusicDto {
+
+    public static class Play {
+        @Schema(name = "MusicDto.Play.Request")
+        public record Request(
+                @NotEmpty
+                String trackId
+        ) {
+        }
+    }
+
+    @Schema(name = "MusicDto.Track")
+    @Getter
+    @NoArgsConstructor
+    public static class Track {
+        private Common.Song song;
+        private boolean isFirst;
+        private boolean isLast;
+
+        public Track(final Common.Song song, final Long index, final int listSize) {
+            this.song = song;
+            this.isFirst = index == 1L;
+            this.isLast = index == listSize;
+        }
+
+        public Track(final Common.Song song, final AtomicReference<Long> atomicIndex, final int size) {
+            this(song, atomicIndex.get(), size);
+        }
+    }
 
     public static class Common {
         @Schema(name = "MusicDto.Common.Song")
@@ -41,7 +72,7 @@ public class MusicDto {
             }
 
 
-            public Song(Track track) {
+            public Song(se.michaelthelin.spotify.model_objects.specification.Track track) {
                 this(
                         track.getId(),
                         track.getName(),
