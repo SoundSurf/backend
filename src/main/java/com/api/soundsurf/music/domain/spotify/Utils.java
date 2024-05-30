@@ -36,6 +36,7 @@ public class Utils {
         String spotifyUrl = albumJson.getString("spotifyUrl");
         String genres = albumJson.isNull("genres") ? null : albumJson.getString("genres");
         String rating = albumJson.isNull("rating") ? null : albumJson.getString("rating");
+        String albumType = albumJson.getString("albumType");
 
         JSONArray artistsJson = albumJson.getJSONArray("artists");
         List<MusicDto.ArtistSimpleInfo.Musician> artists = new ArrayList<>();
@@ -53,6 +54,6 @@ public class Utils {
             images.add(imagesJson.getString(i));
         }
 
-        return new MusicDto.AlbumSimpleInfo.Info(albumName, id, releaseDate, spotifyUrl, genres, rating, artists, images);
+        return new MusicDto.AlbumSimpleInfo.Info(albumName, id, releaseDate, spotifyUrl, genres, rating, albumType, artists, images);
     }
 }

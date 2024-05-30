@@ -77,6 +77,7 @@ public class MusicDto {
                 String spotifyUrl,
                 String genres,
                 String rating,
+                String albumType,
                 List<ArtistSimpleInfo.Musician> artists,
                 List<String> images) {
             public Info(Album album, String genres, String rating) {
@@ -87,6 +88,7 @@ public class MusicDto {
                         album.getExternalUrls().getExternalUrls().get("spotify"),
                         genres,
                         rating,
+                        album.getAlbumType().getType(),
                         Arrays.stream(album.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(album.getImages()).map(Image::getUrl).toList());
             }
@@ -99,6 +101,7 @@ public class MusicDto {
                         album.getExternalUrls().getExternalUrls().get("spotify"),
                         genres,
                         rating,
+                        album.getAlbumType().getType(),
                         Arrays.stream(album.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(album.getImages()).map(Image::getUrl).toList());
             }
@@ -111,6 +114,7 @@ public class MusicDto {
                         albumSimplified.getExternalUrls().getExternalUrls().get("spotify"),
                         null,
                         null,
+                        albumSimplified.getAlbumType().getType(),
                         Arrays.stream(albumSimplified.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(albumSimplified.getImages()).map(Image::getUrl).toList());
             }
