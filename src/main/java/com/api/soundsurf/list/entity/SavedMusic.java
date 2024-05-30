@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -25,9 +27,13 @@ public class SavedMusic {
     @JoinColumn(name = "music_id")
     private Music music;
 
+    @Column(nullable = false)
+    private LocalDateTime savedAt;
+
     public SavedMusic(User user, Music music) {
         this.user = user;
         this.music = music;
+        this.savedAt = LocalDateTime.now();
     }
 
     public static SavedMusic newInstance(final User user,final Music music) {
