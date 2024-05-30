@@ -49,4 +49,8 @@ public class ExceptionCode {
         final public static String SPOTIFY_GENRE_ERROR = "장르 검색 중 오류가 발생했습니다.";
         final public static String SPOTIFY_SEED_EXCEPTION = "장르, 아티스트, 트랙 중 하나를 필수로 입력해주세요.";
     }
+
+    public static class MUSIC {
+        final public static String MUSIC_NOT_FOUND_EXCEPTION = "음악를 찾을 수 없습니다.";
+    }
 }
