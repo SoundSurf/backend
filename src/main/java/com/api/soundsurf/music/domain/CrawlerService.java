@@ -18,15 +18,9 @@ import java.io.IOException;
 @Slf4j
 public class CrawlerService {
 
-    private final static String RYM_SINGLE_URL = "http://rateyourmusic.com/release/single/";
+    private final static String RYM_SINGLE_URL = "http://rateyourmusic.com/release/album/";
 
     public String[] getAlbumGenresRating(final String title, final String artist) {
-        HttpGet request = new HttpGet(RYM_SINGLE_URL + artist + "/" + title + "/");
-
-        return getGenresRating(request);
-    }
-
-    public String[] getMusicGenresRating(final String title, final String artist) {
         HttpGet request = new HttpGet(RYM_SINGLE_URL + artist + "/" + title + "/");
 
         return getGenresRating(request);
