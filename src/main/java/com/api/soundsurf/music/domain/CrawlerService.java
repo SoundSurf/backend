@@ -21,7 +21,10 @@ public class CrawlerService {
     private final static String RYM_SINGLE_URL = "http://rateyourmusic.com/release/album/";
 
     public String[] getAlbumGenresRating(final String title, final String artist) {
-        HttpGet request = new HttpGet(RYM_SINGLE_URL + artist + "/" + title + "/");
+        String formattedTitle = formatRYM(title);
+        String formattedArtist = formatRYM(artist);
+
+        HttpGet request = new HttpGet(RYM_SINGLE_URL + formattedArtist + "/" + formattedTitle + "/");
 
         return getGenresRating(request);
     }
@@ -43,4 +46,10 @@ public class CrawlerService {
         }
     }
 
+    private String formatRYM(String input) {
+        if (input == null) {
+            return null;
+        }
+        return input.toLowerCase().replace(" ", "-");
+    }
 }
