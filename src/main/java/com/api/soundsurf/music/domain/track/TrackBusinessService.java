@@ -8,6 +8,7 @@ import com.api.soundsurf.music.domain.spotify.SpotifyBusinessService;
 import com.api.soundsurf.music.dto.MusicDto;
 import com.api.soundsurf.music.entity.UserTrackLog;
 import com.api.soundsurf.music.entity.UserTrackOrder;
+import com.api.soundsurf.music.exception.CanNotPlayPreviousTrackException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class TrackBusinessService {
 
     public UserTrackLog previous(final List<UserTrackLog> logs, final UserTrackOrder order) {
         if (logs.size() == 0) {
-            throw new ApiException("안돼 돌아가");
+            throw new CanNotPlayPreviousTrackException();
         }
 
         final var firstLog = logs.get(0);
