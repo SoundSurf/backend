@@ -18,3 +18,7 @@ CREATE TABLE `user_track_logs`
 );
 
 CREATE TABLE `user_track_orders` (`id` int NOT NULL AUTO_INCREMENT,`userId` bigint NOT NULL,`order` bigint NOT NULL,`first` tinyint(1) NOT NULL DEFAULT '0',`last` tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (id));
+
+ALTER TABLE `musics`
+    CHANGE `album` `album` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    CHANGE `artist` `artist` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
