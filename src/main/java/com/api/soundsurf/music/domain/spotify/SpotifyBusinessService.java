@@ -35,14 +35,7 @@ public class SpotifyBusinessService {
     public MusicDto.Common.Song find(final List<GenreType> genres, final Long userId) {
         final var prevRecommendedMusics = userRecommendationMusicService.get(userId);
 
-        if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
-            return getRecommendationAndSave(genres, userId);
-
-        } else if (prevRecommendedMusics.size() <= 3) {
-            return returnAndGetRecommendationAndSave(prevRecommendedMusics, genres, userId);
-        }
-
-        return returnFirstOrderRecommendation(prevRecommendedMusics, userId);
+        return find(prevRecommendedMusics, genres, userId);
     }
 
     public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final Long userId) {
