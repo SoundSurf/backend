@@ -32,13 +32,7 @@ public class UserTrackLog {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String artist;
-
-    @Column(nullable = true)
-    private String album;
-
-    @Column(nullable = false, name = "image_url")
+    @Column(nullable = true, name = "image_url")
     private String imageUrl;
 
     @Column(name = "track_preview_url", nullable = true)
@@ -50,10 +44,10 @@ public class UserTrackLog {
     @Column(name = "track_duration_ms", nullable = false)
     private Integer trackDurationMs;
 
-    @Column(name = "artists_metadata", nullable = false)
+    @Column(name = "artists_metadata", nullable = true)
     private String artistsMetadata;
 
-    @Column(name = "album_metadata", nullable = false)
+    @Column(name = "album_metadata", nullable = true)
     private String albumMetadata;
 
     @Column(nullable = true)
