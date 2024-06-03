@@ -75,8 +75,4 @@ public class UserTrackLog {
     public static UserTrackLog newInstance(final Long userId, final String trackId, final Long order) {
         return new UserTrackLog(userId, trackId, order);
     }
-
-    public void nowPlay() {
-        this.createdAt = LocalDateTime.now();
-    }
 }

@@ -17,20 +17,6 @@ import java.util.List;
 public class SpotifyTransferService {
     private final UserRecommendationMusicService userRecommendationMusicService;
     private final SpotifyBusinessService businessService;
-    private final UserTrackLogService userTrackLogService;
-
-    @Transactional
-    public MusicDto.Track playWithId(final SessionUser sessionUser, final MusicDto.Play.Request req) {
-        final var track = businessService.findTrack(req.trackId());
-        final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
-        final var logMap = businessService.createLogMap(allLogs);
-        final var nowPlayTrackLog = logMap.get(req.trackId());
-
-        userTrackLogService.playAndUpdate(nowPlayTrackLog.getLog());
-
-        final var song = new MusicDto.Common.Song(track);
-        return new MusicDto.Track(song, nowPlayTrackLog.getIndex(), logMap.size());
-    }
 
     @Transactional
     public MusicDto.Common.Song recommend(final List<Integer> genres, final SessionUser sessionUser) {

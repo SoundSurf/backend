@@ -19,14 +19,4 @@ public class UserTrackLogService {
     public UserTrackLog findPrev(final Long userId, final LocalDateTime deadLineTime) {
         return repository.findByUserIdAndCreatedAtBeforeOrderByCreatedAtDesc(userId, deadLineTime);
     }
-
-    public UserTrackLog findPrev(final Long id, final Long userId) {
-        return repository.findTopByUserIdAndIdBeforeOrderByIdDesc(userId, id);
-    }
-
-    public void playAndUpdate(final UserTrackLog nowPlayLog) {
-        nowPlayLog.nowPlay();
-
-        repository.save(nowPlayLog);
-    }
 }

@@ -11,5 +11,4 @@ import java.util.List;
 public interface UserTrackLogRepository extends JpaRepository<UserTrackLog, Long> {
     List<UserTrackLog> findAllByUserIdAndCreatedAtBeforeOrderByCreatedAtAsc(Long userId, LocalDateTime deadlineTime);
     UserTrackLog findByUserIdAndCreatedAtBeforeOrderByCreatedAtDesc(Long userId, LocalDateTime deadlineTime);
-    UserTrackLog findTopByUserIdAndIdBeforeOrderByIdDesc(Long userId, Long id);
 }

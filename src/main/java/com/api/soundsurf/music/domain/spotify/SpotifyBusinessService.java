@@ -48,17 +48,6 @@ public class SpotifyBusinessService {
         return returnFirstOrderRecommendation(prevRecommendedMusics, userId);
     }
 
-    public int findPrevLogIndexInAllLogs(List<UserTrackLog> allLogs, Long logId) {
-        var i = allLogs.size() - 1;
-        for (; i >= 0; i--) {
-            if (Objects.equals(allLogs.get(i).getId(), logId)) {
-                return i;
-            }
-        }
-
-        throw new ApiException("log list error");
-    }
-
     public Map<String, LogWithIndex> createLogMap(final List<UserTrackLog> allLogs) {
         final var logMap = new HashMap<String, LogWithIndex>();
         var cnt = new AtomicReference<Long>(1L);
@@ -72,23 +61,6 @@ public class SpotifyBusinessService {
 
     public Track findTrack(final String trackId) {
         return driveService.find(trackId);
-    }
-
-    public HashMap<Long, UserTrackLog> getPreviousLog(Long logId, List<UserTrackLog> allLogs) {
-        var find = false;
-        var cnt = 1L;
-        final var map = new HashMap<Long, UserTrackLog>();
-        for (var log : allLogs) {
-            if (find) {
-                map.put(cnt, log);
-            }
-            if (Objects.equals(log.getId(), logId)) {
-                find = true;
-                cnt++;
-            }
-        }
-
-        return map;
     }
 
     private MusicDto.Common.Song getRecommendationAndSave(final List<GenreType> genres, final Long userId) {
