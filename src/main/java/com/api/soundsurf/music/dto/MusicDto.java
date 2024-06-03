@@ -4,6 +4,7 @@ import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.constant.SearchType;
 import com.api.soundsurf.music.domain.spotify.Utils;
 import com.api.soundsurf.music.entity.UserRecommendationMusic;
+import com.api.soundsurf.music.entity.UserTrackLog;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -36,10 +37,10 @@ public class MusicDto {
         private boolean isFirst;
         private boolean isLast;
 
-        public Track(final Common.Song song, final Long index, final int listSize) {
+        public Track(final Common.Song song, final Long order, final Long maxOrder) {
             this.song = song;
-            this.isFirst = index == 1L;
-            this.isLast = index == listSize;
+            this.isFirst = order == 0L;
+            this.isLast = order.equals(maxOrder);
         }
 
         public Track(final Common.Song song, final AtomicReference<Long> atomicIndex, final int size) {
@@ -93,6 +94,18 @@ public class MusicDto {
                         track.getDurationMs(),
                         null,
                         Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
+                );
+            }
+
+            public Song(final UserTrackLog log) {
+                this(
+                        log.getTrackId(),
+                        log.getTitle(),
+                        log.getTrackPreviewUrl(),
+                        log.getTrackSpotifyUrl(),
+                        log.getTrackDurationMs(),
+                        Utils.convertJsonStringToAlbumDto(log.getAlbumMetadata()),
+                        Utils.convertJsonStringToMusicianDtoList(log.getArtistsMetadata())
                 );
             }
         }

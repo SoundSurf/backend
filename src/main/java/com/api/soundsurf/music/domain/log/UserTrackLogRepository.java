@@ -1,4 +1,4 @@
-package com.api.soundsurf.music.domain.track;
+package com.api.soundsurf.music.domain.log;
 
 import com.api.soundsurf.music.entity.UserTrackLog;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface UserTrackLogRepository extends JpaRepository<UserTrackLog, Long> {
-    List<UserTrackLog> findAllByUserIdAndCreatedAtBeforeOrderByCreatedAtDesc(Long userId, LocalDateTime deadlineTime);
+    List<UserTrackLog> findAllByUserIdAndCreatedAtBeforeOrderByCreatedAtAsc(Long userId, LocalDateTime deadlineTime);
     UserTrackLog findByUserIdAndCreatedAtBeforeOrderByCreatedAtDesc(Long userId, LocalDateTime deadlineTime);
     UserTrackLog findTopByUserIdAndIdBeforeOrderByIdDesc(Long userId, Long id);
 }

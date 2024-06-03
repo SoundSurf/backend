@@ -3,6 +3,7 @@ package com.api.soundsurf.music.domain.spotify;
 import com.api.soundsurf.api.exception.ApiException;
 import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicBusinessService;
+import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
 import com.api.soundsurf.music.dto.MusicDto;
 import com.api.soundsurf.music.entity.UserRecommendationMusic;
 import com.api.soundsurf.music.entity.UserTrackLog;
@@ -29,6 +30,20 @@ public class SpotifyBusinessService {
     @Autowired
     private ApplicationEventPublisher publisher;
     private final UserRecommendationMusicBusinessService userRecommendationMusicBusinessService;
+    private final UserRecommendationMusicService userRecommendationMusicService;
+
+    public MusicDto.Common.Song find(final List<GenreType> genres, final Long userId) {
+        final var prevRecommendedMusics = userRecommendationMusicService.get(userId);
+
+        if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
+            return getRecommendationAndSave(genres, userId);
+
+        } else if (prevRecommendedMusics.size() <= 3) {
+            return returnAndGetRecommendationAndSave(prevRecommendedMusics, genres, userId);
+        }
+
+        return returnFirstOrderRecommendation(prevRecommendedMusics, userId);
+    }
 
     public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final Long userId) {
         if (prevRecommendedMusics == null || prevRecommendedMusics.isEmpty()) {

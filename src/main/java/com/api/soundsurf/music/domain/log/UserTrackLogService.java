@@ -1,4 +1,4 @@
-package com.api.soundsurf.music.domain.track;
+package com.api.soundsurf.music.domain.log;
 
 import com.api.soundsurf.music.entity.UserTrackLog;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ public class UserTrackLogService {
     private final UserTrackLogRepository repository;
 
     public List<UserTrackLog> findAllPrev(final Long userId, final LocalDateTime deadLineTime) {
-        return repository.findAllByUserIdAndCreatedAtBeforeOrderByCreatedAtDesc(userId, deadLineTime);
+        return repository.findAllByUserIdAndCreatedAtBeforeOrderByCreatedAtAsc(userId, deadLineTime);
     }
 
     public UserTrackLog findPrev(final Long userId, final LocalDateTime deadLineTime) {

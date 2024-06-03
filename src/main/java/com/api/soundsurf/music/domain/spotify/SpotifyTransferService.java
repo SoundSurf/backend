@@ -3,7 +3,7 @@ package com.api.soundsurf.music.domain.spotify;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.exception.UserGenreCountException;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
-import com.api.soundsurf.music.domain.track.UserTrackLogService;
+import com.api.soundsurf.music.domain.log.UserTrackLogService;
 import com.api.soundsurf.music.dto.MusicDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

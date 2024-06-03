@@ -34,9 +34,9 @@ public class TrackController {
                             required = true, content = @Content(mediaType = "application/json"))
             })
     public MusicDto.Track previous(
-            final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam(required = false) Long logId) {
+            final @AuthenticationPrincipal SessionUser sessionUser) {
 
-        return transferService.previous(sessionUser, logId);
+        return transferService.previous(sessionUser);
     }
 
     @GetMapping("/following")
@@ -46,9 +46,9 @@ public class TrackController {
                             required = true, content = @Content(mediaType = "application/json"))
             })
     public MusicDto.Track following(
-            final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam(required = false) Long logId) {
+            final @AuthenticationPrincipal SessionUser sessionUser) {
 
-        return transferService.following(sessionUser, logId);
+        return transferService.following(sessionUser);
     }
 
 

@@ -5,6 +5,7 @@ import com.api.soundsurf.iam.QrProcessor;
 import com.api.soundsurf.iam.domain.SessionTokenService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
+import com.api.soundsurf.music.domain.log.UserTrackLogService;
 import com.api.soundsurf.music.domain.track.UserTrackLogService;
 import com.api.soundsurf.iam.entity.User;
 import jakarta.transaction.Transactional;
