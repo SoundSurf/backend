@@ -37,7 +37,7 @@ public class CrawlerService {
                 request = new HttpGet(RYM_ALBUM_URL + "various-artists/" + formattedTitle + "/");
                 return getGenresRating(request);
             } else {
-                throw e;
+                throw new ApiException("앨범 장르 및 평점 정보 가져오기 실패");
             }
         }
     }
