@@ -43,6 +43,18 @@ public class DriveService {
         return getTracks(joinedGenres);
     }
 
+    public MusicDto.NowPlaying.Response getNowPlayingAlbum(final String albumId) {
+        try {
+            final var album = api.getAlbum(albumId).build().execute();
+            final var artist = Arrays.stream(album.getArtists()).map(ArtistSimplified::getName).toArray(String[]::new);
+            final var title = Utils.searchAbleString(album.getName());
+            final var crawled = crawler.getAlbumGenresRating(title, artist);
+            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled));
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            throw new SpotifyNowPlayingException(e.getMessage());
+        }
+    }
+
     private Track[] getTracks(String joinedGenres) {
         try {
 
@@ -66,18 +78,5 @@ public class DriveService {
             throw new SpotifyRecommendationException(e.getMessage());
         }
     }
-
-    public MusicDto.NowPlaying.Response getNowPlayingAlbum(final String albumId) {
-        try {
-            final var album = api.getAlbum(albumId).build().execute();
-            final var artist = Arrays.stream(album.getArtists()).map(ArtistSimplified::getName).toArray(String[]::new);
-            final var title = Utils.searchAbleString(album.getName());
-            final var crawled = crawler.getAlbumGenresRating(title, artist);
-            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled));
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifyNowPlayingException(e.getMessage());
-        }
-    }
-
 
 }
