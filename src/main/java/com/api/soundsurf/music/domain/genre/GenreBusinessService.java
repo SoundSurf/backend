@@ -25,7 +25,11 @@ public class GenreBusinessService {
     public List<UserGenre> selectGenre(final Long userId, final GenreDto.Select.Request requestDto) {
         final User user = userService.findById(userId);
 
-        for (var genreId : requestDto.getIds()) {
+        return selectGenre(user, requestDto.getIds());
+    }
+
+    public List<UserGenre> selectGenre(final User user, final List<Long> ids) {
+        for (var genreId : ids) {
             Genre selectedGenre = genreService.findById(genreId);
             userGenreService.setUserGenre(user, selectedGenre);
         }

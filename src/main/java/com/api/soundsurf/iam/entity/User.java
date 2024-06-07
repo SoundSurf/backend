@@ -2,7 +2,6 @@ package com.api.soundsurf.iam.entity;
 
 import com.api.soundsurf.api.utils.LocalDateTimeUtcSerializer;
 import com.api.soundsurf.list.entity.SavedMusic;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
@@ -42,19 +41,14 @@ public class User implements Persistable<Long> {
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
+    @Column(name = "car_id", nullable = true)
+    private Long carId;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", nullable = false)
-    private UserProfile userProfile;
+    @Column(name = "image_S3_bucket_path", nullable = true)
+    private String imageS3BucketPath;
 
-    @JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "qr_id")
-    private Qr qr;
+    @Column(name = "qr_S3_bucket_path", nullable = true)
+    private String qrS3BucketPath;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserGenre> userGenres = new ArrayList<>();
@@ -75,11 +69,11 @@ public class User implements Persistable<Long> {
         return null == getId();
     }
 
-    public User(final String email, final String password, final Qr qr, final UserProfile userProfile, final Car car) {
+    public User(final String email, final String password, final String qrS3BucketPath, final String imageS3BucketPath, final Long carId) {
         this.email = email;
         this.password = password;
-        this.qr = qr;
-        this.userProfile = userProfile;
-        this.car = car;
+        this.qrS3BucketPath = qrS3BucketPath;
+        this.imageS3BucketPath = imageS3BucketPath;
+        this.carId = carId;
     }
 }

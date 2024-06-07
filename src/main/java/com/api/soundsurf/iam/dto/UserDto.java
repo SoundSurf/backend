@@ -54,15 +54,15 @@ public class UserDto {
             final String nickname;
             final Boolean newUser;
             final Long carId;
-            final Long profileId;
+            final String imageBucketPath;
 
-            public Response(final User user, final Long carId, final Long profileId) {
+            public Response(final User user, final Long carId, final String imageBucketPath) {
                 this.userId = user.getId();
                 this.userEmail = user.getEmail();
                 this.nickname = user.getNickname();
                 this.newUser = user.getNewUser();
                 this.carId = carId;
-                this.profileId = profileId;
+                this.imageBucketPath = imageBucketPath;
             }
         }
     }

@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface UserGenreRepository extends JpaRepository<UserGenre, Long> {
+    void deleteAllByUser(User user);
     List<UserGenre> findAllByUser(User user);
 
     boolean existsByUserAndGenre(User user, Genre genre);

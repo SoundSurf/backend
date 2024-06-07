@@ -13,6 +13,10 @@ import java.util.List;
 public class UserGenreService {
     private final UserGenreRepository userGenreRepository;
 
+    public void deleteAllUserGenres(final User user) {
+        userGenreRepository.deleteAllByUser(user);
+    }
+
     public UserGenre setUserGenre(final User user,final Genre genre) {
         return userGenreRepository.save(UserGenre.newInstance(user, genre));
     }

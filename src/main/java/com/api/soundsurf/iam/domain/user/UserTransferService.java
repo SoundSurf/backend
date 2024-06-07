@@ -2,11 +2,9 @@ package com.api.soundsurf.iam.domain.user;
 
 
 import com.api.soundsurf.iam.domain.SessionTokenService;
-import com.api.soundsurf.iam.domain.car.CarTransferService;
-import com.api.soundsurf.iam.domain.userProfile.UserProfileTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
-import com.api.soundsurf.iam.entity.User;
+import com.api.soundsurf.iam.dto.UserProfileDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,16 +13,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserTransferService {
     private final UserBusinessService businessService;
-    private final UserProfileTransferService userProfileTransferService;
-    private final CarTransferService carTransferService;
     private final SessionTokenService sessionTokenService;
 
     @Transactional
-    public UserDto.Create.Response create(final UserDto.Create.Request requestDto) {
-        final var defaultUserProfile = userProfileTransferService.getDefaultProfileImage();
-        final var defaultCar = carTransferService.getDefaultCar();
+    public void update(final SessionUser sessionUser, final UserProfileDto.Update.Request requestDto) {
+        businessService.update(sessionUser.getUserId(), requestDto.getCarId(), requestDto.getGenreIds(), requestDto.getNickname(), requestDto.getImageS3BucketPath());
+    }
 
-        final var userId = businessService.create(requestDto.getEmail(), requestDto.getPassword(),  defaultUserProfile, defaultCar);
+    public UserProfileDto.Qr.Response getQr(final SessionUser sessionUser) {
+        final var qrS3BucketPath = businessService.getQr(sessionUser.getUserId());
+
+        return new UserProfileDto.Qr.Response(qrS3BucketPath);
+    }
+
+    @Transactional
+    public UserDto.Create.Response create(final UserDto.Create.Request requestDto) {
+        final var userId = businessService.create(requestDto.getEmail(), requestDto.getPassword());
         final var sessionToken = sessionTokenService.create(userId);
 
         return new UserDto.Create.Response(sessionToken.getToken());
@@ -50,10 +54,10 @@ public class UserTransferService {
         final var userId = sessionUser.getUserId();
 
         final var userInfo = businessService.info(userId);
-        final var userCar = userInfo.getCar();
-        final var userProfile = userInfo.getUserProfile();
+        final var userCarId = userInfo.getCarId();
+        final var userProfile = userInfo.getImageS3BucketPath();
 
-        return new UserDto.Info.Response(userInfo, userCar.getId(), userProfile.getId());
+        return new UserDto.Info.Response(userInfo, userCarId,  userProfile);
     }
 
 }

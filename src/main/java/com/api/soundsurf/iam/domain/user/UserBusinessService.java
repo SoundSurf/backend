@@ -1,33 +1,35 @@
 package com.api.soundsurf.iam.domain.user;
 
-import com.api.soundsurf.iam.domain.qr.QrTransferService;
+import com.api.soundsurf.iam.domain.userGenre.UserGenreService;
 import com.api.soundsurf.iam.dto.UserDto;
-import com.api.soundsurf.iam.entity.Car;
 import com.api.soundsurf.iam.entity.User;
-import com.api.soundsurf.iam.entity.UserProfile;
 import com.api.soundsurf.iam.exception.NicknameDuplicateException;
 import com.api.soundsurf.iam.exception.PasswordConditionException;
 import com.api.soundsurf.iam.exception.PasswordNotMatchException;
+import com.api.soundsurf.music.domain.genre.GenreBusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class UserBusinessService {
     private final UserService service;
-    private final QrTransferService qrTransferService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final GenreBusinessService genreBusinessService;
+    private final UserGenreService userGenreService;
 
-    public Long create(final String email, final String password, final UserProfile defaultUserProfile, final Car defaultCar) {
+    private final String DEFAULT_IMAGE_S3_BUCKET_PATH = "https://soundsurf.s3.ap-northeast-2.amazonaws.com/default_profile_image.png";
+
+    public Long create(final String email, final String password) {
         validateCreate(email, password);
 
         final var encryptPassword = encryptPassword(password);
-        final var qr = qrTransferService.create(email);
 
-        final var newUser = new User(email, encryptPassword, qr, defaultUserProfile, defaultCar);
+        final var newUser = new User(email, encryptPassword, null, DEFAULT_IMAGE_S3_BUCKET_PATH, 1L);
 
         return service.create(newUser);
     }
@@ -42,29 +44,39 @@ public class UserBusinessService {
         return user;
     }
 
+    public void update(final Long userId, final Long updateCarId, final List<Long> updateGenreIds, final String updateNickname, final String updateImage) {
+        final var user = service.findById(userId);
+
+        if (updateCarId != null) {
+            user.setCarId(updateCarId);
+        }
+
+        if (updateGenreIds != null && updateGenreIds.size() > 0) {
+            userGenreService.deleteAllUserGenres(user);
+            genreBusinessService.selectGenre(user, updateGenreIds);
+        }
+
+        if (updateNickname != null) {
+            user.setNickname(updateNickname);
+        }
+
+        if(updateImage != null) {
+            user.setImageS3BucketPath(updateImage);
+        }
+
+        service.update(user);
+    }
+
+    public String getQr(final Long userId) {
+        final var user = service.findById(userId);
+        return user.getQrS3BucketPath();
+    }
+
+
     public User info(final Long id) {
         return service.findById(id);
     }
 
-    public void setCar(final Long id, final Car car) {
-        final var user = service.findById(id);
-        user.setCar(car);
-
-        service.update(user);
-    }
-
-    public Car getUserCar(final Long id) {
-        return service.findById(id).getCar();
-    }
-
-    public User getUser(final Long id) {
-        return service.findById(id);
-    }
-
-    public void updateProfileImage(final User user, final UserProfile newUserProfile) {
-        user.setUserProfile(newUserProfile);
-        service.update(user);
-    }
 
     private User findByEmail(final String email) {
         return service.findByEmail(email);

@@ -7,14 +7,6 @@ CREATE TABLE `session_tokens` (
                                   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `cars` (
-                        `id` bigint NOT NULL AUTO_INCREMENT,
-                        `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                        `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                        `image` blob NOT NULL,
-                        PRIMARY KEY (`id`)
-);
-
 CREATE TABLE `genres` (
                           `id` bigint NOT NULL AUTO_INCREMENT,
                           `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -43,20 +35,6 @@ CREATE TABLE `music_genres` (
                                 CONSTRAINT `FKt91jx9wrovjwi8op9crnqdish` FOREIGN KEY (`music_id`) REFERENCES `musics` (`id`)
 );
 
-CREATE TABLE `qrs` (
-                       `id` bigint NOT NULL AUTO_INCREMENT,
-                       `qr` blob NOT NULL,
-                       PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `user_profiles` (
-                                 `id` bigint NOT NULL AUTO_INCREMENT,
-                                 `image` blob NOT NULL,
-                                 PRIMARY KEY (`id`)
-);
-
-
-
 CREATE TABLE `users` (
                          `new_user` bit(1) NOT NULL,
                          `car_id` bigint NOT NULL,
@@ -67,13 +45,7 @@ CREATE TABLE `users` (
                          `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                          `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                          `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                         PRIMARY KEY (`id`),
-                         UNIQUE KEY `UK_569dovefoscirbt4o6qt29ml4` (`qr_id`),
-                         KEY `FKfrbpbk3ue6xhdoi0sj1inyuu` (`car_id`),
-                         KEY `FK53vd0kkkq53stcvl51np2j728` (`profile_id`),
-                         CONSTRAINT `FK53vd0kkkq53stcvl51np2j728` FOREIGN KEY (`profile_id`) REFERENCES `user_profiles` (`id`),
-                         CONSTRAINT `FKfrbpbk3ue6xhdoi0sj1inyuu` FOREIGN KEY (`car_id`) REFERENCES `cars` (`id`),
-                         CONSTRAINT `FKpspeer8lwddbkigff2nrx8vb` FOREIGN KEY (`qr_id`) REFERENCES `qrs` (`id`)
+                         PRIMARY KEY (`id`)
 );
 
 
