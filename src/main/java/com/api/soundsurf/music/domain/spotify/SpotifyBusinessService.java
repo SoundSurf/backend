@@ -1,7 +1,9 @@
 package com.api.soundsurf.music.domain.spotify;
 
-import com.api.soundsurf.api.exception.ApiException;
+import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.music.constant.GenreType;
+import com.api.soundsurf.music.domain.log.UserTrackLogService;
+import com.api.soundsurf.music.domain.log.UserTrackOrderService;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicBusinessService;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
 import com.api.soundsurf.music.dto.MusicDto;
@@ -20,7 +22,6 @@ import se.michaelthelin.spotify.model_objects.specification.Track;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -31,6 +32,8 @@ public class SpotifyBusinessService {
     private ApplicationEventPublisher publisher;
     private final UserRecommendationMusicBusinessService userRecommendationMusicBusinessService;
     private final UserRecommendationMusicService userRecommendationMusicService;
+    private final UserTrackLogService userTrackLogService;
+    private final UserTrackOrderService userTrackOrderService;
 
     public MusicDto.Common.Song find(final List<GenreType> genres, final Long userId) {
         final var prevRecommendedMusics = userRecommendationMusicService.get(userId);
@@ -48,13 +51,27 @@ public class SpotifyBusinessService {
         return returnFirstOrderRecommendation(prevRecommendedMusics, userId);
     }
 
-    public Map<String, LogWithIndex> createLogMap(final List<UserTrackLog> allLogs) {
+    public Map<String, LogWithIndex> createUserTrackLogMap(final List<UserTrackLog> allLogs, final User user, final  String nowPlayingTrackId) {
         final var logMap = new HashMap<String, LogWithIndex>();
         var cnt = new AtomicReference<Long>(1L);
         for (UserTrackLog log : allLogs) {
             logMap.put(log.getTrackId(), new LogWithIndex(log, cnt));
             cnt.set(cnt.get() + 1L);
         }
+
+        if (user.isFirstDrive()) {
+            user.setFirstDrive(false);
+            userTrackOrderService.createNew(user.getId());
+        } else if (allLogs.contains()) {
+            //todo : 새로운 track id 로 실행
+        }
+
+        else {
+            //todo : 기존 track id 로 실행
+            final var nowPlayTrackLog = logMap.get(nowPlayingTrackId);
+            userTrackLogService.playAndUpdate(nowPlayTrackLog.getLog());
+        }
+
 
         return logMap;
     }

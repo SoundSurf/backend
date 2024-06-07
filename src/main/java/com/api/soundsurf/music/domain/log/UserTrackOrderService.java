@@ -18,5 +18,12 @@ public class UserTrackOrderService {
         repository.save(order);
     }
 
+    public void createNew(final Long userId) {
+        final var newOrder = new UserTrackOrder(userId, 0L);
+        newOrder.firstOrder();
+
+        repository.save(newOrder);
+    }
+
 
 }

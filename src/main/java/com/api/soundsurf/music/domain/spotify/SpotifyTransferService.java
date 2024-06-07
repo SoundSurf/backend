@@ -1,6 +1,9 @@
 package com.api.soundsurf.music.domain.spotify;
 
+import com.api.soundsurf.iam.domain.user.UserBusinessService;
 import com.api.soundsurf.iam.dto.SessionUser;
+import com.api.soundsurf.music.constant.GenreType;
+import com.api.soundsurf.music.domain.log.UserTrackOrderService;
 import com.api.soundsurf.iam.exception.UserGenreCountException;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
 import com.api.soundsurf.music.domain.log.UserTrackLogService;
@@ -17,17 +20,18 @@ import java.util.List;
 public class SpotifyTransferService {
     private final UserRecommendationMusicService userRecommendationMusicService;
     private final SpotifyBusinessService businessService;
-
+    private final UserBusinessService userBusinessService;
     private final UserTrackLogService userTrackLogService;
 
     @Transactional
-    public MusicDto.Track playWithId(final SessionUser sessionUser, final MusicDto.Play.Request req) {
-        final var track = businessService.findTrack(req.trackId());
-        final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
-        final var logMap = businessService.createLogMap(allLogs);
-        final var nowPlayTrackLog = logMap.get(req.trackId());
 
-        userTrackLogService.playAndUpdate(nowPlayTrackLog.getLog());
+    public MusicDto.Track playWithId(final SessionUser sessionUser, final MusicDto.Play.Request req) {
+        final var user = userBusinessService.getUser(sessionUser.getUserId());
+        final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
+
+        final var track = businessService.findTrack(req.trackId());
+        final var logMap = businessService.createUserTrackLogMap(allLogs, user, req.trackId());
+//        final var nowPlayTrackLog = logMap.get(req.trackId());
 
         final var song = new MusicDto.Common.Song(track);
         return new MusicDto.Track(song, nowPlayTrackLog.getIndex(), logMap.size());
