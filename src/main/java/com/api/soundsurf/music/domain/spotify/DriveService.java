@@ -55,13 +55,13 @@ public class DriveService {
                     .getTracks();
 
             if (tracks == null || Arrays.stream(tracks).allMatch(track -> track.getPreviewUrl() == null)) {
-                return getTracks(joinedGenres); // 메서드 자신을 재귀적으로 호출
+                return getTracks(joinedGenres);
             }
 
             return Arrays.stream(tracks)
                     .filter(track -> track.getPreviewUrl() != null)
                     .toArray(Track[]::new);
-            
+
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyRecommendationException(e.getMessage());
         }
