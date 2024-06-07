@@ -66,6 +66,24 @@ public class MusicDto {
             }
         }
 
+        public record SongSimpleInfo(
+                String id,
+                String name,
+                String albumId,
+                List<ArtistSimpleInfo.Musician> artists,
+                List<String> images
+        ) {
+            public SongSimpleInfo(Track track) {
+                this(
+                        track.getId(),
+                        track.getName(),
+                        track.getAlbum().getId(),
+                        Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
+                        Arrays.stream(track.getAlbum().getImages()).map(Image::getUrl).toList()
+                );
+            }
+        }
+
     }
 
     public static class AlbumSimpleInfo {
@@ -246,6 +264,7 @@ public class MusicDto {
         @AllArgsConstructor
         public static class Response {
             private AlbumFullInfo.Info album;
+            private List<Common.SongSimpleInfo> relatedAlbums;
         }
     }
 }
