@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CrawlerService {
 
-    private final static String RYM_SINGLE_URL = "http://rateyourmusic.com/release/album/";
+    private final static String RYM_ALBUM_URL = "http://rateyourmusic.com/release/album/";
 
     public String[] getAlbumGenresRating(final String title, final String[] artists) {
         String formattedTitle = formatRYM(title);
@@ -28,13 +28,13 @@ public class CrawlerService {
                 .map(this::formatRYM)
                 .collect(Collectors.joining("-"));
 
-        HttpGet request = new HttpGet(RYM_SINGLE_URL + formattedArtist + "/" + formattedTitle + "/");
+        HttpGet request = new HttpGet(RYM_ALBUM_URL + formattedArtist + "/" + formattedTitle + "/");
 
         try {
             return getGenresRating(request);
         } catch (ApiException e) {
             if (artists.length > 1) {
-                request = new HttpGet(RYM_SINGLE_URL + "various-artists/" + formattedTitle + "/");
+                request = new HttpGet(RYM_ALBUM_URL + "various-artists/" + formattedTitle + "/");
                 return getGenresRating(request);
             } else {
                 throw e;
