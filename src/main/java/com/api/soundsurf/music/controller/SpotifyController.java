@@ -61,16 +61,16 @@ public class SpotifyController {
     }
 
 
-    @GetMapping("/now-playing")
+    @GetMapping("/album-info")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public MusicDto.NowPlaying.Response getNowPlaying(
+    public MusicDto.NowPlaying.Response getAlbumInfo(
             final @AuthenticationPrincipal SessionUser sessionUser,
             final @RequestParam String albumId) {
-        return driveService.getNowPlayingAlbum(albumId);
+        return driveService.getAlbumInfo(albumId);
     }
 
 
