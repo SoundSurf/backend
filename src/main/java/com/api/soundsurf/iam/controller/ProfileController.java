@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping(value = "/profile", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Slf4j
+@CrossOrigin("*")
 public class ProfileController {
     private final CarTransferService carTransferService;
     private final GenreTransferService genreTransferService;
