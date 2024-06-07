@@ -49,7 +49,7 @@ public class DriveService {
             final var artist = Arrays.stream(album.getArtists()).map(ArtistSimplified::getName).toArray(String[]::new);
             final var title = Utils.searchAbleString(album.getName());
             final var crawled = crawler.getAlbumGenresRating(title, artist);
-            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled));
+            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled), Arrays.stream(getRelatedAlbums(albumId, album.getArtists()[0].getId())).toList());
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyNowPlayingException(e.getMessage());
         }
@@ -78,5 +78,38 @@ public class DriveService {
             throw new SpotifyRecommendationException(e.getMessage());
         }
     }
+
+    private MusicDto.Common.SongSimpleInfo[] getRelatedAlbums(String trackId, String artistId) {
+        final var tracks = getTracks(trackId, artistId);
+
+
+        return Arrays.stream(tracks)
+                .map(MusicDto.Common.SongSimpleInfo::new)
+                .toArray(MusicDto.Common.SongSimpleInfo[]::new);
+    }
+
+    private Track[] getTracks(String trackId, String artistId) {
+        try {
+            final var tracks = api.getRecommendations()
+                    .seed_tracks(trackId)
+                    .seed_artists(artistId)
+                    .market(CountryCode.KR)
+                    .limit(12)
+                    .build()
+                    .execute()
+                    .getTracks();
+
+            if (tracks != null && Arrays.stream(tracks).noneMatch(track -> track == null || track.getPreviewUrl() == null)) {
+                return tracks;
+            }
+
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            throw new SpotifyRecommendationException(e.getMessage());
+        }
+
+
+        return getTracks(trackId, artistId);
+    }
+
 
 }
