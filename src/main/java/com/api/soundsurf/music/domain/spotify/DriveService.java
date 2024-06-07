@@ -43,7 +43,7 @@ public class DriveService {
         return getTracks(joinedGenres);
     }
 
-    public MusicDto.NowPlaying.Response getNowPlayingAlbum(final String albumId) {
+    public MusicDto.NowPlaying.Response getAlbumInfo(final String albumId) {
         try {
             final var album = api.getAlbum(albumId).build().execute();
             final var artist = Arrays.stream(album.getArtists()).map(ArtistSimplified::getName).toArray(String[]::new);
