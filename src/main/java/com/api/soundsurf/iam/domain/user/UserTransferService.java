@@ -1,6 +1,7 @@
 package com.api.soundsurf.iam.domain.user;
 
 
+import com.api.soundsurf.iam.QrProcessor;
 import com.api.soundsurf.iam.domain.SessionTokenService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserTransferService {
     private final UserBusinessService businessService;
     private final SessionTokenService sessionTokenService;
+    private final QrProcessor qrProcessor;
 
     @Transactional
     public void update(final SessionUser sessionUser, final UserProfileDto.Update.Request requestDto) {
@@ -28,7 +30,8 @@ public class UserTransferService {
 
     @Transactional
     public UserDto.Create.Response create(final UserDto.Create.Request requestDto) {
-        final var userId = businessService.create(requestDto.getEmail(), requestDto.getPassword());
+        final var qrS3BucketPath = qrProcessor.generateQrCode(requestDto.getEmail());
+        final var userId = businessService.create(requestDto.getEmail(), requestDto.getPassword(), qrS3BucketPath);
         final var sessionToken = sessionTokenService.create(userId);
 
         return new UserDto.Create.Response(sessionToken.getToken());

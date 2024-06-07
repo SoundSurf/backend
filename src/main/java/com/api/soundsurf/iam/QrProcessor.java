@@ -17,11 +17,13 @@ public class QrProcessor {
     // TODO: QR 코드 URL 정하기
     private final String baseUrl = "http://" + System.getenv("DB_HOST") + ":" + System.getenv("DB_PORT");
 
-    public byte[] generateQrCode(final String userEmail) {
+    public String generateQrCode(final String userEmail) {
         final var url = baseUrl + "/api/v1/qr/" + userEmail;
 
         try {
-            return generateQrCodeImage(url);
+            generateQrCodeImage(url);
+            return "";
+            //TODO : save in s3
         } catch (WriterException | IOException e) {
             throw new CannotCreateQRException(e.getMessage());
         }

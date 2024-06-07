@@ -24,12 +24,12 @@ public class UserBusinessService {
 
     private final String DEFAULT_IMAGE_S3_BUCKET_PATH = "https://soundsurf.s3.ap-northeast-2.amazonaws.com/default_profile_image.png";
 
-    public Long create(final String email, final String password) {
+    public Long create(final String email, final String password, final String qrS3BucketPath) {
         validateCreate(email, password);
 
         final var encryptPassword = encryptPassword(password);
 
-        final var newUser = new User(email, encryptPassword, null, DEFAULT_IMAGE_S3_BUCKET_PATH, 1L);
+        final var newUser = new User(email, encryptPassword, qrS3BucketPath, DEFAULT_IMAGE_S3_BUCKET_PATH, 1L);
 
         return service.create(newUser);
     }
