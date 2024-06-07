@@ -40,6 +40,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
+                .cors().disable()
                 .addFilterAfter(tokenFilter(), BasicAuthenticationFilter.class);
 //                .authorizeHttpRequests((requests) -> requests
 //                                .requestMatchers("/user/**").permitAll()
