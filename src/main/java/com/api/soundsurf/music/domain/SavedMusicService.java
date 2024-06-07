@@ -8,6 +8,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +43,15 @@ public class SavedMusicService {
 
         Boolean isSaved = !Objects.isNull(savedMusic);
         return isSaved;
+    }
+
+    @Transactional
+    public long getSavedMusicCount(final Long userId) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.atTime(LocalTime.MAX);
+
+        return savedMusicRepository.countSavedMusicsByUserAndDay(userId, startOfDay, endOfDay);
     }
 
     public List<SavedMusic> getSavedMusics(final Long userId) {
