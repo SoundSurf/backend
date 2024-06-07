@@ -60,7 +60,7 @@ public class UserDto {
                 this.userId = user.getId();
                 this.userEmail = user.getEmail();
                 this.nickname = user.getNickname();
-                this.newUser = user.getNewUser();
+                this.newUser = user.isNewUser();
                 this.carId = carId;
                 this.imageBucketPath = imageBucketPath;
             }

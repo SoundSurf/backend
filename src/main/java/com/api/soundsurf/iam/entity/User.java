@@ -35,7 +35,7 @@ public class User implements Persistable<Long> {
     private String nickname;
 
     @Column(name = "new_user", nullable = false)
-    private Boolean newUser = true;
+    private boolean newUser = true;
 
     @Column(name = "created_at", nullable = false)
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)

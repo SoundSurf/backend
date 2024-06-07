@@ -1,7 +1,7 @@
 CREATE TABLE `session_tokens` (
                                   `id` BIGINT NOT NULL AUTO_INCREMENT,
                                   `token` VARCHAR(36) NOT NULL,
-                                  `user_id` VARCHAR(36) NOT NULL,
+                                  `user_id` BIGINT NOT NULL,
                                   `created_at` DATETIME NOT NULL,
                                   `expired_at` DATETIME NOT NULL,
                                   PRIMARY KEY (`id`)
@@ -40,8 +40,8 @@ CREATE TABLE `users` (
                          `car_id` bigint NOT NULL,
                          `created_at` datetime(6) NOT NULL,
                          `id` bigint NOT NULL AUTO_INCREMENT,
-                         `imageS3BucketPath` varchar(255) NULL,
-                         `qrS3BucketPath` varchar(255) NULL,
+                         `image_s3_bucket_path` varchar(255) NULL,
+                         `qr_s3_bucket_path` varchar(255) NULL,
                          `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                          `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                          `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
