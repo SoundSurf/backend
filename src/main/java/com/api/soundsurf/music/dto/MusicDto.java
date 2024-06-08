@@ -264,7 +264,7 @@ public class MusicDto {
         @AllArgsConstructor
         public static class Response {
             private AlbumFullInfo.Info album;
-            private List<Common.SongSimpleInfo> relatedAlbums;
+            private List<Common.SongSimpleInfo> relatedSongs;
         }
     }
 }
