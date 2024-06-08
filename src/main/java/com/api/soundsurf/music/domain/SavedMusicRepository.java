@@ -2,7 +2,7 @@ package com.api.soundsurf.music.domain;
 
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.list.entity.SavedMusic;
-import com.api.soundsurf.music.entity.Music;
+import com.api.soundsurf.music.entity.UserRecommendationMusic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,9 +13,9 @@ import java.util.List;
 
 @Repository
 public interface SavedMusicRepository extends JpaRepository<SavedMusic, Long> {
-    void deleteByUserAndMusic(User user, Music music);
+    void deleteByUserAndUserRecommendationMusic(User user, UserRecommendationMusic userRecommendationMusic);
 
-    SavedMusic findByUserIdAndMusicId(Long userId, Long musicId);
+    SavedMusic findByUserIdAndUserRecommendationMusicId(Long userId, Long musicId);
 
     List<SavedMusic> findAllByUserId(Long userId);
 
