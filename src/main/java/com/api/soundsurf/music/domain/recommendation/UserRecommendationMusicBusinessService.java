@@ -42,7 +42,9 @@ public class UserRecommendationMusicBusinessService {
                 hydrateJsonMusicians(e, jsonMusicians);
             });
 
-            final var albumArtist = Utils.searchAbleString(album.artists().get(0).artistName());
+            final var albumArtist = Arrays.stream(album.artists().toArray()).map(
+                    e -> ((MusicDto.ArtistSimpleInfo.Musician) e).artistName()
+            ).toArray(String[]::new);
             final var albumTitle = Utils.searchAbleString(album.albumName());
             final var crawlResult = crawlerService.getAlbumGenresRating(albumTitle, albumArtist);
             final var albumGenre = crawlResult[0];
