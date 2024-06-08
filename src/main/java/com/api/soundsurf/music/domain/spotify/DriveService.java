@@ -16,6 +16,7 @@ import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ public class DriveService {
             final var artist = Arrays.stream(album.getArtists()).map(ArtistSimplified::getName).toArray(String[]::new);
             final var title = Utils.searchAbleString(album.getName());
             final var crawled = crawler.getAlbumGenresRating(title, artist);
-            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled), Arrays.stream(getRelatedAlbums(albumId, album.getArtists()[0].getId())).toList());
+            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled), Arrays.stream(getRelatedSongs(albumId, album.getArtists()[0].getId())).toList());
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyNowPlayingException(e.getMessage());
         }
@@ -57,17 +58,25 @@ public class DriveService {
 
     private Track[] getTracks(String joinedGenres) {
         try {
+            Track[] tracks = null;
+            long validPreviewCount = 0;
 
-            final var tracks = api.getRecommendations()
-                    .seed_genres(joinedGenres)
-                    .market(CountryCode.KR)
-                    .limit(3)
-                    .build()
-                    .execute()
-                    .getTracks();
+            while (validPreviewCount < 2) {
+                tracks = api.getRecommendations()
+                        .seed_genres(joinedGenres)
+                        .market(CountryCode.KR)
+                        .limit(3)
+                        .build()
+                        .execute()
+                        .getTracks();
 
-            if (tracks == null || Arrays.stream(tracks).allMatch(track -> track.getPreviewUrl() == null)) {
-                return getTracks(joinedGenres);
+                if (tracks == null) {
+                    continue;
+                }
+
+                validPreviewCount = Arrays.stream(tracks)
+                        .filter(track -> track.getPreviewUrl() != null)
+                        .count();
             }
 
             return Arrays.stream(tracks)
@@ -79,9 +88,8 @@ public class DriveService {
         }
     }
 
-    private MusicDto.Common.SongSimpleInfo[] getRelatedAlbums(String trackId, String artistId) {
+    private MusicDto.Common.SongSimpleInfo[] getRelatedSongs(String trackId, String artistId) {
         final var tracks = getTracks(trackId, artistId);
-
 
         return Arrays.stream(tracks)
                 .map(MusicDto.Common.SongSimpleInfo::new)
@@ -90,26 +98,42 @@ public class DriveService {
 
     private Track[] getTracks(String trackId, String artistId) {
         try {
-            final var tracks = api.getRecommendations()
-                    .seed_tracks(trackId)
-                    .seed_artists(artistId)
-                    .market(CountryCode.KR)
-                    .limit(12)
-                    .build()
-                    .execute()
-                    .getTracks();
+            List<Track> validTracks = new ArrayList<>();
+            int limit = 50;
 
-            if (tracks != null && Arrays.stream(tracks).noneMatch(track -> track == null || track.getPreviewUrl() == null)) {
-                return tracks;
+            while (true) {
+                Track[] tracks = api.getRecommendations()
+                        .seed_tracks(trackId)
+                        .seed_artists(artistId)
+                        .market(CountryCode.KR)
+                        .limit(limit)
+                        .build()
+                        .execute()
+                        .getTracks();
+
+                if (tracks == null) {
+                    continue;
+                }
+
+                List<Track> filteredTracks = Arrays.stream(tracks)
+                        .filter(track -> track.getPreviewUrl() != null)
+                        .toList();
+
+                validTracks.addAll(filteredTracks);
+
+                if (validTracks.size() >= 12) {
+                    break;
+                }
+
+                if (filteredTracks.size() < limit) {
+                    break;
+                }
             }
+
+            return validTracks.subList(0, 12).toArray(new Track[0]);
 
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyRecommendationException(e.getMessage());
         }
-
-
-        return getTracks(trackId, artistId);
     }
-
-
 }
