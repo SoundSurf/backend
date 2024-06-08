@@ -111,4 +111,14 @@ public class ProfileController {
     public void save(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
         savedMusicService.saveMusic(sessionUser.getUserId(), musicId);
     }
+
+    @DeleteMapping
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void unsave(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
+        savedMusicService.unsaveMusic(sessionUser.getUserId(), musicId);
+    }
 }
