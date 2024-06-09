@@ -1,5 +1,6 @@
 package com.api.soundsurf.iam.domain.user;
 
+import com.api.soundsurf.api.utils.S3ImageUploader;
 import com.api.soundsurf.iam.domain.userGenre.UserGenreService;
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.entity.User;
@@ -10,6 +11,7 @@ import com.api.soundsurf.music.domain.genre.GenreBusinessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -21,6 +23,7 @@ public class UserBusinessService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final GenreBusinessService genreBusinessService;
     private final UserGenreService userGenreService;
+    private final S3ImageUploader s3ImageUploader;
 
     private final String DEFAULT_IMAGE_S3_BUCKET_PATH = "https://soundsurf.s3.ap-northeast-2.amazonaws.com/default_profile_image.png";
 
@@ -44,24 +47,26 @@ public class UserBusinessService {
         return user;
     }
 
-    public void update(final Long userId, final Long updateCarId, final List<Long> updateGenreIds, final String updateNickname, final String updateImage) {
+    public void update(final Long userId, final Long updateCarId, final List<Long> updateGenreIds, final String updateNickname, final MultipartFile updateImage) {
         final var user = service.findById(userId);
 
         if (updateCarId != null) {
             user.setCarId(updateCarId);
         }
 
-        if (updateGenreIds != null && updateGenreIds.size() > 0) {
-            userGenreService.deleteAllUserGenres(user);
-            genreBusinessService.selectGenre(user, updateGenreIds);
-        }
+        // TODO: 장르 추가
+//        if (updateGenreIds != null && updateGenreIds.size() > 0) {
+//            userGenreService.deleteAllUserGenres(user);
+//            genreBusinessService.selectGenre(user, updateGenreIds);
+//        }
 
         if (updateNickname != null) {
             user.setNickname(updateNickname);
         }
 
         if(updateImage != null) {
-            user.setImageS3BucketPath(updateImage);
+            final var s3BucketPath = s3ImageUploader.uploadImage(updateImage, "profile");
+            user.setImageS3BucketPath(s3BucketPath.getS3ImagePath());
         }
 
         service.update(user);

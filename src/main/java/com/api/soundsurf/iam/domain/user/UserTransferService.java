@@ -10,6 +10,7 @@ import com.api.soundsurf.music.domain.log.UserTrackLogService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -22,8 +23,8 @@ public class UserTransferService {
     private final QrProcessor qrProcessor;
 
     @Transactional
-    public void update(final SessionUser sessionUser, final UserProfileDto.Update.Request requestDto) {
-        businessService.update(sessionUser.getUserId(), requestDto.getCarId(), requestDto.getGenreIds(), requestDto.getNickname(), requestDto.getImageS3BucketPath());
+    public void update(final SessionUser sessionUser, final UserProfileDto.Update.Request requestDto, final MultipartFile image) {
+        businessService.update(sessionUser.getUserId(), requestDto.getCarId(), requestDto.getGenreIds(), requestDto.getNickname(), image);
     }
 
     public UserProfileDto.Qr.Response getQr(final SessionUser sessionUser) {
@@ -49,8 +50,7 @@ public class UserTransferService {
 
         return new UserDto.Login.Response(sessionToken.getToken());
     }
-
-    @Transactional
+     @Transactional
     public UserDto.SetNickname.Response setNickname(final SessionUser sessionUser, final UserDto.SetNickname.Request requestDto) {
         String nickname = businessService.setNickname(sessionUser.getUserId(), requestDto.getNickname());
 
