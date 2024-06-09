@@ -91,24 +91,31 @@ public class TrackBusinessService {
 
         for (var log : logs) {
             if (Objects.equals(log.getOrder(), order.getOrder())) {
-                final var now = getNewTrack(user, user.getUserGenres(), false, false);
+                //무조건 실행됨
                 response.setPrevSong(new MusicDto.Common.Song(log));
-                response.setNowSong(now);
 
-                userTrackOrderService.setNewOrder(order, log.getOrder() + 1L);
                 break;
             }
         }
 
-        for (var log : logs) {
-            if (log.getOrder() >= order.getOrder() + 1L) {
-                response.setNextSong(new MusicDto.Common.Song(log));
-                return response;
-            }
+        userTrackOrderService.setNewOrder(order, order.getOrder() + 1L);
+        final var nowSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder());
+        MusicDto.Common.Song nowSong;
+        if (nowSongByPrevRecommendationLogs == null) {
+            nowSong = getNewTrack(user, user.getUserGenres(), true, false);
+        } else {
+            nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
         }
-        final var newSong = getNewTrack(user, user.getUserGenres(), true, false);
-        userTrackLogService.createNextSongLog(logs.get(logs.size() - 1).getOrder(), newSong, user);
-        response.setNextSong(newSong);
+        response.setNowSong(nowSong);
+
+        final var prevSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder()+1L);
+        MusicDto.Common.Song nextSong;
+        if (prevSongByPrevRecommendationLogs == null) {
+            nextSong = getNewTrack(user, user.getUserGenres(), true, false);
+        } else {
+            nextSong = new MusicDto.Common.Song(prevSongByPrevRecommendationLogs);
+        }
+        response.setNextSong(nextSong);
 
         return response;
     }
