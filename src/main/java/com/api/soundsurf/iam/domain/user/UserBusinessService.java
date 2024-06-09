@@ -73,7 +73,7 @@ public class UserBusinessService {
     }
 
 
-    public User info(final Long id) {
+    public User getUser(final Long id) {
         return service.findById(id);
     }
 

@@ -55,17 +55,15 @@ public class UserDto {
             final Boolean newUser;
             final Long carId;
             final String imageBucketPath;
-            final Long profileId;
             final String prevTrackId;
 
-            public Response(final User user, final Long carId, final String imageBucketPath, final Long profileId, final String prevTrackId) {
+            public Response(final User user, final Long carId, final String imageBucketPath, final String prevTrackId) {
                 this.userId = user.getId();
                 this.userEmail = user.getEmail();
                 this.nickname = user.getNickname();
                 this.newUser = user.isNewUser();
                 this.carId = carId;
                 this.imageBucketPath = imageBucketPath;
-                this.profileId = profileId;
                 this.prevTrackId = prevTrackId;
             }
         }

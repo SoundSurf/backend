@@ -23,6 +23,7 @@ public class TrackBusinessService {
 
     public UserTrackLog previous(final List<UserTrackLog> logs, final UserTrackOrder order) {
         if (logs.size() == 0) {
+            //recommend
             throw new CanNotPlayPreviousTrackException();
         }
 
