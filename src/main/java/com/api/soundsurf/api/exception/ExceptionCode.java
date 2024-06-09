@@ -54,4 +54,11 @@ public class ExceptionCode {
         final public static String MUSIC_NOT_FOUND_EXCEPTION = "음악를 찾을 수 없습니다.";
         final public static String CAN_NOT_PLAY_PREV_MUSIC_EXCEPTION = "이전 음악이 없습니다.";
     }
+
+    public static class S3{
+        final public static String CANNOT_UPLOAD_IMAGE_EXCEPTION = "이미지를 업로드할 수 없습니다.";
+        final public static String EMPTY_FILE_EXCEPTION = "파일이 비어있습니다.";
+        final public static String INVALID_FILE_EXTENSION_EXCEPTION = "잘못된 파일 확장자입니다.";
+        final public static String PUT_OBJECT_EXCEPTION = "S3에 파일을 업로드할 수 없습니다.";
+    }
 }
