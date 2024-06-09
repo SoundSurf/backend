@@ -40,9 +40,6 @@ public class MusicDto {
         private Common.Song nowSong;
         private Common.Song nextSong;
 
-        public Track(final Common.Song song, final AtomicReference<Long> atomicIndex, final int size) {
-            this(song, atomicIndex.get(), 0L);
-        }
     }
 
     public static class Common {
@@ -111,6 +108,7 @@ public class MusicDto {
                 String id,
                 String name,
                 String albumId,
+                String previewUrl,
                 List<ArtistSimpleInfo.Musician> artists,
                 List<String> images
         ) {
@@ -119,6 +117,7 @@ public class MusicDto {
                         track.getId(),
                         track.getName(),
                         track.getAlbum().getId(),
+                        track.getPreviewUrl(),
                         Arrays.stream((track.getArtists())).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(track.getAlbum().getImages()).map(Image::getUrl).toList()
                 );

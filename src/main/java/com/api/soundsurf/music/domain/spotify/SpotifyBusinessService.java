@@ -64,31 +64,6 @@ public class SpotifyBusinessService {
         return returnFirstOrderRecommendation(prevRecommendedMusics, user.getId());
     }
 
-    public Map<String, LogWithIndex> createUserTrackLogMap(final List<UserTrackLog> allLogs, final User user, final  String nowPlayingTrackId) {
-        final var logMap = new HashMap<String, LogWithIndex>();
-        var cnt = new AtomicReference<Long>(1L);
-        for (UserTrackLog log : allLogs) {
-            logMap.put(log.getTrackId(), new LogWithIndex(log, cnt));
-            cnt.set(cnt.get() + 1L);
-        }
-
-        if (user.isFirstDrive()) {
-            user.setFirstDrive(false);
-            userTrackOrderService.createNew(user.getId());
-        } else if (allLogs.contains()) {
-            //todo : 새로운 track id 로 실행
-        }
-
-        else {
-            //todo : 기존 track id 로 실행
-            final var nowPlayTrackLog = logMap.get(nowPlayingTrackId);
-            userTrackLogService.playAndUpdate(nowPlayTrackLog.getLog());
-        }
-
-
-        return logMap;
-    }
-
     public Track findTrack(final String trackId) {
         return driveService.find(trackId);
     }
@@ -113,12 +88,5 @@ public class SpotifyBusinessService {
         userRecommendationMusicBusinessService.listenAndDelete(userId, prevRecommendedMusics.get(0).getId());
 
         return new MusicDto.Common.Song(prevRecommendedMusics.get(0));
-    }
-
-    @Getter
-    @AllArgsConstructor
-    static class LogWithIndex {
-        private UserTrackLog log;
-        private AtomicReference<Long> index;
     }
 }

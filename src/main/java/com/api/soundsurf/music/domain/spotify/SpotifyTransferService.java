@@ -29,11 +29,9 @@ public class SpotifyTransferService {
         final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
 
         final var track = businessService.findTrack(req.trackId());
-        final var logMap = businessService.createUserTrackLogMap(allLogs, user, req.trackId());
-        final var nowPlayTrackLog = logMap.get(req.trackId());
 
-        final var song = new MusicDto.Common.Song(track);
-        return new MusicDto.Track(song, nowPlayTrackLog.getIndex(), logMap.size());
+        final var nowSong = new MusicDto.Common.Song(track);
+        return new MusicDto.Track(,nowSong,);
     }
 
     @Transactional
