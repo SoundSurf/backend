@@ -9,12 +9,14 @@ public class SaveRecommendationEvent extends ApplicationEvent {
     private final Track[] data;
     private final Long userId;
     private final Long lastOrder;
+    private final boolean isPrev;
 
-    public SaveRecommendationEvent(Object source, final Long lastOrder, final Track[] data, final Long userId) {
+    public SaveRecommendationEvent(Object source, final Long lastOrder, final Track[] data, final Long userId, final boolean isPrev) {
         super(source);
         this.lastOrder = lastOrder;
         this.data = data;
         this.userId = userId;
+        this.isPrev = isPrev;
     }
 
 }

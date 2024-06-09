@@ -38,6 +38,9 @@ public class User implements Persistable<Long> {
     @Column(name = "new_user", nullable = false)
     private boolean newUser = true;
 
+    @Column(name = "first_drive", nullable = false)
+    private boolean firstDrive = true;
+
     @Column(name = "created_at", nullable = false)
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDateTime createdAt;

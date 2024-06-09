@@ -13,7 +13,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -34,9 +38,9 @@ public class SpotifyController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public MusicDto.Common.Song recommendation(
+    public MusicDto.Track recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @RequestParam List<Integer> genres) {
+            final @RequestParam(required = false) List<Integer> genres) {
 
         return transferService.recommend(genres, sessionUser);
     }

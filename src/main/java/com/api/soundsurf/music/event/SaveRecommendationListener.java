@@ -14,6 +14,6 @@ public class SaveRecommendationListener {
     @EventListener
     @Async
     public void onApplicationEvent(SaveRecommendationEvent event) {
-        userRecommendationMusicBusinessService.firstRecommendAndSave(event.getData(), event.getLastOrder(), event.getUserId());
+        userRecommendationMusicBusinessService.firstRecommendAndSave(event.getData(), event.getLastOrder(), event.getUserId(), event.isPrev());
     }
 }

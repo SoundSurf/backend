@@ -52,5 +52,6 @@ public class ExceptionCode {
 
     public static class MUSIC {
         final public static String MUSIC_NOT_FOUND_EXCEPTION = "음악를 찾을 수 없습니다.";
+        final public static String CAN_NOT_PLAY_PREV_MUSIC_EXCEPTION = "이전 음악이 없습니다.";
     }
 }

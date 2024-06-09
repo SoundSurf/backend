@@ -4,17 +4,43 @@ import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.constant.SearchType;
 import com.api.soundsurf.music.domain.spotify.Utils;
 import com.api.soundsurf.music.entity.UserRecommendationMusic;
+import com.api.soundsurf.music.entity.UserTrackLog;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.json.JSONObject;
 import se.michaelthelin.spotify.model_objects.specification.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MusicDto {
+
+    public static class Play {
+        @Schema(name = "MusicDto.Play.Request")
+        public record Request(
+                @NotEmpty
+                String trackId
+        ) {
+        }
+    }
+
+    @Schema(name = "MusicDto.Track")
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Track {
+        private Common.Song prevSong;
+        private Common.Song nowSong;
+        private Common.Song nextSong;
+
+    }
 
     public static class Common {
         @Schema(name = "MusicDto.Common.Song")
@@ -41,7 +67,7 @@ public class MusicDto {
             }
 
 
-            public Song(Track track) {
+            public Song(se.michaelthelin.spotify.model_objects.specification.Track track) {
                 this(
                         track.getId(),
                         track.getName(),
@@ -64,24 +90,39 @@ public class MusicDto {
                         Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
                 );
             }
+
+            public Song(final UserTrackLog log) {
+                this(
+                        log.getTrackId(),
+                        log.getTitle(),
+                        log.getTrackPreviewUrl(),
+                        log.getTrackSpotifyUrl(),
+                        log.getTrackDurationMs(),
+                        Utils.convertJsonStringToAlbumDto(log.getAlbumMetadata()),
+                        Utils.convertJsonStringToMusicianDtoList(log.getArtistsMetadata())
+                );
+            }
         }
 
         public record SongSimpleInfo(
                 String id,
                 String name,
                 String albumId,
+                String previewUrl,
                 List<ArtistSimpleInfo.Musician> artists,
                 List<String> images
         ) {
-            public SongSimpleInfo(Track track) {
+            public SongSimpleInfo(se.michaelthelin.spotify.model_objects.specification.Track track) {
                 this(
                         track.getId(),
                         track.getName(),
                         track.getAlbum().getId(),
-                        Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
+                        track.getPreviewUrl(),
+                        Arrays.stream((track.getArtists())).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(track.getAlbum().getImages()).map(Image::getUrl).toList()
                 );
             }
+
         }
 
     }

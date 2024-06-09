@@ -7,13 +7,6 @@ CREATE TABLE `session_tokens` (
                                   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `genres` (
-                          `id` bigint NOT NULL AUTO_INCREMENT,
-                          `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-                          PRIMARY KEY (`id`)
-);
-
 CREATE TABLE `musics` (
                           `id` bigint NOT NULL AUTO_INCREMENT,
                           `released_date` datetime(6) DEFAULT NULL,
@@ -22,17 +15,6 @@ CREATE TABLE `musics` (
                           `image_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                           `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                           PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `music_genres` (
-                                `genre_id` bigint DEFAULT NULL,
-                                `id` bigint NOT NULL AUTO_INCREMENT,
-                                `music_id` bigint DEFAULT NULL,
-                                PRIMARY KEY (`id`),
-                                KEY `FKiiq4is3n9a9yh8hko5i51pqji` (`genre_id`),
-                                KEY `FKt91jx9wrovjwi8op9crnqdish` (`music_id`),
-                                CONSTRAINT `FKiiq4is3n9a9yh8hko5i51pqji` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`),
-                                CONSTRAINT `FKt91jx9wrovjwi8op9crnqdish` FOREIGN KEY (`music_id`) REFERENCES `musics` (`id`)
 );
 
 CREATE TABLE `users` (
@@ -54,6 +36,7 @@ CREATE TABLE `saved_musics` (
                                 `id` bigint NOT NULL AUTO_INCREMENT,
                                 `music_id` bigint DEFAULT NULL,
                                 `user_id` bigint DEFAULT NULL,
+                                `user_recommendation_music_id` bigint DEFAULT NULL,
                                 PRIMARY KEY (`id`),
                                 KEY `FKqljpftfcsas9avu9karm0ffwa` (`music_id`),
                                 KEY `FK20hr47cutwpwmdaiul3mxqkx8` (`user_id`),
@@ -68,7 +51,6 @@ CREATE TABLE `user_genres` (
                                PRIMARY KEY (`id`),
                                KEY `FKmr5v9qbtxpoa72t8acn72vu17` (`genre_id`),
                                KEY `FKp96ubmofdb42r46tugvvms8fv` (`user_id`),
-                               CONSTRAINT `FKmr5v9qbtxpoa72t8acn72vu17` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`),
                                CONSTRAINT `FKp96ubmofdb42r46tugvvms8fv` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 );
 

@@ -11,12 +11,15 @@ import java.util.List;
 public class UserRecommendationMusicService {
     private final UserRecommendationMusicRepository repository;
 
+    public UserRecommendationMusic getByOrder(final Long userId, final Long order) {
+        return repository.findByUserIdAndOrder(userId, order);
+    }
     public List<UserRecommendationMusic> get(final Long userId) {
-        return repository.findAllByUserIdAndDeletedIsFalseOrderByOrder(userId);
+        return repository.findAllByUserIdOrderByOrder(userId);
     }
 
     public UserRecommendationMusic get(final Long userId, final Long id) {
-        return repository.findByUserIdAndIdAndDeletedIsFalse(userId, id);
+        return repository.findByUserIdAndId(userId, id);
     }
 
     public UserRecommendationMusic save(final UserRecommendationMusic music) {

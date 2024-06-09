@@ -1,45 +1,47 @@
-package com.api.soundsurf.iam.controller;
+package com.api.soundsurf.music.controller;
 
-import com.api.soundsurf.iam.domain.user.UserTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
-import com.api.soundsurf.iam.dto.UserProfileDto;
+import com.api.soundsurf.music.domain.track.TrackTransferService;
+import com.api.soundsurf.music.dto.MusicDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/profile", produces = {MediaType.APPLICATION_JSON_VALUE})
-@Slf4j
-@CrossOrigin("*")
-public class ProfileController {
-    private final UserTransferService userTransferService;
+@RequestMapping(value = "/track")
+public class TrackController {
+    private final TrackTransferService transferService;
 
-    @PatchMapping(value = "")
+    @GetMapping("/previous")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void updateProfile(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody UserProfileDto.Update.Request request) {
-        userTransferService.update(sessionUser, request);
+    public MusicDto.Track previous(
+            final @AuthenticationPrincipal SessionUser sessionUser) {
+
+        return transferService.previous(sessionUser);
     }
 
-    @GetMapping(value = "/qr")
+    @GetMapping("/following")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public UserProfileDto.Qr.Response getQr(final @AuthenticationPrincipal SessionUser sessionUser) {
-        return userTransferService.getQr(sessionUser);
-    }
+    public MusicDto.Track following(
+            final @AuthenticationPrincipal SessionUser sessionUser) {
 
+        return transferService.following(sessionUser);
+    }
 }

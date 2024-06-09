@@ -6,15 +6,19 @@ import com.api.soundsurf.iam.domain.SessionTokenService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserDto;
 import com.api.soundsurf.iam.dto.UserProfileDto;
+import com.api.soundsurf.music.domain.log.UserTrackLogService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class UserTransferService {
     private final UserBusinessService businessService;
     private final SessionTokenService sessionTokenService;
+    private final UserTrackLogService userTrackLogService;
     private final QrProcessor qrProcessor;
 
     @Transactional
@@ -56,11 +60,13 @@ public class UserTransferService {
     public UserDto.Info.Response info(final SessionUser sessionUser) {
         final var userId = sessionUser.getUserId();
 
-        final var userInfo = businessService.info(userId);
+        final var userInfo = businessService.getUser(userId);
         final var userCarId = userInfo.getCarId();
         final var userProfile = userInfo.getImageS3BucketPath();
 
-        return new UserDto.Info.Response(userInfo, userCarId,  userProfile);
+        final var prevTrack = userTrackLogService.findPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
+
+        return new UserDto.Info.Response(userInfo, userCarId, userProfile, prevTrack == null ? null : prevTrack.getTrackId());
     }
 
 }
