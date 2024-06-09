@@ -41,7 +41,7 @@ public class DriveService {
         final var genreStrings = genres.stream().map(GenreType::getValue).collect(Collectors.toList());
         final var joinedGenres = String.join(",", genreStrings);
 
-        return getTracks(joinedGenres);
+        return getTracksByGenres(joinedGenres);
     }
 
     public MusicDto.NowPlaying.Response getAlbumInfo(final String albumId) {
@@ -56,58 +56,32 @@ public class DriveService {
         }
     }
 
-    private Track[] getTracks(String joinedGenres) {
-        try {
-            Track[] tracks = null;
-            long validPreviewCount = 0;
-
-            while (validPreviewCount < 2) {
-                tracks = api.getRecommendations()
-                        .seed_genres(joinedGenres)
-                        .market(CountryCode.KR)
-                        .limit(3)
-                        .build()
-                        .execute()
-                        .getTracks();
-
-                if (tracks == null) {
-                    continue;
-                }
-
-                validPreviewCount = Arrays.stream(tracks)
-                        .filter(track -> track.getPreviewUrl() != null)
-                        .count();
-            }
-
-            return Arrays.stream(tracks)
-                    .filter(track -> track.getPreviewUrl() != null)
-                    .toArray(Track[]::new);
-
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            throw new SpotifyRecommendationException(e.getMessage());
-        }
-    }
-
     private MusicDto.Common.SongSimpleInfo[] getRelatedSongs(String trackId, String artistId) {
-        final var tracks = getTracks(trackId, artistId);
+        final var tracks = getTracksByTrackAndArtist(trackId, artistId);
 
         return Arrays.stream(tracks)
                 .map(MusicDto.Common.SongSimpleInfo::new)
                 .toArray(MusicDto.Common.SongSimpleInfo[]::new);
     }
 
-    private Track[] getTracks(String trackId, String artistId) {
+    private Track[] getTracks(String seed, boolean isGenre, String secondarySeed) {
         try {
             List<Track> validTracks = new ArrayList<>();
             int limit = 50;
+            int targetSize = isGenre ? 3 : 12;
 
             while (true) {
-                Track[] tracks = api.getRecommendations()
-                        .seed_tracks(trackId)
-                        .seed_artists(artistId)
+                var recommendationRequest = api.getRecommendations()
                         .market(CountryCode.KR)
-                        .limit(limit)
-                        .build()
+                        .limit(limit);
+
+                if (isGenre) {
+                    recommendationRequest.seed_genres(seed);
+                } else {
+                    recommendationRequest.seed_tracks(seed).seed_artists(secondarySeed);
+                }
+
+                Track[] tracks = recommendationRequest.build()
                         .execute()
                         .getTracks();
 
@@ -121,7 +95,7 @@ public class DriveService {
 
                 validTracks.addAll(filteredTracks);
 
-                if (validTracks.size() >= 12) {
+                if (validTracks.size() >= targetSize) {
                     break;
                 }
 
@@ -130,10 +104,19 @@ public class DriveService {
                 }
             }
 
-            return validTracks.subList(0, 12).toArray(new Track[0]);
+            return validTracks.subList(0, targetSize).toArray(new Track[0]);
 
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyRecommendationException(e.getMessage());
         }
     }
+
+    private Track[] getTracksByGenres(String joinedGenres) {
+        return getTracks(joinedGenres, true, null);
+    }
+
+    private Track[] getTracksByTrackAndArtist(String trackId, String artistId) {
+        return getTracks(trackId, false, artistId);
+    }
+
 }
