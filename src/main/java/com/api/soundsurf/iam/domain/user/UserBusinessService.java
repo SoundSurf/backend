@@ -64,7 +64,7 @@ public class UserBusinessService {
             user.setNickname(updateNickname);
         }
 
-        if(updateImage != null) {
+        if(!updateImage.isEmpty()) {
             final var s3BucketPath = s3ImageUploader.uploadImage(updateImage, "profile");
             user.setImageS3BucketPath(s3BucketPath.getS3ImagePath());
         }
