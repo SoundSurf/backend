@@ -1,16 +1,14 @@
 package com.api.soundsurf.music.entity;
 
-import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
-import com.api.soundsurf.music.domain.spotify.Utils;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.api.soundsurf.list.entity.SavedMusic;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import se.michaelthelin.spotify.model_objects.specification.Track;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -50,6 +48,10 @@ public class UserRecommendationMusic {
 
     @Column(nullable = false)
     private boolean deleted;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "userRecommendationMusic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavedMusic> savedMusics = new ArrayList<>();
 
     public UserRecommendationMusic(final Track track, final Long order, final Long userId, final String albumMetadata, final String artistsMetadata) {
         this.userId = userId;

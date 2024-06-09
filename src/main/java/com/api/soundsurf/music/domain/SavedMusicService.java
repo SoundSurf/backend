@@ -3,6 +3,7 @@ package com.api.soundsurf.music.domain;
 import com.api.soundsurf.iam.domain.user.UserRepository;
 import com.api.soundsurf.iam.exception.UserNotFoundException;
 import com.api.soundsurf.list.entity.SavedMusic;
+import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicRepository;
 import com.api.soundsurf.music.exception.MusicNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,13 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class SavedMusicService {
     private final UserRepository userRepository;
-    private final MusicRepository musicRepository;
+    private final UserRecommendationMusicRepository userRecommendationMusicRepository;
     private final SavedMusicRepository savedMusicRepository;
 
     @Transactional
     public void saveMusic(final Long userId, final Long musicId) {
         final var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        final var music = musicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
+        final var music = userRecommendationMusicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
 
         savedMusicRepository.save(SavedMusic.newInstance(user, music));
     }
@@ -32,14 +33,14 @@ public class SavedMusicService {
     @Transactional
     public void unsaveMusic(final Long userId, final Long musicId) {
         final var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        final var music = musicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
+        final var music = userRecommendationMusicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
 
-        savedMusicRepository.deleteByUserAndMusic(user, music);
+        savedMusicRepository.deleteByUserAndUserRecommendationMusic(user, music);
     }
 
     @Transactional
     public Boolean isSavedMusic(final Long userId, final Long musicId) {
-        SavedMusic savedMusic = savedMusicRepository.findByUserIdAndMusicId(userId, musicId);
+        SavedMusic savedMusic = savedMusicRepository.findByUserIdAndUserRecommendationMusicId(userId, musicId);
 
         Boolean isSaved = !Objects.isNull(savedMusic);
         return isSaved;

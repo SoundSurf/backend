@@ -15,15 +15,13 @@ public class SavedMusicDto {
         private final String title;
         private final String artist;
         private final String album;
-        private final String imageUrl;
-        private final LocalDate releasedDate;
+        private final String trackId;
         public SavedMusic(com.api.soundsurf.list.entity.SavedMusic entitySavedMusic) {
             this.id = entitySavedMusic.getId();
-            this.title = entitySavedMusic.getMusic().getTitle();
-            this.artist = entitySavedMusic.getMusic().getArtist();
-            this.album = entitySavedMusic.getMusic().getAlbum();
-            this.imageUrl = entitySavedMusic.getMusic().getImageUrl();
-            this.releasedDate = entitySavedMusic.getMusic().getReleasedDate();
+            this.title = entitySavedMusic.getUserRecommendationMusic().getTrackName();
+            this.artist = entitySavedMusic.getUserRecommendationMusic().getArtistsMetadata();
+            this.album = entitySavedMusic.getUserRecommendationMusic().getAlbumMetadata();
+            this.trackId = entitySavedMusic.getUserRecommendationMusic().getTrackId();
         }
     }
 

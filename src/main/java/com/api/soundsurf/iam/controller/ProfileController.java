@@ -4,6 +4,7 @@ import com.api.soundsurf.iam.domain.car.CarTransferService;
 import com.api.soundsurf.iam.domain.userProfile.UserProfileTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserProfileDto;
+import com.api.soundsurf.music.domain.SavedMusicService;
 import com.api.soundsurf.music.domain.genre.GenreTransferService;
 import com.api.soundsurf.iam.dto.CarDto;
 import com.api.soundsurf.iam.dto.GenreDto;
@@ -29,6 +30,7 @@ public class ProfileController {
     private final GenreTransferService genreTransferService;
     private final UserProfileTransferService userProfileTransferService;
     private final SavedMusicTransferService savedMusicTransferService;
+    private final SavedMusicService savedMusicService;
 
     @GetMapping(value = "/cars/all")
     public CarDto.GetAll.Response getAllCars() {
@@ -98,5 +100,25 @@ public class ProfileController {
             })
     public SavedMusicDto.GetAll.Response getSavedMusics(final @AuthenticationPrincipal SessionUser sessionUser) {
         return savedMusicTransferService.getSavedMusics(sessionUser);
+    }
+
+    @PostMapping(value = "/music/save")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void save(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
+        savedMusicService.saveMusic(sessionUser.getUserId(), musicId);
+    }
+
+    @DeleteMapping(value = "/music/unsave")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void unsave(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
+        savedMusicService.unsaveMusic(sessionUser.getUserId(), musicId);
     }
 }

@@ -2,7 +2,7 @@ package com.api.soundsurf.list.entity;
 
 import com.api.soundsurf.api.utils.LocalDateTimeUtcSerializer;
 import com.api.soundsurf.iam.entity.User;
-import com.api.soundsurf.music.entity.Music;
+import com.api.soundsurf.music.entity.UserRecommendationMusic;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
@@ -26,8 +26,8 @@ public class SavedMusic {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "music_id")
-    private Music music;
+    @JoinColumn(name = "user_recommendation_music_id")
+    private UserRecommendationMusic userRecommendationMusic;
 
     @Column(name = "saved_at", nullable = false)
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
@@ -40,13 +40,13 @@ public class SavedMusic {
         }
     }
 
-    public SavedMusic(User user, Music music) {
+    public SavedMusic(User user, UserRecommendationMusic userRecommendationMusic) {
         this.user = user;
-        this.music = music;
+        this.userRecommendationMusic = userRecommendationMusic;
         this.savedAt = LocalDateTime.now();
     }
 
-    public static SavedMusic newInstance(final User user,final Music music) {
-        return new SavedMusic(user, music);
+    public static SavedMusic newInstance(final User user, final UserRecommendationMusic userRecommendationMusic) {
+        return new SavedMusic(user, userRecommendationMusic);
     }
 }
