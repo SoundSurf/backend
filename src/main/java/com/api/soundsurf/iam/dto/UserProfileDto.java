@@ -26,7 +26,6 @@ public class UserProfileDto {
             private Long carId;
             @Size(min = 1, max = 3)
             private List<Long> genreIds;
-//            private MultipartFile image;
             @Length(max=20)
             private String nickname;
         }
