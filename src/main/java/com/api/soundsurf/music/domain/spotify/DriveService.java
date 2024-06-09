@@ -1,8 +1,8 @@
 package com.api.soundsurf.music.domain.spotify;
 
+import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.domain.CrawlerService;
 import com.api.soundsurf.music.dto.MusicDto;
-import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.exception.SpotifyNowPlayingException;
 import com.api.soundsurf.music.exception.SpotifyRecommendationException;
 import com.neovisionaries.i18n.CountryCode;
@@ -11,9 +11,11 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +55,7 @@ public class DriveService {
     public MusicDto.NowPlaying.Response getNowPlayingAlbum(final String albumId) {
         try {
             final var album = api.getAlbum(albumId).build().execute();
-            final var artist = Utils.searchAbleString(album.getArtists()[0].getName());
+            final var artist = Arrays.stream(album.getArtists()).map(ArtistSimplified::getName).toArray(String[]::new);
             final var title = Utils.searchAbleString(album.getName());
             final var crawled = crawler.getAlbumGenresRating(title, artist);
             return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled));

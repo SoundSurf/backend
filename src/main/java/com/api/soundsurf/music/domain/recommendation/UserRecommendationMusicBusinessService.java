@@ -36,13 +36,15 @@ public class UserRecommendationMusicBusinessService {
 
             final var jsonMusicians = new JSONArray();
 
-           final var album = convertIntoAlbumDto(data[i].getAlbum());
+            final var album = convertIntoAlbumDto(data[i].getAlbum());
 
             Arrays.stream(data[i].getArtists()).forEach(e -> {
                 hydrateJsonMusicians(e, jsonMusicians);
             });
 
-            final var albumArtist = Utils.searchAbleString(album.artists().get(0).artistName());
+            final var albumArtist = Arrays.stream(album.artists().toArray()).map(
+                    e -> ((MusicDto.ArtistSimpleInfo.Musician) e).artistName()
+            ).toArray(String[]::new);
             final var albumTitle = Utils.searchAbleString(album.albumName());
             final var crawlResult = crawlerService.getAlbumGenresRating(albumTitle, albumArtist);
             final var albumGenre = crawlResult[0];
@@ -67,7 +69,7 @@ public class UserRecommendationMusicBusinessService {
     private MusicDto.AlbumSimpleInfo.Info convertIntoAlbumDto(final AlbumSimplified album) {
         final var albumArtists = Arrays.stream(album.getArtists()).map(MusicDto.ArtistSimpleInfo.Musician::new).toList();
         final var albumImages = Arrays.stream(album.getImages()).map(Image::getUrl).toList();
-        return new MusicDto.AlbumSimpleInfo.Info(album.getName(), album.getId(), album.getReleaseDate(), album.getHref(), null, null, albumArtists, albumImages);
+        return new MusicDto.AlbumSimpleInfo.Info(album.getName(), album.getId(), album.getReleaseDate(), album.getHref(), null, null, album.getAlbumType().getType(), albumArtists, albumImages);
     }
 
     private void hydrateJsonMusicians(final ArtistSimplified musician, final JSONArray jsonMusicians) {
@@ -79,14 +81,15 @@ public class UserRecommendationMusicBusinessService {
         jsonMusicians.put(jsonMusician);
     }
 
-    private String albumDtoToString(final  MusicDto.AlbumSimpleInfo.Info album, final String genre, final String rating) {
+    private String albumDtoToString(final MusicDto.AlbumSimpleInfo.Info album, final String genre, final String rating) {
         JSONObject albumJson = new JSONObject();
         albumJson.put("albumName", album.albumName());
         albumJson.put("id", album.id());
         albumJson.put("releaseDate", album.releaseDate());
         albumJson.put("spotifyUrl", album.spotifyUrl());
+        albumJson.put("albumType", album.albumType());
         albumJson.put("genres", genre);
-        albumJson.put("rating",rating);
+        albumJson.put("rating", rating);
 
         JSONArray artistsJson = new JSONArray();
         for (MusicDto.ArtistSimpleInfo.Musician artist : album.artists()) {
