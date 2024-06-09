@@ -19,8 +19,8 @@ public class UserRecommendationMusicService {
         return repository.findByUserIdAndIdAndDeletedIsFalse(userId, id);
     }
 
-    public void save(final UserRecommendationMusic music) {
-        repository.save(music);
+    public UserRecommendationMusic save(final UserRecommendationMusic music) {
+        return repository.save(music);
     }
 
 
