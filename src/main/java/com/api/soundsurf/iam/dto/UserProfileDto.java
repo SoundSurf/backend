@@ -1,7 +1,6 @@
 package com.api.soundsurf.iam.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +26,7 @@ public class UserProfileDto {
             private Long carId;
             @Size(min = 1, max = 3)
             private List<Long> genreIds;
-            private String imageS3BucketPath;
+//            private MultipartFile image;
             @Length(max=20)
             private String nickname;
         }
@@ -37,7 +36,9 @@ public class UserProfileDto {
         @Schema(name= "ProfileDto.Get.Response")
         @AllArgsConstructor
         public static class Response {
-            private String imageStr;
+            private String s3ImagePath;
         }
     }
+
+
 }

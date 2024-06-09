@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +29,10 @@ public class ProfileController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void updateProfile(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody UserProfileDto.Update.Request request) {
-        userTransferService.update(sessionUser, request);
+    public void updateProfile(final @AuthenticationPrincipal SessionUser sessionUser,
+                              final @Valid @RequestPart(value = "request") UserProfileDto.Update.Request request,
+                              final @Valid @RequestPart(value = "image", required = false) MultipartFile image) {
+        userTransferService.update(sessionUser, request, image);
     }
 
     @GetMapping(value = "/qr")
