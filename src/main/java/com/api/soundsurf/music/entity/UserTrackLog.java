@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -65,15 +66,20 @@ public class UserTrackLog {
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDateTime expiredAt;
 
-    public UserTrackLog(final Long userId, final String trackId, final Long order) {
+    public UserTrackLog(final Long userId, final String trackId, final Long order, final String name, final List<String> images, final String previewUrl, final String spotifyUrl, final Integer durationMs, final String artistsMetadata,final String albumMetadata, final String releaseDate) {
         this.userId = userId;
         this.trackId = trackId;
         this.order = order;
+        this.title = name;
+        this.imageUrl = images.get(0);
+        this.trackPreviewUrl = previewUrl;
+        this.trackSpotifyUrl = spotifyUrl;
+        this.trackDurationMs = durationMs;
+        this.artistsMetadata = artistsMetadata;
+        this.albumMetadata = albumMetadata;
+        this.releasedDate = LocalDate.parse(releaseDate);
         this.createdAt = LocalDateTime.now();
-    }
-
-    public static UserTrackLog newInstance(final Long userId, final String trackId, final Long order) {
-        return new UserTrackLog(userId, trackId, order);
+        this.expiredAt = LocalDateTime.now().plusYears(100);
     }
 
     public void nowPlay() {

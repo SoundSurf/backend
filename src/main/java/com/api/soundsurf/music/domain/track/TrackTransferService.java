@@ -25,11 +25,9 @@ public class TrackTransferService {
     public MusicDto.Track previous(final SessionUser sessionUser) {
         final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
         final var userTrackOrder = userTrackOrderService.find(sessionUser.getUserId());
+        final var user = userService.findById(sessionUser.getUserId());
 
-        final var previousLog = businessService.previous(allLogs, userTrackOrder);
-
-        final var song = new MusicDto.Common.Song(previousLog);
-        return new MusicDto.Track(song, userTrackOrder.getOrder(), allLogs.get(allLogs.size() - 1).getOrder());
+        return businessService.previous(allLogs, userTrackOrder, user);
     }
 
     @Transactional
@@ -37,19 +35,7 @@ public class TrackTransferService {
         final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
         final var userTrackOrder = userTrackOrderService.find(sessionUser.getUserId());
         final var user = userService.findById(sessionUser.getUserId());
-        final var userGenres = userGenreService.getAllByUser(user);
 
-        final var lastLog = allLogs.get(allLogs.size() - 1);
-
-        if (lastLog.getOrder() <= userTrackOrder.getOrder()) {
-            final var nowTrack = businessService.getNewTrack(sessionUser.getUserId(), userGenres);
-            return new MusicDto.Track(nowTrack, userTrackOrder.getOrder(), allLogs.get(allLogs.size() - 1).getOrder());
-        }
-
-        final var previousLog = businessService.following(allLogs, userTrackOrder);
-
-        final var song = new MusicDto.Common.Song(previousLog);
-        return new MusicDto.Track(song, userTrackOrder.getOrder(), allLogs.get(allLogs.size() - 1).getOrder());
+        return businessService.following(allLogs, userTrackOrder, user);
     }
-
 }

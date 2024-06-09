@@ -35,20 +35,33 @@ public class SpotifyBusinessService {
     private final UserTrackLogService userTrackLogService;
     private final UserTrackOrderService userTrackOrderService;
 
-    public MusicDto.Common.Song find(final List<GenreType> genres, final Long userId) {
-        final var prevRecommendedMusics = userRecommendationMusicService.get(userId);
+    public MusicDto.Common.Song find(final List<GenreType> genres, final User user) {
+        final var prevRecommendedMusics = userRecommendationMusicService.get(user.getId());
 
-        return find(prevRecommendedMusics, genres, userId);
+        return find(prevRecommendedMusics, genres, user);
     }
 
-    public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final Long userId) {
-        if (prevRecommendedMusics == null || prevRecommendedMusics.isEmpty()) {
-            return getRecommendationAndSave(genres, userId);
-        } else if (prevRecommendedMusics.size() <= 3) {
-            return returnAndGetRecommendationAndSave(prevRecommendedMusics, genres, userId);
+    public MusicDto.Common.Song findAndMakeLog(final List<UserRecommendationMusic> prevRecommendedMusics, final List<GenreType> genres, final User user) {
+        final var song = find(prevRecommendedMusics, genres, user);
+        userTrackLogService.createNextSongLog(prevRecommendedMusics, song, user);
+
+        return song;
+    }
+
+    public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<GenreType> genres, final User user) {
+        if (user.isFirstDrive()) {
+            user.setFirstDrive(false);
+            userTrackOrderService.createNew(user.getId());
         }
 
-        return returnFirstOrderRecommendation(prevRecommendedMusics, userId);
+        if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
+            return getRecommendationAndSave(genres, user.getId());
+
+        } else if (prevRecommendedMusics.size() <= 3) {
+            return returnAndGetRecommendationAndSave(prevRecommendedMusics, genres, user.getId());
+        }
+
+        return returnFirstOrderRecommendation(prevRecommendedMusics, user.getId());
     }
 
     public Map<String, LogWithIndex> createUserTrackLogMap(final List<UserTrackLog> allLogs, final User user, final  String nowPlayingTrackId) {

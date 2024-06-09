@@ -24,7 +24,6 @@ public class SpotifyTransferService {
     private final UserTrackLogService userTrackLogService;
 
     @Transactional
-
     public MusicDto.Track playWithId(final SessionUser sessionUser, final MusicDto.Play.Request req) {
         final var user = userBusinessService.getUser(sessionUser.getUserId());
         final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
@@ -42,10 +41,11 @@ public class SpotifyTransferService {
         if (genres.size() > 3)
             throw new UserGenreCountException();
 
-        final var userId = sessionUser.getUserId();
-        final var prevRecommendedMusics = userRecommendationMusicService.get(userId);
+        final var user = userBusinessService.getUser(sessionUser.getUserId());
 
-        return businessService.find(prevRecommendedMusics, genres, sessionUser.getUserId());
+        final var prevRecommendedMusics = userRecommendationMusicService.get(sessionUser.getUserId());
+
+        return businessService.findAndMakeLog(prevRecommendedMusics, genres, user);
     }
 
 }

@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.json.JSONObject;
 import se.michaelthelin.spotify.model_objects.specification.*;
 
@@ -31,20 +32,16 @@ public class MusicDto {
 
     @Schema(name = "MusicDto.Track")
     @Getter
+    @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class Track {
-        private Common.Song song;
-        private boolean isFirst;
-        private boolean isLast;
-
-        public Track(final Common.Song song, final Long order, final Long maxOrder) {
-            this.song = song;
-            this.isFirst = order == 0L;
-            this.isLast = order.equals(maxOrder);
-        }
+        private Common.Song prevSong;
+        private Common.Song nowSong;
+        private Common.Song nextSong;
 
         public Track(final Common.Song song, final AtomicReference<Long> atomicIndex, final int size) {
-            this(song, atomicIndex.get(), size);
+            this(song, atomicIndex.get(), 0L);
         }
     }
 
@@ -117,15 +114,16 @@ public class MusicDto {
                 List<ArtistSimpleInfo.Musician> artists,
                 List<String> images
         ) {
-            public SongSimpleInfo(Track track) {
+            public SongSimpleInfo(se.michaelthelin.spotify.model_objects.specification.Track track) {
                 this(
                         track.getId(),
                         track.getName(),
                         track.getAlbum().getId(),
-                        Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
+                        Arrays.stream((track.getArtists())).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(track.getAlbum().getImages()).map(Image::getUrl).toList()
                 );
             }
+
         }
 
     }
