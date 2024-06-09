@@ -34,6 +34,8 @@ dependencies {
     implementation group: 'com.google.zxing', name: 'javase', version: '3.5.3'
     implementation group: 'com.google.zxing', name: 'core', version: '3.5.3'
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.3.6'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.17.2'
 
