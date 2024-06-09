@@ -29,20 +29,25 @@ public class DriveService {
     private final SpotifyApi api;
     private final CrawlerService crawler;
 
-    public Track[] recommendation(final List<GenreType> requestGenres) {
+    public Track[] recommendation(final List<Integer> genreIndices) {
         List<GenreType> genres;
 
-        if (requestGenres.isEmpty()) {
+        if (genreIndices.isEmpty()) {
             genres = GenreType.getRandomGenres(5);
         } else {
-            genres = requestGenres;
+            genres = genreIndices.stream()
+                    .map(GenreType::getByIndex)
+                    .collect(Collectors.toList());
         }
 
-        final var genreStrings = genres.stream().map(GenreType::getValue).collect(Collectors.toList());
+        final var genreStrings = genres.stream()
+                .map(GenreType::getValue)
+                .collect(Collectors.toList());
         final var joinedGenres = String.join(",", genreStrings);
 
         return getTracksByGenres(joinedGenres);
     }
+
 
     public MusicDto.NowPlaying.Response getAlbumInfo(final String albumId) {
         try {

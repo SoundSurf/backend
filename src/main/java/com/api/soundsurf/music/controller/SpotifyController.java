@@ -1,7 +1,6 @@
 package com.api.soundsurf.music.controller;
 
 import com.api.soundsurf.iam.dto.SessionUser;
-import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.constant.SearchType;
 import com.api.soundsurf.music.domain.spotify.DriveService;
 import com.api.soundsurf.music.domain.spotify.SearchService;
@@ -14,11 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +27,7 @@ public class SpotifyController {
     private final SearchService searchService;
     private final SpotifyTransferService transferService;
 
+
     @GetMapping("/recommendation")
     @Operation(
             parameters = {
@@ -40,7 +36,7 @@ public class SpotifyController {
             })
     public MusicDto.Common.Song recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @RequestParam List<GenreType> genres) {
+            final @RequestParam List<Integer> genres) {
 
         return transferService.recommend(genres, sessionUser);
     }

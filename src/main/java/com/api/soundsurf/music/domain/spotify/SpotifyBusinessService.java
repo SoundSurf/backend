@@ -1,6 +1,5 @@
 package com.api.soundsurf.music.domain.spotify;
 
-import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicBusinessService;
 import com.api.soundsurf.music.dto.MusicDto;
 import com.api.soundsurf.music.entity.UserRecommendationMusic;
@@ -21,10 +20,9 @@ public class SpotifyBusinessService {
     private ApplicationEventPublisher publisher;
     private final UserRecommendationMusicBusinessService userRecommendationMusicBusinessService;
 
-    public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<GenreType> genres, final Long userId) {
-        if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
+    public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final Long userId) {
+        if (prevRecommendedMusics == null || prevRecommendedMusics.isEmpty()) {
             return getRecommendationAndSave(genres, userId);
-
         } else if (prevRecommendedMusics.size() <= 3) {
             return returnAndGetRecommendationAndSave(prevRecommendedMusics, genres, userId);
         }
@@ -32,14 +30,14 @@ public class SpotifyBusinessService {
         return returnFirstOrderRecommendation(prevRecommendedMusics, userId);
     }
 
-    private MusicDto.Common.Song getRecommendationAndSave(final List<GenreType> genres, final Long userId) {
+    private MusicDto.Common.Song getRecommendationAndSave(final List<Integer> genres, final Long userId) {
         final var recommendations = driveService.recommendation(genres);
         publisher.publishEvent(new SaveRecommendationEvent(this, 0L, recommendations, userId));
 
         return new MusicDto.Common.Song(recommendations[0]);
     }
 
-    private MusicDto.Common.Song returnAndGetRecommendationAndSave(final List<UserRecommendationMusic> prevRecommendedMusics, final List<GenreType> genres, final Long userId) {
+    private MusicDto.Common.Song returnAndGetRecommendationAndSave(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final Long userId) {
         final var lastOrder = prevRecommendedMusics.get(prevRecommendedMusics.size() - 1).getOrder();
         final var nowRecommendedMusic = prevRecommendedMusics.get(0);
         publisher.publishEvent(new GetRecommendationsAndSaveRecommendationEvent(this, genres, userId, lastOrder));
