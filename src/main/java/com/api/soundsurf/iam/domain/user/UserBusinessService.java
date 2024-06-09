@@ -55,10 +55,10 @@ public class UserBusinessService {
         }
 
         // TODO: 장르 추가
-//        if (updateGenreIds != null && updateGenreIds.size() > 0) {
-//            userGenreService.deleteAllUserGenres(user);
-//            genreBusinessService.selectGenre(user, updateGenreIds);
-//        }
+        if (updateGenreIds != null && !updateGenreIds.isEmpty()) {
+            userGenreService.deleteAllUserGenres(user);
+            genreBusinessService.selectGenre(user, updateGenreIds);
+        }
 
         if (updateNickname != null) {
             user.setNickname(updateNickname);
