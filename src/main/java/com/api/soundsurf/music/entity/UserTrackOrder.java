@@ -45,7 +45,6 @@ public class UserTrackOrder {
     }
 
     public void firstOrder() {
-        this.order = 0L;
         this.first = true;
     }
 }

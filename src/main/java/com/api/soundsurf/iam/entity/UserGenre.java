@@ -1,7 +1,5 @@
 package com.api.soundsurf.iam.entity;
 
-import com.api.soundsurf.music.entity.Genre;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,17 +17,15 @@ public class UserGenre {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
+    @Column(name = "genre_id")
+    private Integer genreId;
 
-    public UserGenre(User user, Genre genre) {
+    public UserGenre(User user, Integer genreId) {
         this.user = user;
-        this.genre = genre;
+        this.genreId = genreId;
     }
 
-    public static UserGenre newInstance(final User user,final Genre genre) {
+    public static UserGenre newInstance(final User user,final int genre) {
         return new UserGenre(user, genre);
     }
 }

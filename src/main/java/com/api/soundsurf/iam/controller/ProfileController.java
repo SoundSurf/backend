@@ -3,11 +3,6 @@ package com.api.soundsurf.iam.controller;
 import com.api.soundsurf.iam.domain.user.UserTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserProfileDto;
-import com.api.soundsurf.music.domain.SavedMusicService;
-import com.api.soundsurf.music.domain.genre.GenreTransferService;
-import com.api.soundsurf.iam.dto.GenreDto;
-import com.api.soundsurf.music.domain.SavedMusicTransferService;
-import com.api.soundsurf.music.dto.SavedMusicDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -25,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @CrossOrigin("*")
 public class ProfileController {
-    private final GenreTransferService genreTransferService;
     private final UserTransferService userTransferService;
 
     @PatchMapping(value = "")
@@ -46,11 +40,6 @@ public class ProfileController {
             })
     public UserProfileDto.Qr.Response getQr(final @AuthenticationPrincipal SessionUser sessionUser) {
         return userTransferService.getQr(sessionUser);
-    }
-
-    @GetMapping(value = "/genres/all")
-    public GenreDto.GetAll.Response getAllGenres() {
-        return genreTransferService.getAllGenres();
     }
 
 }

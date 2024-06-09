@@ -32,7 +32,7 @@ public class DriveService {
     public Track[] recommendation(final List<Integer> genreIndices) {
         List<GenreType> genres;
 
-        if (genreIndices.isEmpty()) {
+        if (genreIndices == null  || genreIndices.isEmpty()) {
             genres = GenreType.getRandomGenres(5);
         } else {
             genres = genreIndices.stream()

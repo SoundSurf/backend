@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -31,12 +29,9 @@ public class Music {
     @Column(nullable = false, name = "image_url")
     private String imageUrl;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "released_date")
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDate releasedDate;
-
-    @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MusicGenre> musicGenres = new ArrayList<>();
 
     public Music(final String title, final String artist, final String album, final String imageUrl, final LocalDate releasedDate) {
         this.title = title;

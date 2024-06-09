@@ -28,16 +28,21 @@ public class CrawlerService {
                 .map(this::formatRYM)
                 .collect(Collectors.joining("-"));
 
-        HttpGet request = new HttpGet(RYM_ALBUM_URL + formattedArtist + "/" + formattedTitle + "/");
+        HttpGet request;
 
         try {
+            request = new HttpGet(RYM_ALBUM_URL + formattedArtist + "/" + formattedTitle + "/");
             return getGenresRating(request);
-        } catch (ApiException e) {
+        } catch (Exception e) {
             if (artists.length > 1) {
-                request = new HttpGet(RYM_ALBUM_URL + "various-artists/" + formattedTitle + "/");
+                try {
+                    request = new HttpGet(RYM_ALBUM_URL + "various-artists/" + formattedTitle + "/");
+                } catch (Exception e2) {
+                    return new String[]{"Unknown", "Unknown"};
+                }
                 return getGenresRating(request);
             } else {
-                throw new ApiException("앨범 장르 및 평점 정보 가져오기 실패");
+                return new String[]{"Unknown", "Unknown"};
             }
         }
     }

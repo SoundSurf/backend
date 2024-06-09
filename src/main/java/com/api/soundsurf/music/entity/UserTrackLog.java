@@ -51,7 +51,7 @@ public class UserTrackLog {
     @Column(name = "album_metadata", nullable = true)
     private String albumMetadata;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "released_date")
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDate releasedDate;
 
@@ -66,7 +66,7 @@ public class UserTrackLog {
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDateTime expiredAt;
 
-    public UserTrackLog(final Long userId, final String trackId, final Long order, final String name, final List<String> images, final String previewUrl, final String spotifyUrl, final Integer durationMs, final String artistsMetadata,final String albumMetadata, final String releaseDate) {
+    public UserTrackLog(final Long userId, final String trackId, final Long order, final String name, final List<String> images, final String previewUrl, final String spotifyUrl, final Integer durationMs, final String artistsMetadata,final String albumMetadata, final LocalDate releaseDate) {
         this.userId = userId;
         this.trackId = trackId;
         this.order = order;
@@ -77,7 +77,7 @@ public class UserTrackLog {
         this.trackDurationMs = durationMs;
         this.artistsMetadata = artistsMetadata;
         this.albumMetadata = albumMetadata;
-        this.releasedDate = LocalDate.parse(releaseDate);
+        this.releasedDate = releaseDate;
         this.createdAt = LocalDateTime.now();
         this.expiredAt = LocalDateTime.now().plusYears(100);
     }

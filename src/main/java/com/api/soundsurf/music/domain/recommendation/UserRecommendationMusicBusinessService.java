@@ -6,10 +6,8 @@ import com.api.soundsurf.music.dto.MusicDto;
 import com.api.soundsurf.music.entity.UserRecommendationMusic;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.model_objects.specification.AlbumSimplified;
-import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Image;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
@@ -23,13 +21,13 @@ public class UserRecommendationMusicBusinessService {
     private final UserRecommendationMusicService service;
     private final CrawlerService crawlerService;
 
-    public void firstRecommendAndSave(final Track[] data, final Long lastOrder, final Long userId) {
-        final var recommendedMusics = save(data, lastOrder, userId);
+    public void firstRecommendAndSave(final Track[] data, final Long lastOrder, final Long userId, boolean isPrev) {
+        final var recommendedMusics = save(data, lastOrder, userId, isPrev);
         listenAndDelete(userId, recommendedMusics.get(0).getId());
     }
 
 
-    public ArrayList<UserRecommendationMusic> save(final Track[] data, final Long lastOrder, final Long userId) {
+    public ArrayList<UserRecommendationMusic> save(final Track[] data, final Long lastOrder, final Long userId, final boolean isPrev) {
         final var recommendMusics = new ArrayList<UserRecommendationMusic>();
 
         for (var i = 0; i < data.length; i++) {
@@ -52,7 +50,8 @@ public class UserRecommendationMusicBusinessService {
             final var albumMetadata = Utils.albumDtoToString(album, albumGenre, albumRating);
             final var artistsMetadata = Utils.musicianJsonToString(jsonMusicians);
 
-            final var music = new UserRecommendationMusic(data[i], lastOrder + i, userId, albumMetadata, artistsMetadata);
+            final var newOrder = isPrev ? lastOrder - i - 1 : lastOrder + i + 1;
+            final var music = new UserRecommendationMusic(data[i], newOrder, userId, albumMetadata, artistsMetadata);
             recommendMusics.add(service.save(music));
         }
 

@@ -38,9 +38,9 @@ public class SpotifyController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public MusicDto.Common.Song recommendation(
+    public MusicDto.Track recommendation(
             final @AuthenticationPrincipal SessionUser sessionUser,
-            final @RequestParam List<Integer> genres) {
+            final @RequestParam(required = false) List<Integer> genres) {
 
         return transferService.recommend(genres, sessionUser);
     }

@@ -27,27 +27,42 @@ public class SpotifyBusinessService {
     private final UserTrackLogService userTrackLogService;
     private final UserTrackOrderService userTrackOrderService;
 
-    public MusicDto.Common.Song find(final List<Integer> genres, final User user) {
+    public MusicDto.Common.Song find(final List<Integer> genres, final User user, final boolean needMoreTracks, final boolean isPrev) {
         final var prevRecommendedMusics = userRecommendationMusicService.get(user.getId());
 
-        return find(prevRecommendedMusics, genres, user);
+        return find(prevRecommendedMusics, genres, user, needMoreTracks, isPrev);
     }
 
-    public MusicDto.Common.Song findAndMakeLog(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final User user) {
-        final var song = find(prevRecommendedMusics, genres, user);
-        userTrackLogService.createNextSongLog(prevRecommendedMusics, song, user);
+    public MusicDto.Track findAndMakeLog(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final User user, final MusicDto.Track response) {
+        final var song = find(prevRecommendedMusics, genres, user, false, false);
+        response.setNowSong(song);
+        final var nextSong = find(userRecommendationMusicService.get(user.getId()), genres, user, false, false);
+        response.setNextSong(nextSong);
+        final var prevSong = find(userRecommendationMusicService.get(user.getId()), genres, user, false, false);
+        response.setPrevSong(prevSong);
 
-        return song;
+        if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
+            userTrackLogService.createNextSongLog(0L, song, user);
+
+        } else {
+            userTrackLogService.createNextSongLog(prevRecommendedMusics, song, user);
+        }
+
+        return response;
     }
 
-    public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final User user) {
+    public MusicDto.Common.Song find(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final User user, final boolean needMoreTracks, final boolean isPrev) {
         if (user.isFirstDrive()) {
             user.setFirstDrive(false);
             userTrackOrderService.createNew(user.getId());
         }
 
+        if (needMoreTracks) {
+            return getRecommendationAndSave(prevRecommendedMusics, genres, user.getId(), isPrev);
+        }
+
         if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
-            return getRecommendationAndSave(genres, user.getId());
+            return getRecommendationAndSave(prevRecommendedMusics, genres, user.getId(), isPrev);
 
         } else if (prevRecommendedMusics.size() <= 3) {
             return returnAndGetRecommendationAndSave(prevRecommendedMusics, genres, user.getId());
@@ -56,11 +71,25 @@ public class SpotifyBusinessService {
         return returnFirstOrderRecommendation(prevRecommendedMusics, user.getId());
     }
 
-    private MusicDto.Common.Song getRecommendationAndSave(final List<Integer> genres, final Long userId) {
+    private MusicDto.Common.Song getRecommendationAndSave(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final Long userId, final boolean isPrev) {
         final var recommendations = driveService.recommendation(genres);
-        publisher.publishEvent(new SaveRecommendationEvent(this, 0L, recommendations, userId));
+
+
+        publisher.publishEvent(new SaveRecommendationEvent(this, getLastOrder(prevRecommendedMusics, isPrev), recommendations, userId, isPrev));
 
         return new MusicDto.Common.Song(recommendations[0]);
+    }
+
+    private Long getLastOrder(final List<UserRecommendationMusic> prevRecommendedMusics, final boolean isPrev) {
+        if (prevRecommendedMusics == null || prevRecommendedMusics.size() == 0) {
+            return 0L;
+        }
+
+        if (isPrev) {
+            return prevRecommendedMusics.get(0).getOrder();
+        }
+
+        return prevRecommendedMusics.get(prevRecommendedMusics.size() - 1).getOrder();
     }
 
     private MusicDto.Common.Song returnAndGetRecommendationAndSave(final List<UserRecommendationMusic> prevRecommendedMusics, final List<Integer> genres, final Long userId) {

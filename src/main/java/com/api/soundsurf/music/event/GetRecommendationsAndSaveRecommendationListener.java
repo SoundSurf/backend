@@ -21,6 +21,6 @@ public class GetRecommendationsAndSaveRecommendationListener {
     @Async
     public void onApplicationEvent(GetRecommendationsAndSaveRecommendationEvent event) {
         final var recommendations = driveService.recommendation(event.getGenres());
-        userRecommendationMusicBusinessService.save(recommendations, event.getLastOrder(), event.getUserId());
+        userRecommendationMusicBusinessService.save(recommendations, event.getLastOrder(), event.getUserId(), false);
     }
 }

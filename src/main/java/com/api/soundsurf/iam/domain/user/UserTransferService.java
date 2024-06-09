@@ -66,7 +66,7 @@ public class UserTransferService {
 
         final var prevTrack = userTrackLogService.findPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
 
-        return new UserDto.Info.Response(userInfo, userCarId, userProfile, prevTrack.getTrackId());
+        return new UserDto.Info.Response(userInfo, userCarId, userProfile, prevTrack == null ? null : prevTrack.getTrackId());
     }
 
 }

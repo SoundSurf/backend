@@ -19,15 +19,16 @@ public class SpotifyTransferService {
     private final UserBusinessService userBusinessService;
 
     @Transactional
-    public MusicDto.Common.Song recommend(final List<Integer> genres, final SessionUser sessionUser) {
-        if (genres.size() > 3)
+    public MusicDto.Track recommend(final List<Integer> genres, final SessionUser sessionUser) {
+        if (genres != null && genres.size() > 3)
             throw new UserGenreCountException();
 
+        final var response = new MusicDto.Track();
         final var user = userBusinessService.getUser(sessionUser.getUserId());
 
         final var prevRecommendedMusics = userRecommendationMusicService.get(sessionUser.getUserId());
 
-        return businessService.findAndMakeLog(prevRecommendedMusics, genres, user);
+        return businessService.findAndMakeLog(prevRecommendedMusics, genres, user, response);
     }
 
 }
