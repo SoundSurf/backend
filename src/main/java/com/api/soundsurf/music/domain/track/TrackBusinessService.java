@@ -103,7 +103,7 @@ public class TrackBusinessService {
 
     public MusicDto.Common.Song getNewTrack(final User user, final List<UserGenre> userGenres) {
         final var genres = userGenres.stream()
-                .map(userGenre -> GenreType.valueOf(userGenre.getGenre().getName()))
+                .map(userGenre -> GenreType.valueOf(userGenre.getGenre().getName()).getIndex())
                 .toList();
 
         return spotifyBusinessService.find(genres, user);
