@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,18 +20,6 @@ public class SpotifyTransferService {
     private final UserRecommendationMusicService userRecommendationMusicService;
     private final SpotifyBusinessService businessService;
     private final UserBusinessService userBusinessService;
-    private final UserTrackLogService userTrackLogService;
-
-    @Transactional
-    public MusicDto.Track playWithId(final SessionUser sessionUser, final MusicDto.Play.Request req) {
-        final var user = userBusinessService.getUser(sessionUser.getUserId());
-        final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
-
-        final var track = businessService.findTrack(req.trackId());
-
-        final var nowSong = new MusicDto.Common.Song(track);
-        return new MusicDto.Track(,nowSong,);
-    }
 
     @Transactional
     public MusicDto.Common.Song recommend(final List<Integer> genres, final SessionUser sessionUser) {
