@@ -102,7 +102,7 @@ public class ProfileController {
         return savedMusicTransferService.getSavedMusics(sessionUser);
     }
 
-    @PostMapping
+    @PostMapping(value = "/music/save")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
@@ -112,7 +112,7 @@ public class ProfileController {
         savedMusicService.saveMusic(sessionUser.getUserId(), musicId);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/music/unsave")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
