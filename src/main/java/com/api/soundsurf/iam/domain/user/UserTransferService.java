@@ -66,9 +66,7 @@ public class UserTransferService {
         final var userCarId = userInfo.getCarId();
         final var userProfile = userInfo.getImageS3BucketPath();
 
-        final var prevTrack = userTrackLogService.findPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
-
-        return new UserDto.Info.Response(userInfo, userCarId, userProfile, prevTrack == null ? null : prevTrack.getTrackId());
+        return new UserDto.Info.Response(userInfo, userCarId, userProfile);
     }
 
 }
