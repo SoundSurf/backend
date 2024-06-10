@@ -48,7 +48,9 @@ public class UserTransferService {
 
         final var sessionToken = sessionTokenService.findOrCreateNew(user.getId());
 
-        return new UserDto.Login.Response(sessionToken.getToken());
+        final var info = info(new SessionUser(user.getId()));
+
+        return new UserDto.Login.Response(sessionToken.getToken(), info);
     }
      @Transactional
     public UserDto.SetNickname.Response setNickname(final SessionUser sessionUser, final UserDto.SetNickname.Request requestDto) {

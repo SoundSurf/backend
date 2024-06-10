@@ -42,6 +42,7 @@ public class UserDto {
         @Getter
         public static class Response {
             private String userToken;
+            private Info.Response userInfo;
         }
     }
 

@@ -38,9 +38,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+        http.cors();
         http.csrf().disable()
-                .cors().disable()
                 .addFilterAfter(tokenFilter(), BasicAuthenticationFilter.class);
 //                .authorizeHttpRequests((requests) -> requests
 //                                .requestMatchers("/user/**").permitAll()
