@@ -133,7 +133,7 @@ public class TrackBusinessService {
     public MusicDto.Common.Song getNewTrack(final User user,final List<Integer> requestGenres, final boolean needMoreTracks, final boolean isPrev) {
         final var userGenres = user.getUserGenres();
 
-        if (!requestGenres.isEmpty()) {
+        if (requestGenres == null || !requestGenres.isEmpty()) {
             return spotifyBusinessService.find(requestGenres, user, needMoreTracks, isPrev);
         }
 
