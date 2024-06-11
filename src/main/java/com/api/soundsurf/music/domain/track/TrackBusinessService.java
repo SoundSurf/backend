@@ -42,7 +42,9 @@ public class TrackBusinessService {
         boolean nowSongExist = false;
         boolean prevSongExist = false;
         Long nowSongOrder = null;
-        for (var log : logs) {
+        for (int i = logs.size()-1; i >= 0; i--) {
+            var log = logs.get(i);
+
             if (!nowSongExist && log.getOrder() <= nowOrder) {
                 final var nowSong = new MusicDto.Common.Song(log);
                 userTrackLogService.createPrevSongLog(order.getOrder(), nowSong, user);
