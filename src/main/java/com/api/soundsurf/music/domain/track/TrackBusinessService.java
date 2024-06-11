@@ -111,6 +111,7 @@ public class TrackBusinessService {
         final var nowSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder());
         MusicDto.Common.Song nowSong;
         if (nowSongByPrevRecommendationLogs == null) {
+            user.getUserGenres()
             nowSong = getNewTrack(user, genres, true, false);
         } else {
             nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
@@ -130,14 +131,19 @@ public class TrackBusinessService {
         return response;
     }
 
-    public MusicDto.Common.Song getNewTrack(final User user, List<Integer> genres, final boolean needMoreTracks, final boolean isPrev) {
-        if (genres.isEmpty()) {
-            final var userGenres = user.getUserGenres();
-            if(userGenres.isEmpty()) {
-                genres = GenreType.getRandomGenres(5).stream().map(GenreType::getIndex).toList();
-            } else genres = userGenres.stream().map(UserGenre::getGenreId).toList();
+    public MusicDto.Common.Song getNewTrack(final User user,final List<Integer> requestGenres, final boolean needMoreTracks, final boolean isPrev) {
+        final var userGenres = user.getUserGenres();
+
+        if (!requestGenres.isEmpty()) {
+            return spotifyBusinessService.find(requestGenres, user, needMoreTracks, isPrev);
         }
 
-        return spotifyBusinessService.find(genres, user, needMoreTracks, isPrev);
+        if (!userGenres.isEmpty()) {
+            final var userGenreList = user.getUserGenres().stream().map(UserGenre::getGenreId).toList();
+            return spotifyBusinessService.find(userGenreList, user, needMoreTracks, isPrev);
+        }
+
+        final var randGenres = GenreType.getRandomGenres(5).stream().map(GenreType::getIndex).toList();
+        return spotifyBusinessService.find(randGenres, user, needMoreTracks, isPrev);
     }
 }
