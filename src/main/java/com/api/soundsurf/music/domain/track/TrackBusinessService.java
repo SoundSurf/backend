@@ -78,7 +78,13 @@ public class TrackBusinessService {
 
         if (!prevSongExist) {
             final var prevSongLog = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder() - 1L);
-            final var prevSong = new MusicDto.Common.Song(prevSongLog);
+            MusicDto.Common.Song prevSong;
+
+            if (prevSongLog == null) {
+                prevSong = getNewTrack(user, user.getUserGenres(), true, true);
+            } else {
+                prevSong = new MusicDto.Common.Song(prevSongLog);
+            }
             response.setPrevSong(prevSong);
         }
 
