@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,20 +23,20 @@ public class TrackTransferService {
     private final UserService userService;
 
     @Transactional
-    public MusicDto.Track previous(final SessionUser sessionUser) {
+    public MusicDto.Track previous(final SessionUser sessionUser, final List<Integer> genres) {
         final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
         final var userTrackOrder = userTrackOrderService.find(sessionUser.getUserId());
         final var user = userService.findById(sessionUser.getUserId());
 
-        return businessService.previous(allLogs, userTrackOrder, user);
+        return businessService.previous(allLogs, userTrackOrder, user, genres);
     }
 
     @Transactional
-    public MusicDto.Track following(final SessionUser sessionUser) {
+    public MusicDto.Track following(final SessionUser sessionUser, final List<Integer> genres) {
         final var allLogs = userTrackLogService.findAllPrev(sessionUser.getUserId(), LocalDateTime.now().minusHours(24L));
         final var userTrackOrder = userTrackOrderService.find(sessionUser.getUserId());
         final var user = userService.findById(sessionUser.getUserId());
 
-        return businessService.following(allLogs, userTrackOrder, user);
+        return businessService.following(allLogs, userTrackOrder, user, genres);
     }
 }
