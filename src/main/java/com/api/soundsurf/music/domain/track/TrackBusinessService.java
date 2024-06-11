@@ -111,7 +111,6 @@ public class TrackBusinessService {
         final var nowSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder());
         MusicDto.Common.Song nowSong;
         if (nowSongByPrevRecommendationLogs == null) {
-            user.getUserGenres()
             nowSong = getNewTrack(user, genres, true, false);
         } else {
             nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
