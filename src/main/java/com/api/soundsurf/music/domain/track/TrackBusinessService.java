@@ -2,6 +2,7 @@ package com.api.soundsurf.music.domain.track;
 
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.entity.UserGenre;
+import com.api.soundsurf.music.constant.GenreType;
 import com.api.soundsurf.music.domain.log.UserTrackLogService;
 import com.api.soundsurf.music.domain.log.UserTrackOrderService;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
@@ -24,7 +25,7 @@ public class TrackBusinessService {
     private final UserRecommendationMusicService userRecommendationMusicService;
 
 
-    public MusicDto.Track previous(final List<UserTrackLog> logs, final UserTrackOrder order, final User user) {
+    public MusicDto.Track previous(final List<UserTrackLog> logs, final UserTrackOrder order, final User user, final List<Integer> genres) {
         final var response = new MusicDto.Track();
         Long nowOrder = order.getOrder();
 
@@ -66,7 +67,7 @@ public class TrackBusinessService {
             MusicDto.Common.Song nowSong;
 
             if (nowSongByPrevRecommendationLogs == null) {
-                nowSong = getNewTrack(user, user.getUserGenres(), true, true);
+                nowSong = getNewTrack(user, genres, true, true);
             } else {
                 nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
             }
@@ -83,7 +84,7 @@ public class TrackBusinessService {
             MusicDto.Common.Song prevSong;
 
             if (prevSongLog == null) {
-                prevSong = getNewTrack(user, user.getUserGenres(), true, true);
+                prevSong = getNewTrack(user, genres, true, true);
             } else {
                 prevSong = new MusicDto.Common.Song(prevSongLog);
             }
@@ -93,7 +94,7 @@ public class TrackBusinessService {
         return response;
     }
 
-    public MusicDto.Track following(final List<UserTrackLog> logs, final UserTrackOrder order, final User user) {
+    public MusicDto.Track following(final List<UserTrackLog> logs, final UserTrackOrder order, final User user, final List<Integer> genres) {
         final var response = new MusicDto.Track();
 
 
@@ -110,7 +111,7 @@ public class TrackBusinessService {
         final var nowSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder());
         MusicDto.Common.Song nowSong;
         if (nowSongByPrevRecommendationLogs == null) {
-            nowSong = getNewTrack(user, user.getUserGenres(), true, false);
+            nowSong = getNewTrack(user, genres, true, false);
         } else {
             nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
         }
@@ -120,7 +121,7 @@ public class TrackBusinessService {
         final var prevSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder()+1L);
         MusicDto.Common.Song nextSong;
         if (prevSongByPrevRecommendationLogs == null) {
-            nextSong = getNewTrack(user, user.getUserGenres(), true, false);
+            nextSong = getNewTrack(user, genres, true, false);
         } else {
             nextSong = new MusicDto.Common.Song(prevSongByPrevRecommendationLogs);
         }
@@ -129,10 +130,13 @@ public class TrackBusinessService {
         return response;
     }
 
-    public MusicDto.Common.Song getNewTrack(final User user, final List<UserGenre> userGenres, final boolean needMoreTracks, final boolean isPrev) {
-        final var genres = userGenres.stream()
-                .map(UserGenre::getGenreId)
-                .toList();
+    public MusicDto.Common.Song getNewTrack(final User user, List<Integer> genres, final boolean needMoreTracks, final boolean isPrev) {
+        if (genres.isEmpty()) {
+            final var userGenres = user.getUserGenres();
+            if(userGenres.isEmpty()) {
+                genres = GenreType.getRandomGenres(5).stream().map(GenreType::getIndex).toList();
+            } else genres = userGenres.stream().map(UserGenre::getGenreId).toList();
+        }
 
         return spotifyBusinessService.find(genres, user, needMoreTracks, isPrev);
     }
