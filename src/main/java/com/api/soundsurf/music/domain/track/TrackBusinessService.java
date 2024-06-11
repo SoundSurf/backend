@@ -43,7 +43,9 @@ public class TrackBusinessService {
         Long nowSongOrder = null;
         for (var log : logs) {
             if (!nowSongExist && log.getOrder() <= nowOrder) {
-                response.setNowSong(new MusicDto.Common.Song(log));
+                final var nowSong = new MusicDto.Common.Song(log);
+                userTrackLogService.createPrevSongLog(order.getOrder(), nowSong, user);
+                response.setNowSong(nowSong);
                 nowSongExist = true;
                 nowSongOrder = log.getOrder();
                 nowOrder = log.getOrder();
@@ -112,6 +114,7 @@ public class TrackBusinessService {
         } else {
             nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
         }
+        userTrackLogService.createPrevSongLog(order.getOrder(), nowSong, user);
         response.setNowSong(nowSong);
 
         final var prevSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder()+1L);
