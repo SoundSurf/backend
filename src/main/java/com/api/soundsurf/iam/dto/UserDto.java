@@ -68,7 +68,7 @@ public class UserDto {
                 this.nickname = user.getNickname();
                 this.newUser = user.isNewUser();
                 this.carId = carId;
-                this.genres = user.getUserGenres().stream().map(UserGenre::getGenreId).collect(Collectors.toList();
+                this.genres = user.getUserGenres().stream().map(UserGenre::getGenreId).collect(Collectors.toList());
                 this.imageBucketPath = imageBucketPath;
             }
         }
