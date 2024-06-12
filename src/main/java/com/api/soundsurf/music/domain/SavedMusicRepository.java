@@ -15,7 +15,7 @@ import java.util.List;
 public interface SavedMusicRepository extends JpaRepository<SavedMusic, Long> {
     void deleteByUserAndUserRecommendationMusic(User user, UserRecommendationMusic userRecommendationMusic);
 
-    SavedMusic findByUserIdAndUserRecommendationMusicId(Long userId, Long musicId);
+    SavedMusic findByUserIdAndUserRecommendationMusicTrackId(Long userId, String trackId);
 
     List<SavedMusic> findAllByUserId(Long userId);
 

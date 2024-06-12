@@ -57,7 +57,7 @@ public class ProfileController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void save(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam List<Long> musicIds) {
+    public void save(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam List<String> musicIds) {
         savedMusicService.saveMusic(sessionUser.getUserId(), musicIds);
     }
 
@@ -67,7 +67,7 @@ public class ProfileController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void unsave(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
+    public void unsave(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam String musicId) {
         savedMusicService.unsaveMusic(sessionUser.getUserId(), musicId);
     }
 
@@ -77,7 +77,7 @@ public class ProfileController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public SavedMusicDto.GetCount.Response getCount(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
+    public SavedMusicDto.GetCount.Response getCount(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam String musicId) {
         Boolean isSaved = savedMusicService.isSavedMusic(sessionUser.getUserId(), musicId);
         long count = savedMusicService.getSavedMusicCount(sessionUser.getUserId());
         return new SavedMusicDto.GetCount.Response(count, isSaved);
