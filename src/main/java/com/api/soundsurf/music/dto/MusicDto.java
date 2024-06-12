@@ -73,7 +73,7 @@ public class MusicDto {
                         track.getPreviewUrl(),
                         track.getExternalUrls().getExternalUrls().get("spotify"),
                         track.getDurationMs(),
-                        new AlbumSimpleInfo.Info(track.getAlbum(), null, null),
+                        new AlbumSimpleInfo.Info(track.getAlbum(), null),
                         Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
                 );
             }
@@ -85,7 +85,7 @@ public class MusicDto {
                         track.getPreviewUrl(),
                         track.getExternalUrls().getExternalUrls().get("spotify"),
                         track.getDurationMs(),
-                        new AlbumSimpleInfo.Info(album, null, null),
+                        new AlbumSimpleInfo.Info(album, album.getGenres()),
                         Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
                 );
             }
@@ -133,32 +133,29 @@ public class MusicDto {
                 String id,
                 String releaseDate,
                 String spotifyUrl,
-                String genres,
-                String rating,
+                String[] genres,
                 String albumType,
                 List<ArtistSimpleInfo.Musician> artists,
                 List<String> images) {
-            public Info(Album album, String genres, String rating) {
+            public Info(Album album, String[] genres) {
                 this(
                         album.getName(),
                         album.getId(),
                         album.getReleaseDate(),
                         album.getExternalUrls().getExternalUrls().get("spotify"),
                         genres,
-                        rating,
                         album.getAlbumType().getType(),
                         Arrays.stream(album.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(album.getImages()).map(Image::getUrl).toList());
             }
 
-            public Info(AlbumSimplified album, String genres, String rating) {
+            public Info(AlbumSimplified album, String[] genres) {
                 this(
                         album.getName(),
                         album.getId(),
                         album.getReleaseDate(),
                         album.getExternalUrls().getExternalUrls().get("spotify"),
                         genres,
-                        rating,
                         album.getAlbumType().getType(),
                         Arrays.stream(album.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
                         Arrays.stream(album.getImages()).map(Image::getUrl).toList());
@@ -170,7 +167,6 @@ public class MusicDto {
                         albumSimplified.getId(),
                         albumSimplified.getReleaseDate(),
                         albumSimplified.getExternalUrls().getExternalUrls().get("spotify"),
-                        null,
                         null,
                         albumSimplified.getAlbumType().getType(),
                         Arrays.stream(albumSimplified.getArtists()).map(ArtistSimpleInfo.Musician::new).toList(),
@@ -184,8 +180,8 @@ public class MusicDto {
         public record Info(
                 AlbumSimpleInfo.Info albumSimple,
                 List<Common.Song> songs) {
-            public Info(Album album, String[] crawled) {
-                this(new AlbumSimpleInfo.Info(album, crawled[0], crawled[1]),
+            public Info(Album album, String[] genres) {
+                this(new AlbumSimpleInfo.Info(album, genres),
                         Arrays.stream(album.getTracks().getItems()).map(track -> new Common.Song(track, album)).toList());
             }
         }
