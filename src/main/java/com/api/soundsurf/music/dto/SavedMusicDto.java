@@ -33,4 +33,14 @@ public class SavedMusicDto {
             private List<SavedMusic> savedMusics;
         }
     }
+
+    public static class GetCount {
+        @Getter
+        @Schema(name = "SavedMusicDto.GetCount.Response")
+        @AllArgsConstructor
+        public static class Response {
+            private long count;
+            private boolean isSaved;
+        }
+    }
 }
