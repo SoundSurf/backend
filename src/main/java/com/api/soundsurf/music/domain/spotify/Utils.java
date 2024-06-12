@@ -55,7 +55,7 @@ public class Utils {
             images.add(imagesJson.getString(i));
         }
 
-        return new MusicDto.AlbumSimpleInfo.Info(albumName, id, releaseDate, spotifyUrl, genres, rating, albumType, artists, images);
+        return new MusicDto.AlbumSimpleInfo.Info(albumName, id, releaseDate, spotifyUrl, null, albumType, artists, images);
     }
 
     public static String albumDtoToString(final MusicDto.AlbumSimpleInfo.Info album, final String genre, final String rating) {

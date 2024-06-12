@@ -12,7 +12,6 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
-import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.io.IOException;
@@ -52,10 +51,10 @@ public class DriveService {
     public MusicDto.NowPlaying.Response getAlbumInfo(final String albumId) {
         try {
             final var album = api.getAlbum(albumId).build().execute();
-            final var artist = Arrays.stream(album.getArtists()).map(ArtistSimplified::getName).toArray(String[]::new);
+            final var artist = api.getArtist(album.getArtists()[0].getId()).build().execute();
             final var title = Utils.searchAbleString(album.getName());
-            final var crawled = crawler.getAlbumGenresRating(title, artist);
-            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, crawled), Arrays.stream(getRelatedSongs(albumId, album.getArtists()[0].getId())).toList());
+            final var genres = artist.getGenres();
+            return new MusicDto.NowPlaying.Response(new MusicDto.AlbumFullInfo.Info(album, genres), Arrays.stream(getRelatedSongs(albumId, album.getArtists()[0].getId())).toList());
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             throw new SpotifyNowPlayingException(e.getMessage());
         }

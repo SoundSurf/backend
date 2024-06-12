@@ -68,7 +68,7 @@ public class UserRecommendationMusicBusinessService {
     private MusicDto.AlbumSimpleInfo.Info convertIntoAlbumDto(final AlbumSimplified album) {
         final var albumArtists = Arrays.stream(album.getArtists()).map(MusicDto.ArtistSimpleInfo.Musician::new).toList();
         final var albumImages = Arrays.stream(album.getImages()).map(Image::getUrl).toList();
-        return new MusicDto.AlbumSimpleInfo.Info(album.getName(), album.getId(), album.getReleaseDate(), album.getHref(), null, null, album.getAlbumType().getType(), albumArtists, albumImages);
+        return new MusicDto.AlbumSimpleInfo.Info(album.getName(), album.getId(), album.getReleaseDate(), album.getHref(), null, album.getAlbumType().getType(), albumArtists, albumImages);
     }
 
 }
