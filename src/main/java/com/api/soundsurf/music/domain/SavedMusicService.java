@@ -23,25 +23,25 @@ public class SavedMusicService {
     private final SavedMusicRepository savedMusicRepository;
 
     @Transactional
-    public void saveMusic(final Long userId, final List<Long> musicIds) {
+    public void saveMusic(final Long userId, final List<String> musicIds) {
         final var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        for (Long musicId : musicIds) {
-            final var music = userRecommendationMusicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
+        for (String musicId : musicIds) {
+            final var music = userRecommendationMusicRepository.findByTrackId(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
             savedMusicRepository.save(SavedMusic.newInstance(user, music));
         }
     }
 
     @Transactional
-    public void unsaveMusic(final Long userId, final Long musicId) {
+    public void unsaveMusic(final Long userId, final String musicId) {
         final var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        final var music = userRecommendationMusicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
+        final var music = userRecommendationMusicRepository.findByTrackId(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
 
         savedMusicRepository.deleteByUserAndUserRecommendationMusic(user, music);
     }
 
     @Transactional
-    public Boolean isSavedMusic(final Long userId, final Long musicId) {
-        SavedMusic savedMusic = savedMusicRepository.findByUserIdAndUserRecommendationMusicId(userId, musicId);
+    public Boolean isSavedMusic(final Long userId, final String trackId) {
+        SavedMusic savedMusic = savedMusicRepository.findByUserIdAndUserRecommendationMusicTrackId(userId, trackId);
 
         Boolean isSaved = !Objects.isNull(savedMusic);
         return isSaved;
