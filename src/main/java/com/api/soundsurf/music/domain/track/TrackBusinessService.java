@@ -44,7 +44,7 @@ public class TrackBusinessService {
         boolean nowSongExist = false;
         boolean prevSongExist = false;
         Long nowSongOrder = null;
-        for (int i = userTrackLogs.size()-1; i >= 0; i--) {
+        for (int i = userTrackLogs.size() - 1; i >= 0; i--) {
             var log = userTrackLogs.get(i);
 
             if (!nowSongExist && log.getOrder() < order.getOrder()) {
@@ -66,7 +66,7 @@ public class TrackBusinessService {
         }
 
         if (!nowSongExist) {
-            final var nowSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder()-1L);
+            final var nowSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder() - 1L);
             MusicDto.Common.Song nowSong;
 
             if (nowSongByPrevRecommendationLogs == null) {
@@ -135,7 +135,7 @@ public class TrackBusinessService {
         return response;
     }
 
-    public MusicDto.Common.Song getNewTrack(final User user,final List<Integer> requestGenres, final boolean needMoreTracks, final boolean isPrev) {
+    public MusicDto.Common.Song getNewTrack(final User user, final List<Integer> requestGenres, final boolean needMoreTracks, final boolean isPrev) {
         final var userGenres = user.getUserGenres();
 
         if (requestGenres == null || !requestGenres.isEmpty()) {
