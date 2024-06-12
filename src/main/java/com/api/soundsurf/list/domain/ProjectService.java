@@ -45,6 +45,16 @@ public class ProjectService {
         final var project = projectRepository.findByIdAndUser(projectId, user).orElseThrow(() -> new ProjectNotFoundException(projectId));
         projectMusicRepository.save(new ProjectMusic(null, music, project));
     }
+
+    public void addMemo(final Long userId, final Long projectId, final String trackId, final String memo) {
+        final var user = userRepository.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        final var project = projectRepository.findByIdAndUser(projectId, user).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        final var music = musicRepository.findByTrackId(trackId).orElseThrow(() -> new MusicNotFoundException(trackId));
+        final var projectMusic = projectMusicRepository.findByProjectAndMusic(project, music);
+        projectMusic.updateMemo(memo);
+        projectMusicRepository.save(projectMusic);
+
+    }
 //
 //    public Project findNotNullable(final Long userId, final Long id) {
 //        final var project = repository.findByUserIdAndId(userId, id);

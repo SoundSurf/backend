@@ -39,4 +39,8 @@ public class ProjectMusic {
     public static ProjectMusic newInstance(final String memo, final Music music, final Project project) {
         return new ProjectMusic(memo, music, project);
     }
+
+    public void updateMemo(final String memo) {
+        this.memo = memo;
+    }
 }

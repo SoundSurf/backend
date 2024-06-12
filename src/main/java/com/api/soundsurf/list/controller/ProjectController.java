@@ -49,6 +49,16 @@ public class ProjectController {
     public void addMusic(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Music.Request req) {
         transferService.addMusic(sessionUser, id, req);
     }
+
+    @PostMapping(value = "/{id}/add/memo")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void addMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Memo.Request req) {
+        transferService.addMemo(sessionUser, id, req);
+    }
 //
 //    @PatchMapping("/{id}")
 //    @Operation(

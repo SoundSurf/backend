@@ -63,6 +63,15 @@ public class ProjectDto {
             private String imageUrl;
         }
     }
+
+    public static class Memo {
+        @Schema(name = "ProjectDto.Memo.Request")
+        @Getter
+        public static class Request {
+            private String trackId;
+            private String memo;
+        }
+    }
 //
 //    public static class Update {
 //        @Schema(name = "ProjectDto.Update.Request")

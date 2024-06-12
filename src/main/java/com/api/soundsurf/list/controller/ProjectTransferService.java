@@ -36,6 +36,10 @@ public class ProjectTransferService {
     public void addMusic(final SessionUser sessionUser, final Long projectId, final ProjectDto.Music.Request req) {
         businessService.addMusic(sessionUser.getUserId(), projectId, req.getTrackId(), req.getTitle(), req.getArtists(), req.getImageUrl());
     }
+
+    public void addMemo(final SessionUser sessionUser, final Long projectId, final ProjectDto.Memo.Request req) {
+        businessService.addMemo(sessionUser.getUserId(), projectId, req.getTrackId(), req.getMemo());
+    }
 //
 //    public void update(final SessionUser sessionUser, final Long id, final ProjectDto.Update.Request req) {
 //        businessService.update(sessionUser.getUserId(), id, req.getMemo(), req.getName());
