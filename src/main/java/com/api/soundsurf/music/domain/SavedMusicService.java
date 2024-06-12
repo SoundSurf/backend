@@ -23,11 +23,12 @@ public class SavedMusicService {
     private final SavedMusicRepository savedMusicRepository;
 
     @Transactional
-    public void saveMusic(final Long userId, final Long musicId) {
+    public void saveMusic(final Long userId, final List<Long> musicIds) {
         final var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        final var music = userRecommendationMusicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
-
-        savedMusicRepository.save(SavedMusic.newInstance(user, music));
+        for (Long musicId : musicIds) {
+            final var music = userRecommendationMusicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
+            savedMusicRepository.save(SavedMusic.newInstance(user, music));
+        }
     }
 
     @Transactional

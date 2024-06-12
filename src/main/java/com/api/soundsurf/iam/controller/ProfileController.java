@@ -18,6 +18,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/profile", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -55,8 +57,8 @@ public class ProfileController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void save(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
-        savedMusicService.saveMusic(sessionUser.getUserId(), musicId);
+    public void save(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam List<Long> musicIds) {
+        savedMusicService.saveMusic(sessionUser.getUserId(), musicIds);
     }
 
     @DeleteMapping(value = "/music/unsave")
