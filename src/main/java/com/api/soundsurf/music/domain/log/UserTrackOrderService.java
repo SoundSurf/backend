@@ -13,6 +13,11 @@ public class UserTrackOrderService {
         return repository.findByUserId(userId);
     }
 
+    public void plusOrder( final  UserTrackOrder order){
+        setNewOrder(order, order.getOrder() + 1L);
+        repository.save(order);
+    }
+
     public void setNewOrder(final UserTrackOrder order, final Long newOrder) {
         order.updateOrder(newOrder);
         repository.save(order);

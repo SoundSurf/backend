@@ -10,12 +10,14 @@ public class GetRecommendationsAndSaveRecommendationEvent extends ApplicationEve
     private final List<Integer> genres;
     private final Long userId;
     private final Long lastOrder;
+    private final boolean isPrev;
 
-    public GetRecommendationsAndSaveRecommendationEvent(Object source, final List<Integer>  genres, final Long userId, final Long lastOrder) {
+    public GetRecommendationsAndSaveRecommendationEvent(Object source, final List<Integer>  genres, final Long userId, final Long lastOrder, final boolean isPrev) {
         super(source);
         this.genres = genres;
         this.userId = userId;
         this.lastOrder = lastOrder;
+        this.isPrev = isPrev;
     }
 
 }

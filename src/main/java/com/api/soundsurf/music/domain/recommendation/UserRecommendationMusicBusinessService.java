@@ -13,6 +13,7 @@ import se.michaelthelin.spotify.model_objects.specification.Track;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Service
@@ -24,6 +25,10 @@ public class UserRecommendationMusicBusinessService {
     public void firstRecommendAndSave(final Track[] data, final Long lastOrder, final Long userId, boolean isPrev) {
         final var recommendedMusics = save(data, lastOrder, userId, isPrev);
         listenAndDelete(userId, recommendedMusics.get(0).getId());
+    }
+
+    public List<UserRecommendationMusic> get(final Long userId) {
+        return service.get(userId);
     }
 
 
@@ -63,6 +68,10 @@ public class UserRecommendationMusicBusinessService {
         userRecommendationMusic.delete();
 
         service.save(userRecommendationMusic);
+    }
+
+    public UserRecommendationMusic getByOrder(final Long userId, final Long order) {
+        return service.getByOrder(userId, order);
     }
 
     private MusicDto.AlbumSimpleInfo.Info convertIntoAlbumDto(final AlbumSimplified album) {

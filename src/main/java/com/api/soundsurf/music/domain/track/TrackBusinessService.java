@@ -3,8 +3,10 @@ package com.api.soundsurf.music.domain.track;
 import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.entity.UserGenre;
 import com.api.soundsurf.music.constant.GenreType;
+import com.api.soundsurf.music.domain.GeneralMusicBusinessService;
 import com.api.soundsurf.music.domain.log.UserTrackLogService;
 import com.api.soundsurf.music.domain.log.UserTrackOrderService;
+import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicBusinessService;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicService;
 import com.api.soundsurf.music.domain.spotify.SpotifyBusinessService;
 import com.api.soundsurf.music.dto.MusicDto;
@@ -22,7 +24,8 @@ public class TrackBusinessService {
     private final UserTrackOrderService userTrackOrderService;
     private final UserTrackLogService userTrackLogService;
     private final SpotifyBusinessService spotifyBusinessService;
-    private final UserRecommendationMusicService userRecommendationMusicService;
+    private final UserRecommendationMusicBusinessService userRecommendationMusicBusinessService;
+    private final GeneralMusicBusinessService generalMusicBusinessService;
 
 
     public MusicDto.Track previous(final List<UserTrackLog> logs, final UserTrackOrder order, final User user, final List<Integer> genres) {
@@ -65,7 +68,7 @@ public class TrackBusinessService {
         }
 
         if (!nowSongExist) {
-            final var nowSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder());
+            final var nowSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder());
             MusicDto.Common.Song nowSong;
 
             if (nowSongByPrevRecommendationLogs == null) {
@@ -82,7 +85,7 @@ public class TrackBusinessService {
 
 
         if (!prevSongExist) {
-            final var prevSongLog = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder() - 1L);
+            final var prevSongLog = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder() - 1L);
             MusicDto.Common.Song prevSong;
 
             if (prevSongLog == null) {
@@ -99,7 +102,6 @@ public class TrackBusinessService {
     public MusicDto.Track following(final List<UserTrackLog> logs, final UserTrackOrder order, final User user, final List<Integer> genres) {
         final var response = new MusicDto.Track();
 
-
         for (var log : logs) {
             if (Objects.equals(log.getOrder(), order.getOrder())) {
                 //무조건 실행됨
@@ -109,24 +111,17 @@ public class TrackBusinessService {
             }
         }
 
-        userTrackOrderService.setNewOrder(order, order.getOrder() + 1L);
-        final var nowSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder());
-        MusicDto.Common.Song nowSong;
-        if (nowSongByPrevRecommendationLogs == null) {
-            nowSong = getNewTrack(user, genres, true, false);
-        } else {
-            nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
+        final var nowSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.get(user.getId());
+        final var nowSong = generalMusicBusinessService.getNextTrackWhenFollowing(logs, nowSongByPrevRecommendationLogs, order, user, genres);
+        if (!logs.stream().map(UserTrackLog::getOrder).toList().contains(order.getOrder() + 1L)) {
+            userTrackLogService.createNextSongLog(order.getOrder(), nowSong, user);
         }
-        userTrackLogService.createPrevSongLog(order.getOrder(), nowSong, user);
         response.setNowSong(nowSong);
 
-        final var prevSongByPrevRecommendationLogs = userRecommendationMusicService.getByOrder(user.getId(), order.getOrder()+1L);
-        MusicDto.Common.Song nextSong;
-        if (prevSongByPrevRecommendationLogs == null) {
-            nextSong = getNewTrack(user, genres, true, false);
-        } else {
-            nextSong = new MusicDto.Common.Song(prevSongByPrevRecommendationLogs);
-        }
+        userTrackOrderService.plusOrder(order);
+
+        final var nextSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.get(user.getId());
+        final var nextSong = generalMusicBusinessService.getNextTrackWhenFollowing(logs, nextSongByPrevRecommendationLogs, order, user, genres);
         response.setNextSong(nextSong);
 
         return response;
@@ -136,15 +131,15 @@ public class TrackBusinessService {
         final var userGenres = user.getUserGenres();
 
         if (requestGenres == null || !requestGenres.isEmpty()) {
-            return spotifyBusinessService.find(requestGenres, user, needMoreTracks, isPrev);
+            return generalMusicBusinessService.find(requestGenres, user, needMoreTracks, isPrev);
         }
 
         if (!userGenres.isEmpty()) {
             final var userGenreList = user.getUserGenres().stream().map(UserGenre::getGenreId).toList();
-            return spotifyBusinessService.find(userGenreList, user, needMoreTracks, isPrev);
+            return generalMusicBusinessService.find(userGenreList, user, needMoreTracks, isPrev);
         }
 
         final var randGenres = GenreType.getRandomGenres(5).stream().map(GenreType::getIndex).toList();
-        return spotifyBusinessService.find(randGenres, user, needMoreTracks, isPrev);
+        return generalMusicBusinessService.find(randGenres, user, needMoreTracks, isPrev);
     }
 }

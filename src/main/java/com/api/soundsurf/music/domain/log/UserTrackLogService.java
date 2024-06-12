@@ -41,7 +41,7 @@ public class UserTrackLogService {
         return repository.findAllByUserIdAndCreatedAtAfterOrderByCreatedAtAsc(userId, deadLineTime);
     }
 
-    private void createLog(final Long order, final MusicDto.Common.Song song, final User user) {
+    public void createLog(final Long order, final MusicDto.Common.Song song, final User user) {
         final var crawlResult = crawlerService.getAlbumGenresRating(song.album().albumName(), song.album().artists().stream().map(MusicDto.ArtistSimpleInfo.Musician::artistName).toArray(String[]::new));
         final var albumGenre = crawlResult[0];
         final var albumRating = crawlResult[1];
