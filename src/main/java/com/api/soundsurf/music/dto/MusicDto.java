@@ -17,7 +17,6 @@ import se.michaelthelin.spotify.model_objects.specification.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MusicDto {
 
@@ -79,14 +78,14 @@ public class MusicDto {
                 );
             }
 
-            public Song(TrackSimplified track) {
+            public Song(TrackSimplified track, Album album) {
                 this(
                         track.getId(),
                         track.getName(),
                         track.getPreviewUrl(),
                         track.getExternalUrls().getExternalUrls().get("spotify"),
                         track.getDurationMs(),
-                        null,
+                        new AlbumSimpleInfo.Info(album, null, null),
                         Arrays.stream(track.getArtists()).map(ArtistSimpleInfo.Musician::new).toList()
                 );
             }
@@ -187,7 +186,7 @@ public class MusicDto {
                 List<Common.Song> songs) {
             public Info(Album album, String[] crawled) {
                 this(new AlbumSimpleInfo.Info(album, crawled[0], crawled[1]),
-                        Arrays.stream(album.getTracks().getItems()).map(Common.Song::new).toList());
+                        Arrays.stream(album.getTracks().getItems()).map(track -> new Common.Song(track, album)).toList());
             }
         }
     }
