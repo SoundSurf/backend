@@ -1,13 +1,14 @@
 package com.api.soundsurf.list.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.api.soundsurf.iam.entity.User;
+import com.api.soundsurf.music.entity.ProjectGenre;
+import com.api.soundsurf.music.entity.ProjectMusic;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,46 +22,46 @@ public class Project {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "memo", nullable = true)
-    private String memo;
-
     @Column(name= "is_complete", nullable = false)
-    private boolean complete;
+    private boolean isComplete;
 
-    @Column(name = "genre_id", nullable = true)
-    private Long genreId;
+    @Column(name="isDeleted", nullable = false)
+    private boolean isDeleted;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name="deleted", nullable = false)
-    private boolean deleted;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectGenre> projectGenres = new ArrayList<>();
 
-    public Project(final  Long userId, final String name, final Long genreId) {
-        this.userId = userId;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectMusic> projectMusics = new ArrayList<>();
+
+    public Project(final User user, final String name) {
+        this.user = user;
         this.name = name;
-        this.genreId = genreId;
-        this.complete = false;
-        this.deleted = false;
+        this.isComplete = false;
+        this.isDeleted = false;
     }
 
-    public void updateName(final String name) {
-        this.name = name;
-    }
-
-    public void updateMemo(final String memo) {
-        this.memo = memo;
-    }
-
-    public void complete() {
-        this.complete = true;
-    }
-
-    public void unComplete() {
-        this.complete = false;
-    }
-
-    public void delete() {
-        this.deleted = true;
-    }
+//    public void updateName(final String name) {
+//        this.name = name;
+//    }
+//
+//    public void updateMemo(final String memo) {
+//        this.memo = memo;
+//    }
+//
+//    public void complete() {
+//        this.complete = true;
+//    }
+//
+//    public void unComplete() {
+//        this.complete = false;
+//    }
+//
+//    public void delete() {
+//        this.deleted = true;
+//    }
 }

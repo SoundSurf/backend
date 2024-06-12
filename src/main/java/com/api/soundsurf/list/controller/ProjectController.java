@@ -27,16 +27,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectController {
     private final ProjectTransferService transferService;
 
-    @GetMapping()
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public ProjectDto.List.Response list(final @AuthenticationPrincipal SessionUser sessionUser) {
-        return transferService.list(sessionUser);
-    }
-
+//    @GetMapping()
+//    @Operation(
+//            parameters = {
+//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+//                            required = true, content = @Content(mediaType = "application/json"))
+//            })
+//    public ProjectDto.List.Response list(final @AuthenticationPrincipal SessionUser sessionUser) {
+//        return transferService.list(sessionUser);
+//    }
+//
     @PostMapping()
     @Operation(
             parameters = {
@@ -46,54 +46,54 @@ public class ProjectController {
     public ProjectDto.Create.Response create(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody ProjectDto.Create.Request req) {
         return transferService.create(sessionUser, req);
     }
-
-    @PatchMapping("/{id}")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public void update(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Update.Request req) {
-        transferService.update(sessionUser, id, req);
-    }
-
-    @PatchMapping("/{id}/complete")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public void complete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
-        transferService.complete(sessionUser, id);
-    }
-
-    @PatchMapping("/{id}/un-complete")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public void unComplete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
-        transferService.unComplete(sessionUser, id);
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public void delete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
-        transferService.delete(sessionUser, id);
-    }
-
-    @PostMapping("/{id}/entity")
-    @Operation(
-            parameters = {
-                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-                            required = true, content = @Content(mediaType = "application/json"))
-            })
-    public void saveEntity(final @AuthenticationPrincipal SessionUser sessionUser, final @PathVariable Long id, final @Valid @RequestBody ProjectDto.SaveEntity.Request req) {
-        transferService.saveEntity(sessionUser, id, req);
-    }
+//
+//    @PatchMapping("/{id}")
+//    @Operation(
+//            parameters = {
+//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+//                            required = true, content = @Content(mediaType = "application/json"))
+//            })
+//    public void update(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Update.Request req) {
+//        transferService.update(sessionUser, id, req);
+//    }
+//
+//    @PatchMapping("/{id}/complete")
+//    @Operation(
+//            parameters = {
+//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+//                            required = true, content = @Content(mediaType = "application/json"))
+//            })
+//    public void complete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
+//        transferService.complete(sessionUser, id);
+//    }
+//
+//    @PatchMapping("/{id}/un-complete")
+//    @Operation(
+//            parameters = {
+//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+//                            required = true, content = @Content(mediaType = "application/json"))
+//            })
+//    public void unComplete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
+//        transferService.unComplete(sessionUser, id);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    @Operation(
+//            parameters = {
+//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+//                            required = true, content = @Content(mediaType = "application/json"))
+//            })
+//    public void delete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
+//        transferService.delete(sessionUser, id);
+//    }
+//
+//    @PostMapping("/{id}/entity")
+//    @Operation(
+//            parameters = {
+//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+//                            required = true, content = @Content(mediaType = "application/json"))
+//            })
+//    public void saveEntity(final @AuthenticationPrincipal SessionUser sessionUser, final @PathVariable Long id, final @Valid @RequestBody ProjectDto.SaveEntity.Request req) {
+//        transferService.saveEntity(sessionUser, id, req);
+//    }
 }
