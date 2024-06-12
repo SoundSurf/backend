@@ -6,7 +6,7 @@ import com.api.soundsurf.api.exception.ExceptionCode;
 public class MusicNotFoundException extends ApiException {
     private final static String exceptionCode = ExceptionCode.MUSIC.MUSIC_NOT_FOUND_EXCEPTION;
 
-    public MusicNotFoundException(Long id) {
-        super(exceptionCode + " : " + id);
+    public MusicNotFoundException(String trackId) {
+        super(exceptionCode + " : " + trackId);
     }
 }
