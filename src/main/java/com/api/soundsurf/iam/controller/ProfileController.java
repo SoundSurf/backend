@@ -4,6 +4,7 @@ import com.api.soundsurf.iam.domain.user.UserTransferService;
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.iam.dto.UserProfileDto;
 import com.api.soundsurf.music.domain.SavedMusicService;
+import com.api.soundsurf.music.dto.SavedMusicDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -64,5 +65,17 @@ public class ProfileController {
             })
     public void unsave(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
         savedMusicService.unsaveMusic(sessionUser.getUserId(), musicId);
+    }
+
+    @GetMapping(value = "/saved-music")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public SavedMusicDto.GetCount.Response getCount(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam Long musicId) {
+        Boolean isSaved = savedMusicService.isSavedMusic(sessionUser.getUserId(), musicId);
+        long count = savedMusicService.getSavedMusicCount(sessionUser.getUserId());
+        return new SavedMusicDto.GetCount.Response(count, isSaved);
     }
 }
