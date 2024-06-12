@@ -28,15 +28,14 @@ public class TrackBusinessService {
     private final GeneralMusicBusinessService generalMusicBusinessService;
 
 
-    public MusicDto.Track previous(final List<UserTrackLog> logs, final UserTrackOrder order, final User user, final List<Integer> genres) {
+    public MusicDto.Track previous(final List<UserTrackLog> userTrackLogs, final UserTrackOrder order, final User user, final List<Integer> genres) {
         final var response = new MusicDto.Track();
-        Long nowOrder = order.getOrder();
+//        Long nowOrder = order.getOrder();
 
-        for (var log : logs) {
+        for (var log : userTrackLogs) {
             if (Objects.equals(log.getOrder(), order.getOrder())) {
                 //무조건 실행된다.
                 response.setNextSong(new MusicDto.Common.Song(log));
-                userTrackOrderService.setNewOrder(order, --nowOrder);
 
                 break;
             }
@@ -45,21 +44,20 @@ public class TrackBusinessService {
         boolean nowSongExist = false;
         boolean prevSongExist = false;
         Long nowSongOrder = null;
-        for (int i = logs.size()-1; i >= 0; i--) {
-            var log = logs.get(i);
+        for (int i = userTrackLogs.size()-1; i >= 0; i--) {
+            var log = userTrackLogs.get(i);
 
-            if (!nowSongExist && log.getOrder() <= nowOrder) {
+            if (!nowSongExist && log.getOrder() < order.getOrder()) {
                 final var nowSong = new MusicDto.Common.Song(log);
-                userTrackLogService.createPrevSongLog(order.getOrder(), nowSong, user);
+                createPrevSongTrackLog(userTrackLogs, user, order, nowSong);
                 response.setNowSong(nowSong);
                 nowSongExist = true;
                 nowSongOrder = log.getOrder();
-                nowOrder = log.getOrder();
 
                 continue;
             }
 
-            if (nowSongExist && log.getOrder() <= nowOrder - 1L) {
+            if (nowSongExist && log.getOrder() < order.getOrder() - 1L) {
                 response.setPrevSong(new MusicDto.Common.Song(log));
                 prevSongExist = true;
 
@@ -68,7 +66,7 @@ public class TrackBusinessService {
         }
 
         if (!nowSongExist) {
-            final var nowSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder());
+            final var nowSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder()-1L);
             MusicDto.Common.Song nowSong;
 
             if (nowSongByPrevRecommendationLogs == null) {
@@ -77,15 +75,14 @@ public class TrackBusinessService {
                 nowSong = new MusicDto.Common.Song(nowSongByPrevRecommendationLogs);
             }
 
-            nowSongOrder = nowOrder - 1L;
-            userTrackLogService.createPrevSongLog(order.getOrder(), nowSong, user);
+            createPrevSongTrackLog(userTrackLogs, user, order, nowSong);
             response.setNowSong(nowSong);
 
         }
 
 
         if (!prevSongExist) {
-            final var prevSongLog = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder() - 1L);
+            final var prevSongLog = userRecommendationMusicBusinessService.getByOrder(user.getId(), order.getOrder() - 2L);
             MusicDto.Common.Song prevSong;
 
             if (prevSongLog == null) {
@@ -96,7 +93,20 @@ public class TrackBusinessService {
             response.setPrevSong(prevSong);
         }
 
+        userTrackOrderService.minusOrder(order);
         return response;
+    }
+
+    private void createPrevSongTrackLog(final List<UserTrackLog> userTrackLogs, final User user, final UserTrackOrder userTrackOrder, final MusicDto.Common.Song song) {
+        if (!userTrackLogs.stream().map(UserTrackLog::getOrder).toList().contains(userTrackOrder.getOrder() - 1L)) {
+            userTrackLogService.createPrevSongLog(userTrackOrder.getOrder(), song, user);
+        }
+    }
+
+    private void createNextSongTrackLog(final List<UserTrackLog> userTrackLogs, final User user, final UserTrackOrder userTrackOrder, final MusicDto.Common.Song song) {
+        if (!userTrackLogs.stream().map(UserTrackLog::getOrder).toList().contains(userTrackOrder.getOrder() + 1L)) {
+            userTrackLogService.createNextSongLog(userTrackOrder.getOrder(), song, user);
+        }
     }
 
     public MusicDto.Track following(final List<UserTrackLog> logs, final UserTrackOrder order, final User user, final List<Integer> genres) {
@@ -113,9 +123,7 @@ public class TrackBusinessService {
 
         final var nowSongByPrevRecommendationLogs = userRecommendationMusicBusinessService.get(user.getId());
         final var nowSong = generalMusicBusinessService.getNextTrackWhenFollowing(logs, nowSongByPrevRecommendationLogs, order, user, genres);
-        if (!logs.stream().map(UserTrackLog::getOrder).toList().contains(order.getOrder() + 1L)) {
-            userTrackLogService.createNextSongLog(order.getOrder(), nowSong, user);
-        }
+        createNextSongTrackLog(logs, user, order, nowSong);
         response.setNowSong(nowSong);
 
         userTrackOrderService.plusOrder(order);

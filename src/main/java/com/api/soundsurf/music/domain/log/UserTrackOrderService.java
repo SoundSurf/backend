@@ -18,6 +18,11 @@ public class UserTrackOrderService {
         repository.save(order);
     }
 
+    public void minusOrder(final UserTrackOrder order) {
+        setNewOrder(order, order.getOrder() - 1L);
+        repository.save(order);
+    }
+
     public void setNewOrder(final UserTrackOrder order, final Long newOrder) {
         order.updateOrder(newOrder);
         repository.save(order);
