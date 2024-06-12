@@ -21,6 +21,10 @@ public class ProjectBusinessService {
 
         return service.create(userId, name, genreIds);
     }
+
+    public void addMusic(final Long userId, final Long projectId, final String trackId, final String title, final String artists, final String imageUrl) {
+        service.addMusic(userId, projectId, trackId, title, artists, imageUrl);
+    }
 //
 //    public void update(final Long userId, final Long id, final String memo, final String name) {
 //        final var project = service.findNotNullable(userId, id);

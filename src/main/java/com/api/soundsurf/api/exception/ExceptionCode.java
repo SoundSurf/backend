@@ -35,7 +35,7 @@ public class ExceptionCode {
 
     public static class PROJECT {
         final public static String DUPLICATE_PROJECT_NAME_EXCEPTION = "같은 이름의 프로젝트가 존재합니다.";
-        final public static String NOT_FOUND = "프로젝트를 찾지 못했습니다.";
+        final public static String PROJECT_NOT_FOUND = "프로젝트를 찾지 못했습니다.";
     }
 
     public static class GENRE {

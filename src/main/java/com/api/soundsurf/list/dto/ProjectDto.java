@@ -35,7 +35,7 @@ public class ProjectDto {
 //        }
 //    }
 //
-    public static class  Create {
+    public static class Create {
         @Schema(name = "ProjectDto.Create.Request")
         @Getter
         public static class Request {
@@ -50,6 +50,17 @@ public class ProjectDto {
         @Getter
         public static class Response {
             private Long id;
+        }
+    }
+
+    public static class Music {
+        @Schema(name = "ProjectDto.Music.Request")
+        @Getter
+        public static class Request {
+            private String trackId;
+            private String title;
+            private String artists;
+            private String imageUrl;
         }
     }
 //
