@@ -100,15 +100,15 @@ public class ProjectController {
 //        transferService.unComplete(sessionUser, id);
 //    }
 //
-//    @DeleteMapping("/{id}")
-//    @Operation(
-//            parameters = {
-//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-//                            required = true, content = @Content(mediaType = "application/json"))
-//            })
-//    public void delete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
-//        transferService.delete(sessionUser, id);
-//    }
+    @DeleteMapping("/{id}")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void delete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
+        transferService.delete(sessionUser, id);
+    }
 //
 //    @PostMapping("/{id}/entity")
 //    @Operation(

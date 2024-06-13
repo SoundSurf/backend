@@ -26,21 +26,6 @@ public class ProjectTransferService {
     private final ProjectMusicRepository projectMusicRepository;
     private final ProjectGenreRepository projectGenreRepository;
 
-//    public ProjectDto.List.Response list(final SessionUser sessionUser) {
-//        final var projects = businessService.find(sessionUser.getUserId());
-//
-//        final var completeProjects = projects.stream()
-//                .filter(Project::isComplete)
-//                .map(project -> new ProjectDto.Project(project, project.getGenreId()))
-//                .toList();
-//        final var unCompleteProjects = projects.stream()
-//                .filter(project -> !project.isComplete())
-//                .map(project -> new ProjectDto.Project(project, project.getGenreId()))
-//                .toList();
-//
-//        return new ProjectDto.List.Response(completeProjects, unCompleteProjects);
-//    }
-
     public ProjectDto.List.Response getProjectList(final SessionUser sessionUser) {
         final var projects = businessService.find(sessionUser.getUserId());
 
@@ -114,9 +99,9 @@ public class ProjectTransferService {
 //        businessService.unComplete(sessionUser.getUserId(), id);
 //    }
 //
-//    public void delete(final SessionUser sessionUser, final Long id) {
-//        businessService.delete(sessionUser.getUserId(), id);
-//    }
+    public void delete(final SessionUser sessionUser, final Long id) {
+        businessService.delete(sessionUser.getUserId(), id);
+    }
 //
 //    public void saveEntity(final SessionUser sessionUser, final Long id, final ProjectDto.SaveEntity.Request req) {
 //

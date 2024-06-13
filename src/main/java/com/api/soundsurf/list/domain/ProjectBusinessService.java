@@ -48,13 +48,13 @@ public class ProjectBusinessService {
 //        patchProject(project, false);
 //    }
 //
-//    public void delete(final Long userId, final Long id) {
-//        final var project = service.findNotNullable(userId, id);
-//
-//        project.delete();
-//        service.save(project);
-//    }
-//
+    public void delete(final Long userId, final Long id) {
+        final var project = service.findNotNullable(userId, id);
+
+        project.delete();
+        service.save(project);
+    }
+
     private void validateName(final Long userId, final String name) {
         if (service.isExist(userId, name)) {
             throw new DuplicateProjectNameException(name);

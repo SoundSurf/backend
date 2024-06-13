@@ -75,7 +75,7 @@ public class Project {
 //        this.complete = false;
 //    }
 //
-//    public void delete() {
-//        this.deleted = true;
-//    }
+    public void delete() {
+        this.isDeleted = true;
+    }
 }

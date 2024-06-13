@@ -24,10 +24,10 @@ public class ProjectService {
     private final MusicRepository musicRepository;
     private final UserRepository userRepository;
 
-//    public void save(final Project project) {
-//        repository.save(project);
-//    }
-//
+    public void save(final Project project) {
+        projectRepository.save(project);
+    }
+
     public boolean isExist(final Long userId, final String name) {
         return projectRepository.existsByUserIdAndName(userId, name);
     }
@@ -56,16 +56,16 @@ public class ProjectService {
 
     }
 //
-//    public Project findNotNullable(final Long userId, final Long id) {
-//        final var project = repository.findByUserIdAndId(userId, id);
-//
-//        if (project == null) {
-//            throw new ProjectNotFoundException(id);
-//        }
-//
-//        return project;
-//    }
-//
+    public Project findNotNullable(final Long userId, final Long id) {
+        final var project = projectRepository.findByUserIdAndId(userId, id);
+
+        if (project == null) {
+            throw new ProjectNotFoundException(id);
+        }
+
+        return project;
+    }
+
     public List<Project> find(final Long userId) {
         return projectRepository.findAllByUserIdAndIsDeletedIsFalse(userId);
     }
