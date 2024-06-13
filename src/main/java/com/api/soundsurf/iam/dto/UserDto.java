@@ -61,6 +61,8 @@ public class UserDto {
             final Boolean newUser;
             final Long carId;
             final String imageBucketPath;
+            final Long savedMusicCount;
+            final Long playListCount;
 
             public Response(final User user, final Long carId, final String imageBucketPath) {
                 this.userId = user.getId();
@@ -70,6 +72,8 @@ public class UserDto {
                 this.carId = carId;
                 this.genres = user.getUserGenres().stream().map(UserGenre::getGenreId).collect(Collectors.toList());
                 this.imageBucketPath = imageBucketPath;
+                this.savedMusicCount = (long) user.getSavedMusics().size();
+                this.playListCount = (long) user.getPlaylists().size();
             }
         }
     }

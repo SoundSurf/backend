@@ -28,8 +28,8 @@ public class Project {
     @Column(name= "complete", nullable = false)
     private boolean complete;
 
-    @Column(name="isDeleted", nullable = false)
-    private boolean isDeleted;
+    @Column(name="deleted", nullable = false)
+    private boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -49,7 +49,7 @@ public class Project {
         this.user = user;
         this.name = name;
         this.complete = false;
-        this.isDeleted = false;
+        this.deleted = false;
     }
 
     @PrePersist
@@ -68,6 +68,6 @@ public class Project {
     }
 
     public void delete() {
-        this.isDeleted = true;
+        this.deleted = true;
     }
 }

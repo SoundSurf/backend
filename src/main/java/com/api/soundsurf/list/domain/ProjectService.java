@@ -84,7 +84,7 @@ public class ProjectService {
     }
 
     public List<Project> find(final Long userId) {
-        return projectRepository.findAllByUserIdAndIsDeletedIsFalse(userId);
+        return projectRepository.findAllByUserIdAndDeletedIsFalse(userId);
     }
 
     public Project findByIdAndUser(Long projectId, User user) {

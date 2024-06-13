@@ -63,7 +63,7 @@ public class User implements Persistable<Long> {
     private List<SavedMusic> savedMusics = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Project> projects = new ArrayList<>();
+    private List<Project> playlists = new ArrayList<>();
 
     @PrePersist
     private void onPersist() {
