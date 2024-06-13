@@ -8,6 +8,7 @@ import com.api.soundsurf.list.domain.ProjectBusinessService;
 import com.api.soundsurf.list.domain.ProjectMusicRepository;
 import com.api.soundsurf.list.domain.ProjectRepository;
 import com.api.soundsurf.list.dto.ProjectDto;
+import com.api.soundsurf.list.entity.Project;
 import com.api.soundsurf.music.domain.genre.ProjectGenreRepository;
 import com.api.soundsurf.music.entity.ProjectMusic;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,28 @@ public class ProjectTransferService {
 //
 //        return new ProjectDto.List.Response(completeProjects, unCompleteProjects);
 //    }
+
+    public ProjectDto.List.Response getProjectList(final SessionUser sessionUser) {
+        final var projects = businessService.find(sessionUser.getUserId());
+
+        final List<ProjectDto.List.ProjectSummary> completeProjects = projects.stream()
+                .filter(Project::isComplete)
+                .map(project -> new ProjectDto.List.ProjectSummary(
+                        project.getName(),
+                        project.getCreatedAt(),
+                        project.getProjectMusics().size())) // 예시로 사용된 musicCount 대신 실제 필드를 사용하세요
+                .collect(Collectors.toList());
+
+        final List<ProjectDto.List.ProjectSummary> unCompleteProjects = projects.stream()
+                .filter(project -> !project.isComplete())
+                .map(project -> new ProjectDto.List.ProjectSummary(
+                        project.getName(),
+                        project.getCreatedAt(),
+                        project.getProjectMusics().size())) // 예시로 사용된 musicCount 대신 실제 필드를 사용하세요
+                .collect(Collectors.toList());
+
+        return new ProjectDto.List.Response(completeProjects, unCompleteProjects);
+    }
 
     public ProjectDto.Get.Response getProject(final SessionUser sessionUser, final Long projectId) {
         final var user = userRepository.findUserById(sessionUser.getUserId()).orElseThrow(() -> new UserNotFoundException(sessionUser.getUserId()));

@@ -20,6 +20,16 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
     private final ProjectTransferService transferService;
 
+    @GetMapping("")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public ProjectDto.List.Response getProjectList(final @AuthenticationPrincipal SessionUser sessionUser) {
+        return transferService.getProjectList(sessionUser);
+    }
+
     @GetMapping("/{id}")
     @Operation(
             parameters = {

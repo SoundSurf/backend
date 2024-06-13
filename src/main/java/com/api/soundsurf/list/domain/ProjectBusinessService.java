@@ -12,10 +12,10 @@ import java.util.List;
 public class ProjectBusinessService {
     private final ProjectService service;
 
-//    public List<Project> find(final Long userId) {
-//        return service.find(userId);
-//    }
-//
+    public List<Project> find(final Long userId) {
+        return service.find(userId);
+    }
+
     public Long create(final Long userId, final String name, final List<Long> genreIds) {
         validateName(userId, name);
 

@@ -1,6 +1,5 @@
 package com.api.soundsurf.list.dto;
 
-import com.api.soundsurf.list.entity.Project;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -36,13 +35,21 @@ public class ProjectDto {
     }
 
     public static class List{
-
         @Schema(name = "ProjectDto.List.Response")
         @Getter
         @AllArgsConstructor
         public static class Response {
-            private java.util.List<Project> completed;
-            private java.util.List<Project> unCompleted;
+            private java.util.List<ProjectSummary> completed;
+            private java.util.List<ProjectSummary> unCompleted;
+        }
+
+        @Schema(name = "ProjectDto.List.ProjectSummary")
+        @Getter
+        @AllArgsConstructor
+        public static class ProjectSummary {
+            private String name;
+            private LocalDateTime createdAt;
+            private Integer musicCount;
         }
     }
 

@@ -66,8 +66,7 @@ public class ProjectService {
 //        return project;
 //    }
 //
-//    public List<Project> find(final Long userId) {
-//        return repository.findAllByUserIdAndDeletedIsFalse(userId);
-//    }
-
+    public List<Project> find(final Long userId) {
+        return projectRepository.findAllByUserIdAndIsDeletedIsFalse(userId);
+    }
 }
