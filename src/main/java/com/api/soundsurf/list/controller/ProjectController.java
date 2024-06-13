@@ -69,6 +69,16 @@ public class ProjectController {
     public void addMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Memo.Request req) {
         transferService.addMemo(sessionUser, id, req);
     }
+
+    @DeleteMapping(value = "/{projectId}/delete/memo")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void deleteMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long projectId, final @RequestParam String trackId) {
+        transferService.deleteMemo(sessionUser, projectId, trackId);
+    }
 //
 //    @PatchMapping("/{id}")
 //    @Operation(

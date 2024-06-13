@@ -64,6 +64,7 @@ public class ProjectTransferService {
                 .collect(Collectors.toList());
 
         return new ProjectDto.Get.Response(
+                project.getId(),
                 project.getName(),
                 project.isComplete(),
                 project.isDeleted(),
@@ -85,6 +86,10 @@ public class ProjectTransferService {
 
     public void addMemo(final SessionUser sessionUser, final Long projectId, final ProjectDto.Memo.Request req) {
         businessService.addMemo(sessionUser.getUserId(), projectId, req.getTrackId(), req.getMemo());
+    }
+
+    public void deleteMemo(final SessionUser sessionUser, final Long projectId, final String trackId) {
+        businessService.deleteMemo(sessionUser.getUserId(), projectId, trackId);
     }
 //
 //    public void update(final SessionUser sessionUser, final Long id, final ProjectDto.Update.Request req) {

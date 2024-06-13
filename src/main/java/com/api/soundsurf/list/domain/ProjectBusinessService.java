@@ -29,6 +29,10 @@ public class ProjectBusinessService {
     public void addMemo(final Long userId, final Long projectId, final String trackId, final String memo) {
         service.addMemo(userId, projectId, trackId, memo);
     }
+
+    public void deleteMemo(final Long userId, final Long projectId, final String trackId) {
+        service.deleteMemo(userId, projectId, trackId);
+    }
 //
 //    public void update(final Long userId, final Long id, final String memo, final String name) {
 //        final var project = service.findNotNullable(userId, id);

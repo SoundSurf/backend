@@ -16,6 +16,7 @@ public class ProjectDto {
         @Getter
         @AllArgsConstructor
         public static class Response {
+            private Long id;
             private String name;
             private boolean isComplete;
             private boolean isDeleted;
