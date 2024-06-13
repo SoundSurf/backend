@@ -94,11 +94,11 @@ public class ProjectTransferService {
     public void complete(final SessionUser sessionUser, final Long id) {
         businessService.complete(sessionUser.getUserId(), id);
     }
-//
-//    public void unComplete(final SessionUser sessionUser, final Long id) {
-//        businessService.unComplete(sessionUser.getUserId(), id);
-//    }
-//
+
+    public void unComplete(final SessionUser sessionUser, final Long id) {
+        businessService.unComplete(sessionUser.getUserId(), id);
+    }
+
     public void delete(final SessionUser sessionUser, final Long id) {
         businessService.delete(sessionUser.getUserId(), id);
     }

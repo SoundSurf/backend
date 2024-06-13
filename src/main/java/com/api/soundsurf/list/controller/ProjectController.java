@@ -89,17 +89,17 @@ public class ProjectController {
     public void complete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
         transferService.complete(sessionUser, id);
     }
-//
-//    @PatchMapping("/{id}/un-complete")
-//    @Operation(
-//            parameters = {
-//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-//                            required = true, content = @Content(mediaType = "application/json"))
-//            })
-//    public void unComplete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
-//        transferService.unComplete(sessionUser, id);
-//    }
-//
+
+    @PatchMapping("/{id}/un-complete")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void unComplete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
+        transferService.unComplete(sessionUser, id);
+    }
+
     @DeleteMapping("/{id}")
     @Operation(
             parameters = {

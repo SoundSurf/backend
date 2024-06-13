@@ -41,13 +41,13 @@ public class ProjectBusinessService {
 
         patchProject(project, true);
     }
-//
-//    public void unComplete(final Long userId, final Long id) {
-//        final var project = service.findNotNullable(userId, id);
-//
-//        patchProject(project, false);
-//    }
-//
+
+    public void unComplete(final Long userId, final Long id) {
+        final var project = service.findNotNullable(userId, id);
+
+        patchProject(project, false);
+    }
+
     public void delete(final Long userId, final Long id) {
         final var project = service.findNotNullable(userId, id);
 
