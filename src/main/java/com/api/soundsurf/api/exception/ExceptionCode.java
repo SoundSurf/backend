@@ -66,4 +66,8 @@ public class ExceptionCode {
         final public static String INVALID_FILE_EXTENSION_EXCEPTION = "잘못된 파일 확장자입니다.";
         final public static String PUT_OBJECT_EXCEPTION = "S3에 파일을 업로드할 수 없습니다.";
     }
+
+    public static class SAVEDMUSIC {
+        final public static String MUSIC_ALREADY_SAVED_EXCEPTION = "이미 저장된 음악입니다.";
+    }
 }
