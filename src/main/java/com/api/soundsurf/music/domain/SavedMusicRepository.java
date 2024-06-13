@@ -20,5 +20,4 @@ public interface SavedMusicRepository extends JpaRepository<SavedMusic, Long> {
     @Query("SELECT COUNT(sm) FROM SavedMusic sm WHERE sm.user.id = :userId AND sm.savedAt BETWEEN :startOfDay AND :endOfDay")
     long countSavedMusicsByUserAndDay(@Param("userId") Long userId, @Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
 
-    boolean existsByUserAndUserRecommendationMusic(User user, UserRecommendationMusic userRecommendationMusic);
 }
