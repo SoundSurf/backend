@@ -48,8 +48,8 @@ public class PlaylistBusinessService {
         return playlistService.create(userId, name, genreIds);
     }
 
-    public void addMusic(final Long userId, final Long playlistId, final String trackId, final String title, final String artists, final String imageUrl) {
-        playlistService.addMusic(userId, playlistId, trackId, title, artists, imageUrl);
+    public void addMusic(final Long userId, final Long playlistId, final String trackId, final String imageUrl) {
+        playlistService.addMusic(userId, playlistId, trackId, imageUrl);
     }
 
     public void deleteMusic(final Long userId, final Long playlistId, final Long musicId) {
