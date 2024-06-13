@@ -48,6 +48,7 @@ public class PlaylistDto {
         @Getter
         @AllArgsConstructor
         public static class PlaylistSummary {
+            private Long id;
             private String name;
             private LocalDateTime createdAt;
             private Integer musicCount;
