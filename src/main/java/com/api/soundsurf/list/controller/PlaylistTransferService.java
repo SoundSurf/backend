@@ -21,6 +21,7 @@ public class PlaylistTransferService {
         final List<PlaylistDto.List.PlaylistSummary> completePlaylists = playlists.stream()
                 .filter(Playlist::isComplete)
                 .map(playlist -> new PlaylistDto.List.PlaylistSummary(
+                        playlist.getId(),
                         playlist.getName(),
                         playlist.getCreatedAt(),
                         playlist.getPlaylistMusics().size()))
@@ -29,6 +30,7 @@ public class PlaylistTransferService {
         final List<PlaylistDto.List.PlaylistSummary> unCompletePlaylists = playlists.stream()
                 .filter(playlist -> !playlist.isComplete())
                 .map(playlist -> new PlaylistDto.List.PlaylistSummary(
+                        playlist.getId(),
                         playlist.getName(),
                         playlist.getCreatedAt(),
                         playlist.getPlaylistMusics().size()))
