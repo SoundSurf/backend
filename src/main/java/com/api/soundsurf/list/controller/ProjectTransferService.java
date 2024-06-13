@@ -2,7 +2,7 @@ package com.api.soundsurf.list.controller;
 
 import com.api.soundsurf.iam.dto.SessionUser;
 import com.api.soundsurf.list.domain.ProjectBusinessService;
-import com.api.soundsurf.list.dto.ProjectDto;
+import com.api.soundsurf.list.dto.PlaylistDto;
 import com.api.soundsurf.list.entity.Project;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,42 +15,42 @@ import java.util.stream.Collectors;
 public class ProjectTransferService {
     private final ProjectBusinessService businessService;
 
-    public ProjectDto.List.Response getProjectList(final SessionUser sessionUser) {
+    public PlaylistDto.List.Response getProjectList(final SessionUser sessionUser) {
         final var projects = businessService.find(sessionUser.getUserId());
 
-        final List<ProjectDto.List.ProjectSummary> completeProjects = projects.stream()
+        final List<PlaylistDto.List.PlaylistSummary> completeProjects = projects.stream()
                 .filter(Project::isComplete)
-                .map(project -> new ProjectDto.List.ProjectSummary(
+                .map(project -> new PlaylistDto.List.PlaylistSummary(
                         project.getName(),
                         project.getCreatedAt(),
                         project.getProjectMusics().size()))
                 .collect(Collectors.toList());
 
-        final List<ProjectDto.List.ProjectSummary> unCompleteProjects = projects.stream()
+        final List<PlaylistDto.List.PlaylistSummary> unCompleteProjects = projects.stream()
                 .filter(project -> !project.isComplete())
-                .map(project -> new ProjectDto.List.ProjectSummary(
+                .map(project -> new PlaylistDto.List.PlaylistSummary(
                         project.getName(),
                         project.getCreatedAt(),
                         project.getProjectMusics().size()))
                 .collect(Collectors.toList());
 
-        return new ProjectDto.List.Response(completeProjects, unCompleteProjects);
+        return new PlaylistDto.List.Response(completeProjects, unCompleteProjects);
     }
 
-    public ProjectDto.Get.Response getProject(final SessionUser sessionUser, final Long projectId) {
+    public PlaylistDto.Get.Response getProject(final SessionUser sessionUser, final Long projectId) {
         final var project = businessService.getProject(sessionUser.getUserId(), projectId);
         final var musicCount = businessService.getMusicCount(project);
         final var genreIds = businessService.getGenreIds(project);
         final var projectMusics = businessService.getProjectMusics(project);
 
-        List<ProjectDto.Get.MusicWithMemo> projectMusicsWithMemo = projectMusics.stream()
+        List<PlaylistDto.Get.MusicWithMemo> projectMusicsWithMemo = projectMusics.stream()
                 .map(music -> {
                     final var memo = businessService.getProjectMusicMemo(project, music);
-                    return new ProjectDto.Get.MusicWithMemo(music, memo);
+                    return new PlaylistDto.Get.MusicWithMemo(music, memo);
                 })
                 .collect(Collectors.toList());
 
-        return new ProjectDto.Get.Response(
+        return new PlaylistDto.Get.Response(
                 project.getId(),
                 project.getName(),
                 project.isComplete(),
@@ -62,13 +62,13 @@ public class ProjectTransferService {
         );
     }
 
-    public ProjectDto.Create.Response create(final SessionUser sessionUser, final ProjectDto.Create.Request req) {
+    public PlaylistDto.Create.Response create(final SessionUser sessionUser, final PlaylistDto.Create.Request req) {
         final var projectId = businessService.create(sessionUser.getUserId(), req.getName(), req.getGenreIds());
 
-        return new ProjectDto.Create.Response(projectId);
+        return new PlaylistDto.Create.Response(projectId);
     }
 
-    public void addMusic(final SessionUser sessionUser, final Long projectId, final ProjectDto.Music.Request req) {
+    public void addMusic(final SessionUser sessionUser, final Long projectId, final PlaylistDto.Music.Request req) {
         businessService.addMusic(sessionUser.getUserId(), projectId, req.getTrackId(), req.getTitle(), req.getArtists(), req.getImageUrl());
     }
 
@@ -76,7 +76,7 @@ public class ProjectTransferService {
         businessService.deleteMusic(sessionUser.getUserId(), projectId, musicId);
     }
 
-    public void addMemo(final SessionUser sessionUser, final Long projectId, final ProjectDto.Memo.Request req) {
+    public void addMemo(final SessionUser sessionUser, final Long projectId, final PlaylistDto.Memo.Request req) {
         businessService.addMemo(sessionUser.getUserId(), projectId, req.getMusicId(), req.getMemo());
     }
 

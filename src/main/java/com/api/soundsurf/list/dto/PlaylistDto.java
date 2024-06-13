@@ -8,11 +8,11 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
-public class ProjectDto {
+public class PlaylistDto {
     @AllArgsConstructor
 
     public static class Get {
-        @Schema(name = "ProjectDto.Get.Response")
+        @Schema(name = "PlaylistDto.Get.Response")
         @Getter
         @AllArgsConstructor
         public static class Response {
@@ -23,10 +23,10 @@ public class ProjectDto {
             private LocalDateTime createdAt;
             private Integer musicCount;
             private java.util.List<Long> genreIds;
-            private java.util.List<MusicWithMemo> projectMusics;
+            private java.util.List<MusicWithMemo> playlistMusics;
         }
 
-        @Schema(name = "ProjectDto.Get.MusicWithMemo")
+        @Schema(name = "PlaylistDto.Get.MusicWithMemo")
         @Getter
         @AllArgsConstructor
         public static class MusicWithMemo {
@@ -36,18 +36,18 @@ public class ProjectDto {
     }
 
     public static class List{
-        @Schema(name = "ProjectDto.List.Response")
+        @Schema(name = "PlaylistDto.List.Response")
         @Getter
         @AllArgsConstructor
         public static class Response {
-            private java.util.List<ProjectSummary> completed;
-            private java.util.List<ProjectSummary> unCompleted;
+            private java.util.List<PlaylistSummary> completed;
+            private java.util.List<PlaylistSummary> unCompleted;
         }
 
-        @Schema(name = "ProjectDto.List.ProjectSummary")
+        @Schema(name = "PlaylistDto.List.PlaylistSummary")
         @Getter
         @AllArgsConstructor
-        public static class ProjectSummary {
+        public static class PlaylistSummary {
             private String name;
             private LocalDateTime createdAt;
             private Integer musicCount;
@@ -55,7 +55,7 @@ public class ProjectDto {
     }
 
     public static class Create {
-        @Schema(name = "ProjectDto.Create.Request")
+        @Schema(name = "PlaylistDto.Create.Request")
         @Getter
         public static class Request {
             @Length(max = 50)
@@ -64,7 +64,7 @@ public class ProjectDto {
             private java.util.List<Long> genreIds;
         }
 
-        @Schema(name = "ProjectDto.Create.Response")
+        @Schema(name = "PlaylistDto.Create.Response")
         @AllArgsConstructor
         @Getter
         public static class Response {
@@ -73,7 +73,7 @@ public class ProjectDto {
     }
 
     public static class Music {
-        @Schema(name = "ProjectDto.Music.Request")
+        @Schema(name = "PlaylistDto.Music.Request")
         @Getter
         public static class Request {
             private String trackId;
@@ -84,7 +84,7 @@ public class ProjectDto {
     }
 
     public static class Memo {
-        @Schema(name = "ProjectDto.Memo.Request")
+        @Schema(name = "PlaylistDto.Memo.Request")
         @Getter
         public static class Request {
             private Long musicId;
