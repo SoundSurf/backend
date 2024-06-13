@@ -1,6 +1,7 @@
 package com.api.soundsurf.list.domain;
 
 import com.api.soundsurf.iam.domain.user.UserRepository;
+import com.api.soundsurf.iam.entity.User;
 import com.api.soundsurf.iam.exception.ProjectNotFoundException;
 import com.api.soundsurf.iam.exception.UserNotFoundException;
 import com.api.soundsurf.list.entity.Project;
@@ -32,7 +33,7 @@ public class ProjectService {
     public boolean isExist(final Long userId, final String name) {
         return projectRepository.existsByUserIdAndName(userId, name);
     }
-//
+
     public Long create(final Long userId, final String name, final List<Long> genreIds) {
         final var user = userRepository.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         final var newProject = projectRepository.save(new Project(user, name));
@@ -84,5 +85,26 @@ public class ProjectService {
 
     public List<Project> find(final Long userId) {
         return projectRepository.findAllByUserIdAndIsDeletedIsFalse(userId);
+    }
+
+    public Project findByIdAndUser(Long projectId, User user) {
+        return projectRepository.findByIdAndUser(projectId, user)
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+    }
+
+    public int countMusicByProject(Project project) {
+        return projectMusicRepository.countByProject(project);
+    }
+
+    public List<Long> findGenreIdByProject(Project project) {
+        return projectGenreRepository.findGenreIdByProject(project);
+    }
+
+    public List<Music> findMusicByProject(Project project) {
+        return projectMusicRepository.findMusicByProject(project);
+    }
+
+    public ProjectMusic findByProjectAndMusic(Project project, Music music) {
+        return projectMusicRepository.findByProjectAndMusic(project, music);
     }
 }

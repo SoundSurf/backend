@@ -1,16 +1,9 @@
 package com.api.soundsurf.list.controller;
 
-import com.api.soundsurf.iam.domain.user.UserRepository;
 import com.api.soundsurf.iam.dto.SessionUser;
-import com.api.soundsurf.iam.exception.ProjectNotFoundException;
-import com.api.soundsurf.iam.exception.UserNotFoundException;
 import com.api.soundsurf.list.domain.ProjectBusinessService;
-import com.api.soundsurf.list.domain.ProjectMusicRepository;
-import com.api.soundsurf.list.domain.ProjectRepository;
 import com.api.soundsurf.list.dto.ProjectDto;
 import com.api.soundsurf.list.entity.Project;
-import com.api.soundsurf.music.domain.genre.ProjectGenreRepository;
-import com.api.soundsurf.music.entity.ProjectMusic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +14,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProjectTransferService {
     private final ProjectBusinessService businessService;
-    private final UserRepository userRepository;
-    private final ProjectRepository projectRepository;
-    private final ProjectMusicRepository projectMusicRepository;
-    private final ProjectGenreRepository projectGenreRepository;
 
     public ProjectDto.List.Response getProjectList(final SessionUser sessionUser) {
         final var projects = businessService.find(sessionUser.getUserId());
@@ -49,16 +38,14 @@ public class ProjectTransferService {
     }
 
     public ProjectDto.Get.Response getProject(final SessionUser sessionUser, final Long projectId) {
-        final var user = userRepository.findUserById(sessionUser.getUserId()).orElseThrow(() -> new UserNotFoundException(sessionUser.getUserId()));
-        final var project = projectRepository.findByIdAndUser(projectId, user).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        final var musicCount = projectMusicRepository.countByProject(project);
-        final var genreIds = projectGenreRepository.findGenreIdByProject(project);
-        final var projectMusics = projectMusicRepository.findMusicByProject(project);
+        final var project = businessService.getProject(sessionUser.getUserId(), projectId);
+        final var musicCount = businessService.getMusicCount(project);
+        final var genreIds = businessService.getGenreIds(project);
+        final var projectMusics = businessService.getProjectMusics(project);
 
         List<ProjectDto.Get.MusicWithMemo> projectMusicsWithMemo = projectMusics.stream()
                 .map(music -> {
-                    ProjectMusic projectMusic = projectMusicRepository.findByProjectAndMusic(project, music);
-                    String memo = projectMusic != null ? projectMusic.getMemo() : null;
+                    final var memo = businessService.getProjectMusicMemo(project, music);
                     return new ProjectDto.Get.MusicWithMemo(music, memo);
                 })
                 .collect(Collectors.toList());
@@ -74,6 +61,7 @@ public class ProjectTransferService {
                 projectMusicsWithMemo
         );
     }
+
     public ProjectDto.Create.Response create(final SessionUser sessionUser, final ProjectDto.Create.Request req) {
         final var projectId = businessService.create(sessionUser.getUserId(), req.getName(), req.getGenreIds());
 
