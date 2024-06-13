@@ -28,7 +28,7 @@ import java.util.List;
 public class ProfileController {
     private final UserTransferService userTransferService;
     private final SavedMusicService savedMusicService;
-    private final SavedMusicTransferService savedMusicTransferService;
+    private final SavedMusicTransferService transferService;
 
     @PatchMapping(value = "")
     @Operation(
@@ -51,6 +51,7 @@ public class ProfileController {
     public UserProfileDto.Qr.Response getQr(final @AuthenticationPrincipal SessionUser sessionUser) {
         return userTransferService.getQr(sessionUser);
     }
+
     @PostMapping(value = "/music/save")
     @Operation(
             parameters = {
@@ -58,7 +59,7 @@ public class ProfileController {
                             required = true, content = @Content(mediaType = "application/json"))
             })
     public void save(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam List<String> musicIds) {
-        savedMusicService.saveMusic(sessionUser.getUserId(), musicIds);
+        transferService.saveMusic(sessionUser, musicIds);
     }
 
     @DeleteMapping(value = "/music/unsave")
@@ -67,8 +68,8 @@ public class ProfileController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void unsave(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam String musicId) {
-        savedMusicService.unsaveMusic(sessionUser.getUserId(), musicId);
+    public void delete(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam String musicId) {
+        transferService.delete(sessionUser, musicId);
     }
 
     @GetMapping(value = "/music/is-saved")
@@ -78,9 +79,7 @@ public class ProfileController {
                             required = true, content = @Content(mediaType = "application/json"))
             })
     public SavedMusicDto.GetCount.Response getCount(final @AuthenticationPrincipal SessionUser sessionUser, final @RequestParam String musicId) {
-        Boolean isSaved = savedMusicService.isSavedMusic(sessionUser.getUserId(), musicId);
-        long count = savedMusicService.getSavedMusicCount(sessionUser.getUserId());
-        return new SavedMusicDto.GetCount.Response(count, isSaved);
+        return transferService.getSavedMusicCount(sessionUser, musicId);
     }
 
     @GetMapping(value = "list/saved-musics")
@@ -90,6 +89,6 @@ public class ProfileController {
                             required = true, content = @Content(mediaType = "application/json"))
             })
     public SavedMusicDto.GetAll.Response getSavedMusics(final @AuthenticationPrincipal SessionUser sessionUser) {
-        return savedMusicTransferService.getSavedMusics(sessionUser);
+        return transferService.getSavedMusics(sessionUser);
     }
 }

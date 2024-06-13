@@ -22,12 +22,12 @@ public class SavedMusicDto {
 
         public SavedMusic(com.api.soundsurf.list.entity.SavedMusic entitySavedMusic) {
             this.id = entitySavedMusic.getId();
-            this.title = entitySavedMusic.getUserRecommendationMusic().getTrackName();
-            this.album = Utils.convertJsonStringToAlbumDto(entitySavedMusic.getUserRecommendationMusic().getAlbumMetadata());
-            this.artists = Utils.convertJsonStringToMusicianDtoList(entitySavedMusic.getUserRecommendationMusic().getArtistsMetadata());
-            this.trackId = entitySavedMusic.getUserRecommendationMusic().getTrackId();
-            this.previewUrl = entitySavedMusic.getUserRecommendationMusic().getTrackPreviewUrl();
-            this.spotifyUrl = entitySavedMusic.getUserRecommendationMusic().getTrackSpotifyUrl();
+            this.title = entitySavedMusic.getTrackName();
+            this.album = Utils.convertJsonStringToAlbumDto(entitySavedMusic.getAlbumMetadata());
+            this.artists = Utils.convertJsonStringToMusicianDtoList(entitySavedMusic.getArtistsMetadata());
+            this.trackId = entitySavedMusic.getTrackId();
+            this.previewUrl = entitySavedMusic.getTrackPreviewUrl();
+            this.spotifyUrl = entitySavedMusic.getTrackSpotifyUrl();
         }
     }
 
