@@ -16,12 +16,17 @@ public class SavedMusicDto {
         private final String artist;
         private final String album;
         private final String trackId;
+        private final String previewUrl;
+        private final String spotifyUrl;
+
         public SavedMusic(com.api.soundsurf.list.entity.SavedMusic entitySavedMusic) {
             this.id = entitySavedMusic.getId();
             this.title = entitySavedMusic.getUserRecommendationMusic().getTrackName();
             this.artist = entitySavedMusic.getUserRecommendationMusic().getArtistsMetadata();
             this.album = entitySavedMusic.getUserRecommendationMusic().getAlbumMetadata();
             this.trackId = entitySavedMusic.getUserRecommendationMusic().getTrackId();
+            this.previewUrl = entitySavedMusic.getUserRecommendationMusic().getTrackPreviewUrl();
+            this.spotifyUrl = entitySavedMusic.getUserRecommendationMusic().getTrackSpotifyUrl();
         }
     }
 

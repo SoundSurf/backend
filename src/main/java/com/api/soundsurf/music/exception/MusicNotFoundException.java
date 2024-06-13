@@ -9,4 +9,8 @@ public class MusicNotFoundException extends ApiException {
     public MusicNotFoundException(String trackId) {
         super(exceptionCode + " : " + trackId);
     }
+
+    public MusicNotFoundException(String trackId) {
+        super(exceptionCode + " : " + trackId);
+    }
 }
