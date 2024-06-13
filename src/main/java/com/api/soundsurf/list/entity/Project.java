@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "projects")
+@Table(name = "playlists")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,8 @@ public class Project {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name= "is_complete", nullable = false)
-    private boolean isComplete;
+    @Column(name= "complete", nullable = false)
+    private boolean complete;
 
     @Column(name="isDeleted", nullable = false)
     private boolean isDeleted;
@@ -39,16 +39,16 @@ public class Project {
     @JsonSerialize(using = LocalDateTimeUtcSerializer.class)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectGenre> projectGenres = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectMusic> projectMusics = new ArrayList<>();
 
     public Project(final User user, final String name) {
         this.user = user;
         this.name = name;
-        this.isComplete = false;
+        this.complete = false;
         this.isDeleted = false;
     }
 
@@ -60,11 +60,11 @@ public class Project {
     }
 
     public void complete() {
-        this.isComplete = true;
+        this.complete = true;
     }
 
     public void unComplete() {
-        this.isComplete = false;
+        this.complete = false;
     }
 
     public void delete() {

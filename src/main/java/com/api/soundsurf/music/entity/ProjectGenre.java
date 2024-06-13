@@ -8,21 +8,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "project_genres")
+@Table(name = "playlist_genres")
 public class ProjectGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "playlist_id")
+    private Project playlist;
 
     @Column(name = "genre_id")
     private Long genreId;
 
     public ProjectGenre(Project project, Long genreId) {
-        this.project = project;
+        this.playlist = project;
         this.genreId = genreId;
     }
 

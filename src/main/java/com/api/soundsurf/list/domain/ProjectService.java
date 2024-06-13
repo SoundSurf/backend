@@ -52,14 +52,14 @@ public class ProjectService {
     public void deleteMusic(final Long userId, final Long projectId, final Long musicId) {
         final var user = userRepository.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         final var project = projectRepository.findByIdAndUser(projectId, user).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        projectMusicRepository.deleteByProjectIdAndMusicId(project.getId(), musicId);
+        projectMusicRepository.deleteByPlaylistIdAndMusicId(project.getId(), musicId);
     }
 
     public void addMemo(final Long userId, final Long projectId, final Long musicId, final String memo) {
         final var user = userRepository.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         final var project = projectRepository.findByIdAndUser(projectId, user).orElseThrow(() -> new ProjectNotFoundException(projectId));
         final var music = musicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
-        final var projectMusic = projectMusicRepository.findByProjectAndMusic(project, music);
+        final var projectMusic = projectMusicRepository.findByPlaylistAndMusic(project, music);
         projectMusic.updateMemo(memo);
         projectMusicRepository.save(projectMusic);
     }
@@ -68,7 +68,7 @@ public class ProjectService {
         final var user = userRepository.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         final var project = projectRepository.findByIdAndUser(projectId, user).orElseThrow(() -> new ProjectNotFoundException(projectId));
         final var music = musicRepository.findById(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
-        final var projectMusic = projectMusicRepository.findByProjectAndMusic(project, music);
+        final var projectMusic = projectMusicRepository.findByPlaylistAndMusic(project, music);
         projectMusic.updateMemo(null);
         projectMusicRepository.save(projectMusic);
     }
@@ -93,7 +93,7 @@ public class ProjectService {
     }
 
     public int countMusicByProject(Project project) {
-        return projectMusicRepository.countByProject(project);
+        return projectMusicRepository.countByPlaylist(project);
     }
 
     public List<Long> findGenreIdByProject(Project project) {
@@ -101,10 +101,10 @@ public class ProjectService {
     }
 
     public List<Music> findMusicByProject(Project project) {
-        return projectMusicRepository.findMusicByProject(project);
+        return projectMusicRepository.findMusicByPlaylist(project);
     }
 
     public ProjectMusic findByProjectAndMusic(Project project, Music music) {
-        return projectMusicRepository.findByProjectAndMusic(project, music);
+        return projectMusicRepository.findByPlaylistAndMusic(project, music);
     }
 }

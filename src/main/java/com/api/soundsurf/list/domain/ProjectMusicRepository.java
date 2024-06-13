@@ -10,12 +10,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProjectMusicRepository extends JpaRepository<ProjectMusic, Long> {
-    ProjectMusic findByProjectAndMusic(Project project, Music music);
+    ProjectMusic findByPlaylistAndMusic(Project playlist, Music music);
 
-    Integer countByProject(Project project);
+    Integer countByPlaylist(Project playlist);
 
-    @Query("SELECT pm.music FROM ProjectMusic pm WHERE pm.project = :project")
-    List<Music> findMusicByProject(@Param("project") Project project);
+    @Query("SELECT pm.music FROM ProjectMusic pm WHERE pm.playlist = :playlist")
+    List<Music> findMusicByPlaylist(@Param("playlist") Project playlist);
 
-    void deleteByProjectIdAndMusicId(Long projectId, Long musicId);
+    void deleteByPlaylistIdAndMusicId(Long playlistId, Long musicId);
 }

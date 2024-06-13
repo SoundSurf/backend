@@ -1,19 +1,15 @@
 package com.api.soundsurf.music.entity;
 
-import com.api.soundsurf.api.utils.LocalDateTimeUtcSerializer;
 import com.api.soundsurf.list.entity.Project;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "project_musics")
+@Table(name = "playlist_musics")
 public class ProjectMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,17 +23,17 @@ public class ProjectMusic {
     private Music music;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "playlist_id")
+    private Project playlist;
 
-    public ProjectMusic(final String meno, final Music music, final Project project) {
+    public ProjectMusic(final String meno, final Music music, final Project playlist) {
         this.memo = meno;
         this.music = music;
-        this.project = project;
+        this.playlist = playlist;
     }
 
-    public static ProjectMusic newInstance(final String memo, final Music music, final Project project) {
-        return new ProjectMusic(memo, music, project);
+    public static ProjectMusic newInstance(final String memo, final Music music, final Project playlist) {
+        return new ProjectMusic(memo, music, playlist);
     }
 
     public void updateMemo(final String memo) {

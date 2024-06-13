@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProjectGenreRepository extends JpaRepository<ProjectGenre, Long> {
-    @Query("SELECT pg.genreId FROM ProjectGenre pg WHERE pg.project = :project")
+    @Query("SELECT pg.genreId FROM ProjectGenre pg WHERE pg.playlist = :project")
     List<Long> findGenreIdByProject(@Param("project") Project project);
 }
