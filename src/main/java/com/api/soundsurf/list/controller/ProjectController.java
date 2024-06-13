@@ -89,17 +89,7 @@ public class ProjectController {
     public void deleteMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long projectId, @PathVariable Long musicId) {
         transferService.deleteMemo(sessionUser, projectId, musicId);
     }
-//
-//    @PatchMapping("/{id}")
-//    @Operation(
-//            parameters = {
-//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-//                            required = true, content = @Content(mediaType = "application/json"))
-//            })
-//    public void update(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Update.Request req) {
-//        transferService.update(sessionUser, id, req);
-//    }
-//
+
     @PatchMapping("/{id}/complete")
     @Operation(
             parameters = {
@@ -129,14 +119,4 @@ public class ProjectController {
     public void delete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
         transferService.delete(sessionUser, id);
     }
-//
-//    @PostMapping("/{id}/entity")
-//    @Operation(
-//            parameters = {
-//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-//                            required = true, content = @Content(mediaType = "application/json"))
-//            })
-//    public void saveEntity(final @AuthenticationPrincipal SessionUser sessionUser, final @PathVariable Long id, final @Valid @RequestBody ProjectDto.SaveEntity.Request req) {
-//        transferService.saveEntity(sessionUser, id, req);
-//    }
 }

@@ -95,11 +95,7 @@ public class ProjectTransferService {
     public void deleteMemo(final SessionUser sessionUser, final Long projectId, final Long musicId) {
         businessService.deleteMemo(sessionUser.getUserId(), projectId, musicId);
     }
-//
-//    public void update(final SessionUser sessionUser, final Long id, final ProjectDto.Update.Request req) {
-//        businessService.update(sessionUser.getUserId(), id, req.getMemo(), req.getName());
-//    }
-//
+
     public void complete(final SessionUser sessionUser, final Long id) {
         businessService.complete(sessionUser.getUserId(), id);
     }
@@ -111,20 +107,4 @@ public class ProjectTransferService {
     public void delete(final SessionUser sessionUser, final Long id) {
         businessService.delete(sessionUser.getUserId(), id);
     }
-//
-//    public void saveEntity(final SessionUser sessionUser, final Long id, final ProjectDto.SaveEntity.Request req) {
-//
-//        System.out.println("asdf");
-//
-//    }
-//
-////    private List<ProjectDto.Project> mapProjectsToDto(List<Project> projects, boolean isComplete, List<Long> genreIds) {
-////        return projects.stream()
-////                .filter(project -> project.isComplete() == isComplete)
-////                .map(project -> {
-//////                    final var genreName = genreMap.get(project.getGenreId());
-////                    return new ProjectDto.Project(project, genreIds);
-////                })
-////                .toList();
-////    }
 }

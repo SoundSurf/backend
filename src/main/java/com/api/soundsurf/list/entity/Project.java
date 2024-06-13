@@ -59,14 +59,6 @@ public class Project {
         }
     }
 
-//    public void updateName(final String name) {
-//        this.name = name;
-//    }
-//
-//    public void updateMemo(final String memo) {
-//        this.memo = memo;
-//    }
-//
     public void complete() {
         this.isComplete = true;
     }

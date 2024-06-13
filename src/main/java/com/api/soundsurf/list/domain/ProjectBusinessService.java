@@ -37,13 +37,7 @@ public class ProjectBusinessService {
     public void deleteMemo(final Long userId, final Long projectId, final Long musicId) {
         service.deleteMemo(userId, projectId, musicId);
     }
-//
-//    public void update(final Long userId, final Long id, final String memo, final String name) {
-//        final var project = service.findNotNullable(userId, id);
-//
-//        patchProject(project, memo, name);
-//    }
-//
+
     public void complete(final Long userId, final Long id) {
         final var project = service.findNotNullable(userId, id);
 
@@ -68,19 +62,7 @@ public class ProjectBusinessService {
             throw new DuplicateProjectNameException(name);
         }
     }
-//
-//    private void patchProject(final Project project, final String memo, final String name) {
-//        if (memo != null) {
-//            project.updateMemo(memo);
-//        }
-//
-//        if (name != null) {
-//            project.updateName(name);
-//        }
-//
-//        service.save(project);
-//    }
-//
+
     private void patchProject(final Project project, final boolean isComplete) {
         if (isComplete) {
             project.complete();
