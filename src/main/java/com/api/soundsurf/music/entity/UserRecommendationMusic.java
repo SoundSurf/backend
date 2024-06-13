@@ -49,10 +49,6 @@ public class UserRecommendationMusic {
     @Column(nullable = false)
     private boolean deleted;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "userRecommendationMusic", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SavedMusic> savedMusics = new ArrayList<>();
-
     public UserRecommendationMusic(final Track track, final Long order, final Long userId, final String albumMetadata, final String artistsMetadata) {
         this.userId = userId;
         this.order = order;

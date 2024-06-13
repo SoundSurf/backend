@@ -31,7 +31,7 @@ public class DriveService {
     public Track[] recommendation(final List<Integer> genreIndices) {
         List<GenreType> genres;
 
-        if (genreIndices == null  || genreIndices.isEmpty()) {
+        if (genreIndices == null || genreIndices.isEmpty()) {
             genres = GenreType.getRandomGenres(5);
         } else {
             genres = genreIndices.stream()
@@ -45,6 +45,26 @@ public class DriveService {
         final var joinedGenres = String.join(",", genreStrings);
 
         return getTracksByGenres(joinedGenres);
+    }
+
+    public MusicDto.Common.Song getTrackInfo(final String id) {
+        try {
+            final var track = api.getTrack(id).build().execute();
+
+            return new MusicDto.Common.Song(track);
+        } catch (IOException | ParseException | SpotifyWebApiException e) {
+            throw new SpotifyNowPlayingException(e.getMessage());
+        }
+    }
+
+    public String[] getGenre(final  String artistId) {
+        try {
+            final var artist = api.getArtist(artistId).build().execute();
+            return artist.getGenres();
+
+        } catch (IOException | ParseException | SpotifyWebApiException e) {
+            throw new SpotifyNowPlayingException(e.getMessage());
+        }
     }
 
 

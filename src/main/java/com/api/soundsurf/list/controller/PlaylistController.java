@@ -66,6 +66,7 @@ public class PlaylistController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
+
     public void deleteMusic(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long playlistId, @PathVariable Long musicId) {
         transferService.deleteMusic(sessionUser, playlistId, musicId);
     }
