@@ -26,12 +26,16 @@ public class ProjectBusinessService {
         service.addMusic(userId, projectId, trackId, title, artists, imageUrl);
     }
 
-    public void addMemo(final Long userId, final Long projectId, final String trackId, final String memo) {
-        service.addMemo(userId, projectId, trackId, memo);
+    public void deleteMusic(final Long userId, final Long projectId, final Long musicId) {
+        service.deleteMusic(userId, projectId, musicId);
     }
 
-    public void deleteMemo(final Long userId, final Long projectId, final String trackId) {
-        service.deleteMemo(userId, projectId, trackId);
+    public void addMemo(final Long userId, final Long projectId, final Long musicId, final String memo) {
+        service.addMemo(userId, projectId, musicId, memo);
+    }
+
+    public void deleteMemo(final Long userId, final Long projectId, final Long musicId) {
+        service.deleteMemo(userId, projectId, musicId);
     }
 //
 //    public void update(final Long userId, final Long id, final String memo, final String name) {

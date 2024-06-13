@@ -87,7 +87,7 @@ public class ProjectDto {
         @Schema(name = "ProjectDto.Memo.Request")
         @Getter
         public static class Request {
-            private String trackId;
+            private Long musicId;
             private String memo;
         }
     }

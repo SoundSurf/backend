@@ -16,4 +16,6 @@ public interface ProjectMusicRepository extends JpaRepository<ProjectMusic, Long
 
     @Query("SELECT pm.music FROM ProjectMusic pm WHERE pm.project = :project")
     List<Music> findMusicByProject(@Param("project") Project project);
+
+    void deleteByProjectIdAndMusicId(Long projectId, Long musicId);
 }

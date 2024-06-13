@@ -60,6 +60,16 @@ public class ProjectController {
         transferService.addMusic(sessionUser, id, req);
     }
 
+    @DeleteMapping(value = "/{projectId}/delete/music/{musicId}")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void deleteMusic(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long projectId, @PathVariable Long musicId) {
+        transferService.deleteMusic(sessionUser, projectId, musicId);
+    }
+
     @PostMapping(value = "/{id}/add/memo")
     @Operation(
             parameters = {
@@ -70,14 +80,14 @@ public class ProjectController {
         transferService.addMemo(sessionUser, id, req);
     }
 
-    @DeleteMapping(value = "/{projectId}/delete/memo")
+    @DeleteMapping(value = "/{projectId}/delete/memo/{musicId}")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void deleteMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long projectId, final @RequestParam String trackId) {
-        transferService.deleteMemo(sessionUser, projectId, trackId);
+    public void deleteMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long projectId, @PathVariable Long musicId) {
+        transferService.deleteMemo(sessionUser, projectId, musicId);
     }
 //
 //    @PatchMapping("/{id}")

@@ -84,12 +84,16 @@ public class ProjectTransferService {
         businessService.addMusic(sessionUser.getUserId(), projectId, req.getTrackId(), req.getTitle(), req.getArtists(), req.getImageUrl());
     }
 
-    public void addMemo(final SessionUser sessionUser, final Long projectId, final ProjectDto.Memo.Request req) {
-        businessService.addMemo(sessionUser.getUserId(), projectId, req.getTrackId(), req.getMemo());
+    public void deleteMusic(final SessionUser sessionUser, final Long projectId, final Long musicId) {
+        businessService.deleteMusic(sessionUser.getUserId(), projectId, musicId);
     }
 
-    public void deleteMemo(final SessionUser sessionUser, final Long projectId, final String trackId) {
-        businessService.deleteMemo(sessionUser.getUserId(), projectId, trackId);
+    public void addMemo(final SessionUser sessionUser, final Long projectId, final ProjectDto.Memo.Request req) {
+        businessService.addMemo(sessionUser.getUserId(), projectId, req.getMusicId(), req.getMemo());
+    }
+
+    public void deleteMemo(final SessionUser sessionUser, final Long projectId, final Long musicId) {
+        businessService.deleteMemo(sessionUser.getUserId(), projectId, musicId);
     }
 //
 //    public void update(final SessionUser sessionUser, final Long id, final ProjectDto.Update.Request req) {
