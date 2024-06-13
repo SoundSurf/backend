@@ -4,6 +4,7 @@ import com.api.soundsurf.iam.domain.user.UserRepository;
 import com.api.soundsurf.iam.exception.UserNotFoundException;
 import com.api.soundsurf.list.entity.SavedMusic;
 import com.api.soundsurf.music.domain.recommendation.UserRecommendationMusicRepository;
+import com.api.soundsurf.music.exception.MusicAlreadySavedException;
 import com.api.soundsurf.music.exception.MusicNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,9 @@ public class SavedMusicService {
         final var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         for (String musicId : musicIds) {
             final var music = userRecommendationMusicRepository.findByTrackId(musicId).orElseThrow(() -> new MusicNotFoundException(musicId));
+            if (savedMusicRepository.existsByUserAndUserRecommendationMusic(user, music)) {
+                throw new MusicAlreadySavedException(user.getId(), music.getTrackId());
+            }
             savedMusicRepository.save(SavedMusic.newInstance(user, music));
         }
     }
