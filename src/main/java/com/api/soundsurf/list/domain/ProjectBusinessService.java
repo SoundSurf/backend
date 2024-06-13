@@ -36,11 +36,11 @@ public class ProjectBusinessService {
 //        patchProject(project, memo, name);
 //    }
 //
-//    public void complete(final Long userId, final Long id) {
-//        final var project = service.findNotNullable(userId, id);
-//
-//        patchProject(project, true);
-//    }
+    public void complete(final Long userId, final Long id) {
+        final var project = service.findNotNullable(userId, id);
+
+        patchProject(project, true);
+    }
 //
 //    public void unComplete(final Long userId, final Long id) {
 //        final var project = service.findNotNullable(userId, id);
@@ -73,13 +73,13 @@ public class ProjectBusinessService {
 //        service.save(project);
 //    }
 //
-//    private void patchProject(final Project project, final boolean isComplete) {
-//        if (isComplete) {
-//            project.complete();
-//        } else {
-//            project.unComplete();
-//        }
-//
-//        service.save(project);
-//    }
+    private void patchProject(final Project project, final boolean isComplete) {
+        if (isComplete) {
+            project.complete();
+        } else {
+            project.unComplete();
+        }
+
+        service.save(project);
+    }
 }

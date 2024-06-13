@@ -91,9 +91,9 @@ public class ProjectTransferService {
 //        businessService.update(sessionUser.getUserId(), id, req.getMemo(), req.getName());
 //    }
 //
-//    public void complete(final SessionUser sessionUser, final Long id) {
-//        businessService.complete(sessionUser.getUserId(), id);
-//    }
+    public void complete(final SessionUser sessionUser, final Long id) {
+        businessService.complete(sessionUser.getUserId(), id);
+    }
 //
 //    public void unComplete(final SessionUser sessionUser, final Long id) {
 //        businessService.unComplete(sessionUser.getUserId(), id);

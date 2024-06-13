@@ -80,15 +80,15 @@ public class ProjectController {
 //        transferService.update(sessionUser, id, req);
 //    }
 //
-//    @PatchMapping("/{id}/complete")
-//    @Operation(
-//            parameters = {
-//                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
-//                            required = true, content = @Content(mediaType = "application/json"))
-//            })
-//    public void complete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
-//        transferService.complete(sessionUser, id);
-//    }
+    @PatchMapping("/{id}/complete")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "authorization", in = ParameterIn.HEADER,
+                            required = true, content = @Content(mediaType = "application/json"))
+            })
+    public void complete(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
+        transferService.complete(sessionUser, id);
+    }
 //
 //    @PatchMapping("/{id}/un-complete")
 //    @Operation(

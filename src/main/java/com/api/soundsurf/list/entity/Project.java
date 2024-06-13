@@ -67,14 +67,14 @@ public class Project {
 //        this.memo = memo;
 //    }
 //
-//    public void complete() {
-//        this.complete = true;
-//    }
-//
-//    public void unComplete() {
-//        this.complete = false;
-//    }
-//
+    public void complete() {
+        this.isComplete = true;
+    }
+
+    public void unComplete() {
+        this.isComplete = false;
+    }
+
     public void delete() {
         this.isDeleted = true;
     }
