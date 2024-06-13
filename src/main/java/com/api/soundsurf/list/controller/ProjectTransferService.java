@@ -34,7 +34,7 @@ public class ProjectTransferService {
                 .map(project -> new ProjectDto.List.ProjectSummary(
                         project.getName(),
                         project.getCreatedAt(),
-                        project.getProjectMusics().size())) // 예시로 사용된 musicCount 대신 실제 필드를 사용하세요
+                        project.getProjectMusics().size()))
                 .collect(Collectors.toList());
 
         final List<ProjectDto.List.ProjectSummary> unCompleteProjects = projects.stream()
@@ -42,7 +42,7 @@ public class ProjectTransferService {
                 .map(project -> new ProjectDto.List.ProjectSummary(
                         project.getName(),
                         project.getCreatedAt(),
-                        project.getProjectMusics().size())) // 예시로 사용된 musicCount 대신 실제 필드를 사용하세요
+                        project.getProjectMusics().size()))
                 .collect(Collectors.toList());
 
         return new ProjectDto.List.Response(completeProjects, unCompleteProjects);
