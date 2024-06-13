@@ -33,9 +33,9 @@ public class ExceptionCode {
         final public static String QR_NOT_FOUND_ERROR = "QR 코드를 찾을 수 없습니다.";
     }
 
-    public static class PROJECT {
-        final public static String DUPLICATE_PROJECT_NAME_EXCEPTION = "같은 이름의 프로젝트가 존재합니다.";
-        final public static String PROJECT_NOT_FOUND = "프로젝트를 찾지 못했습니다.";
+    public static class PLAYLIST {
+        final public static String DUPLICATE_PLAYLIST_NAME_EXCEPTION = "같은 이름의 프로젝트가 존재합니다.";
+        final public static String PLAYLIST_NOT_FOUND = "프로젝트를 찾지 못했습니다.";
     }
 
     public static class GENRE {

@@ -1,7 +1,7 @@
 package com.api.soundsurf.list.controller;
 
 import com.api.soundsurf.iam.dto.SessionUser;
-import com.api.soundsurf.list.dto.ProjectDto;
+import com.api.soundsurf.list.dto.PlaylistDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/project", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/playlist", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Slf4j
-public class ProjectController {
-    private final ProjectTransferService transferService;
+public class PlaylistController {
+    private final PlaylistTransferService transferService;
 
     @GetMapping("")
     @Operation(
@@ -26,8 +26,8 @@ public class ProjectController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public ProjectDto.List.Response getProjectList(final @AuthenticationPrincipal SessionUser sessionUser) {
-        return transferService.getProjectList(sessionUser);
+    public PlaylistDto.List.Response getPlaylistList(final @AuthenticationPrincipal SessionUser sessionUser) {
+        return transferService.getPlaylistList(sessionUser);
     }
 
     @GetMapping("/{id}")
@@ -36,8 +36,8 @@ public class ProjectController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public ProjectDto.Get.Response getProject(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
-        return transferService.getProject(sessionUser, id);
+    public PlaylistDto.Get.Response getPlaylist(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id) {
+        return transferService.getPlaylist(sessionUser, id);
     }
 
     @PostMapping()
@@ -46,7 +46,7 @@ public class ProjectController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public ProjectDto.Create.Response create(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody ProjectDto.Create.Request req) {
+    public PlaylistDto.Create.Response create(final @AuthenticationPrincipal SessionUser sessionUser, final @Valid @RequestBody PlaylistDto.Create.Request req) {
         return transferService.create(sessionUser, req);
     }
 
@@ -56,18 +56,18 @@ public class ProjectController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void addMusic(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Music.Request req) {
+    public void addMusic(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody PlaylistDto.Music.Request req) {
         transferService.addMusic(sessionUser, id, req);
     }
 
-    @DeleteMapping(value = "/{projectId}/delete/music/{musicId}")
+    @DeleteMapping(value = "/{playlistId}/delete/music/{musicId}")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void deleteMusic(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long projectId, @PathVariable Long musicId) {
-        transferService.deleteMusic(sessionUser, projectId, musicId);
+    public void deleteMusic(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long playlistId, @PathVariable Long musicId) {
+        transferService.deleteMusic(sessionUser, playlistId, musicId);
     }
 
     @PostMapping(value = "/{id}/add/memo")
@@ -76,18 +76,18 @@ public class ProjectController {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void addMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody ProjectDto.Memo.Request req) {
+    public void addMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long id, final @Valid @RequestBody PlaylistDto.Memo.Request req) {
         transferService.addMemo(sessionUser, id, req);
     }
 
-    @DeleteMapping(value = "/{projectId}/delete/memo/{musicId}")
+    @DeleteMapping(value = "/{playlistId}/delete/memo/{musicId}")
     @Operation(
             parameters = {
                     @Parameter(name = "authorization", in = ParameterIn.HEADER,
                             required = true, content = @Content(mediaType = "application/json"))
             })
-    public void deleteMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long projectId, @PathVariable Long musicId) {
-        transferService.deleteMemo(sessionUser, projectId, musicId);
+    public void deleteMemo(final @AuthenticationPrincipal SessionUser sessionUser, @PathVariable Long playlistId, @PathVariable Long musicId) {
+        transferService.deleteMemo(sessionUser, playlistId, musicId);
     }
 
     @PatchMapping("/{id}/complete")
