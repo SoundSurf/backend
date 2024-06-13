@@ -2,8 +2,8 @@ package com.api.soundsurf.list.entity;
 
 import com.api.soundsurf.api.utils.LocalDateTimeUtcSerializer;
 import com.api.soundsurf.iam.entity.User;
-import com.api.soundsurf.music.entity.ProjectGenre;
-import com.api.soundsurf.music.entity.ProjectMusic;
+import com.api.soundsurf.music.entity.PlaylistGenre;
+import com.api.soundsurf.music.entity.PlaylistMusic;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "playlists")
-public class Project {
+public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,12 +40,12 @@ public class Project {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectGenre> projectGenres = new ArrayList<>();
+    private List<PlaylistGenre> playlistGenres = new ArrayList<>();
 
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectMusic> projectMusics = new ArrayList<>();
+    private List<PlaylistMusic> playlistMusics = new ArrayList<>();
 
-    public Project(final User user, final String name) {
+    public Playlist(final User user, final String name) {
         this.user = user;
         this.name = name;
         this.complete = false;
