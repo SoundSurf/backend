@@ -77,8 +77,6 @@ public class PlaylistDto {
         @Getter
         public static class Request {
             private String trackId;
-            private String title;
-            private String artists;
             private String imageUrl;
         }
     }

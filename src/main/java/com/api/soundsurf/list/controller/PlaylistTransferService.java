@@ -69,7 +69,7 @@ public class PlaylistTransferService {
     }
 
     public void addMusic(final SessionUser sessionUser, final Long playlistId, final PlaylistDto.Music.Request req) {
-        businessService.addMusic(sessionUser.getUserId(), playlistId, req.getTrackId(), req.getTitle(), req.getArtists(), req.getImageUrl());
+        businessService.addMusic(sessionUser.getUserId(), playlistId, req.getTrackId(), req.getImageUrl());
     }
 
     public void deleteMusic(final SessionUser sessionUser, final Long playlistId, final Long musicId) {
