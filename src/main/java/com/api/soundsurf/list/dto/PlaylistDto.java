@@ -91,23 +91,4 @@ public class PlaylistDto {
             private String memo;
         }
     }
-//
-//    public static class Update {
-//        @Schema(name = "ProjectDto.Update.Request")
-//        @Getter
-//        public static class Request {
-//            @Length(max = 50)
-//            private String name;
-//            @Length()
-//            private String memo;
-//        }
-//    }
-//
-//    public static class SaveEntity {
-//        @Schema(name = "ProjectDto.SaveEntity.Request")
-//        @Getter
-//        public static class Request{
-//            private EntityType entityType;
-//        }
-//    }
 }
